@@ -118,30 +118,91 @@ function handlePlaceOrder(e) {
     toast(t('checkout.fillRequired'), 'error');
     return;
   }
+
+  // Check if cart is not empty
+  if (Object.keys(state.cart).length === 0) {
+    toast(t('cart.empty'), 'error');
+    return;
+  }
   
   // Show loading state
   const btn = e.target;
   const originalText = btn.textContent;
-  btn.textContent = t('contact.sending');
+  btn.textContent = t('order.processing');
   btn.disabled = true;
   btn.classList.add('loading');
   
+  // Collect form data
+  const formData = new FormData(form);
+  const checkoutData = {
+    fullName: form.querySelector('input[data-i18n="checkout.nameExample"]').value.trim(),
+    email: form.querySelector('input[type="email"]').value.trim(),
+    phone: form.querySelector('input[type="tel"]').value.trim(),
+    wilaya: wilayaSelect.value,
+    address: form.querySelector('textarea').value.trim()
+  };
+  
+  // Calculate subtotal
+  const subtotal = Object.keys(state.cart).reduce((sum, productId) => {
+    const product = products.find(p => p.id === parseInt(productId));
+    return sum + (product ? product.price * state.cart[productId] : 0);
+  }, 0);
+  
   // Simulate processing delay
   setTimeout(() => {
-    $('#checkoutModal').close();
-    toast(t('message.orderPlaced'), 'success');
-    emptyCart();
-    
-    // Reset button
-    btn.textContent = originalText;
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    
-    // Reset form
-    form.reset();
-    inputs.forEach(input => input.classList.remove('error'));
-    
-    // Re-populate wilaya dropdown after reset
-    setTimeout(initWilayaDropdown, 100);
+    try {
+      // Create order using order manager
+      const order = orderManager.createOrder(checkoutData, state.cart, subtotal);
+      
+      // Close modal and show success
+      $('#checkoutModal').close();
+      
+      // Show order confirmation
+      const orderSummary = orderManager.generateOrderSummary(order);
+      console.log('Order created:', order);
+      console.log('Order summary:', orderSummary);
+      
+      toast(t('order.created'), 'success');
+      
+      // Empty cart after successful order
+      emptyCart();
+      
+      // Reset button
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      
+      // Reset form
+      form.reset();
+      inputs.forEach(input => input.classList.remove('error'));
+      
+      // Re-populate wilaya dropdown after reset
+      setTimeout(initWilayaDropdown, 100);
+      
+      // Optional: Show order details modal
+      showOrderConfirmation(order);
+      
+    } catch (error) {
+      console.error('Error creating order:', error);
+      toast('Error creating order. Please try again.', 'error');
+      
+      // Reset button
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    }
   }, 1500);
+}
+
+/**
+ * Show order confirmation modal/details
+ * @param {Object} order - Created order object
+ */
+function showOrderConfirmation(order) {
+  // You can implement a detailed order confirmation modal here
+  // For now, we'll just log the order and show a toast
+  console.log('Order confirmation for:', order.orderId);
+  
+  // Optional: Create and show order confirmation dialog
+  // This could include order details, estimated delivery, etc.
 }

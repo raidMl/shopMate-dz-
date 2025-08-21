@@ -101,6 +101,16 @@ body {
   background: var(--panel);
 }
 
+.btn.danger { 
+  background: #ef4444; 
+  color: white; 
+  border: 1px solid #dc2626; 
+}
+
+.btn.danger:hover {
+  background: #dc2626;
+}
+
 /* Badge */
 .badge { 
   background: #232730; 

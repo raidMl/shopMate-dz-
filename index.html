@@ -49,6 +49,7 @@
           <span id="cartCount" class="cart-count">0</span>
         </button>
         <button class="btn" id="checkoutQuick" data-i18n="nav.checkout">Quick Checkout</button>
+        <button class="btn ghost" id="adminPanel" title="Admin Panel">⚙️</button>
       </div>
     </div>
   </nav>
@@ -171,6 +172,32 @@
         <button class="btn secondary" value="cancel" data-i18n="checkout.cancel">Cancel</button>
         <button id="placeOrder" class="btn" value="confirm" data-i18n="checkout.placeOrder">Place Order</button>
       </menu>
+    </form>
+  </dialog>
+
+  <!-- Admin Panel Modal -->
+  <dialog id="adminModal">
+    <form method="dialog" style="padding: 16px; min-width: 400px;">
+      <div class="modal-head">
+        <h3 style="margin:0;">Admin Panel</h3>
+        <button class="btn ghost" value="cancel">Close</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin: 16px 0;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <strong>Orders Management:</strong>
+          <span id="orderCount" class="badge">0</span>
+        </div>
+        <button type="button" class="btn secondary" id="exportOrders">📥 Export Orders JSON</button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="file" id="importOrders" accept=".json" style="display: none;">
+          <button type="button" class="btn secondary" id="importOrdersBtn">📤 Import Orders JSON</button>
+        </div>
+        <button type="button" class="btn secondary" id="viewOrders">👁️ View All Orders</button>
+        <button type="button" class="btn secondary" id="resetProducts">🔄 Reset Product Stock</button>
+        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px;">
+          <button type="button" class="btn danger" id="clearAllOrders">🗑️ Clear All Orders</button>
+        </div>
+      </div>
     </form>
   </dialog>
 
@@ -298,12 +325,14 @@
   <script src="./js/data/wilayas.js"></script>
   <script src="./js/data/products.js"></script>
   <script src="./js/utils/state.js"></script>
+  <script src="./js/utils/orderManager.js"></script>
   <script src="./js/components/productCard.js"></script>
   <script src="./js/components/cart.js"></script>
   <script src="./js/components/filters.js"></script>
   <script src="./js/components/favorites.js"></script>
   <script src="./js/components/checkout.js"></script>
   <script src="./js/components/language-switcher.js"></script>
+  <script src="./js/components/admin.js"></script>
   <script src="./js/components/theme-contact.js"></script>
   <script src="./js/app.js"></script>
 </body>

@@ -95,6 +95,19 @@ const languages = {
       "checkout.addressExample": "Street, Commune, Daira",
       "checkout.fillRequired": "Please fill in all required fields correctly",
       
+      // Order Management
+      "order.confirmation": "Order Confirmation",
+      "order.id": "Order ID",
+      "order.date": "Order Date",
+      "order.items": "Items Ordered",
+      "order.subtotal": "Subtotal",
+      "order.tax": "Tax (19%)",
+      "order.total": "Total",
+      "order.created": "Order created successfully!",
+      "order.processing": "Processing your order...",
+      "customer.name": "Customer",
+      "customer.wilaya": "Delivery Wilaya",
+      
       // Contact
       "contact.title": "Get in Touch",
       "contact.subtitle": "Have questions about our products or need support? We'd love to hear from you.",
@@ -242,6 +255,19 @@ const languages = {
       "checkout.addressExample": "الشارع، البلدية، الدائرة",
       "checkout.fillRequired": "يرجى ملء جميع الحقول المطلوبة بشكل صحيح",
       
+      // Order Management
+      "order.confirmation": "تأكيد الطلب",
+      "order.id": "رقم الطلب",
+      "order.date": "تاريخ الطلب",
+      "order.items": "المنتجات المطلوبة",
+      "order.subtotal": "المجموع الفرعي",
+      "order.tax": "الضريبة (19%)",
+      "order.total": "المجموع الإجمالي",
+      "order.created": "تم إنشاء الطلب بنجاح!",
+      "order.processing": "جاري معالجة طلبك...",
+      "customer.name": "العميل",
+      "customer.wilaya": "ولاية التوصيل",
+      
       // Contact
       "contact.title": "تواصل معنا",
       "contact.subtitle": "هل لديك أسئلة حول منتجاتنا أو تحتاج للدعم؟ نحن نحب أن نسمع منك.",
@@ -388,6 +414,19 @@ const languages = {
       "checkout.selectWilaya": "Sélectionner Wilaya",
       "checkout.addressExample": "Rue, Commune, Daira",
       "checkout.fillRequired": "Veuillez remplir tous les champs requis correctement",
+      
+      // Order Management
+      "order.confirmation": "Confirmation de commande",
+      "order.id": "ID de commande",
+      "order.date": "Date de commande",
+      "order.items": "Articles commandés",
+      "order.subtotal": "Sous-total",
+      "order.tax": "Taxe (19%)",
+      "order.total": "Total",
+      "order.created": "Commande créée avec succès!",
+      "order.processing": "Traitement de votre commande...",
+      "customer.name": "Client",
+      "customer.wilaya": "Wilaya de livraison",
       
       // Contact
       "contact.title": "Contactez-nous",
