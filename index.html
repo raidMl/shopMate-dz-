@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShopMate — Modern E‑Commerce</title>
+  <meta name="description" content="A modern e‑commerce UI in pure HTML/CSS/JS with products grid, filters, cart, and checkout." />
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./styles/variables.css">
+  <link rel="stylesheet" href="./styles/base.css">
+  <link rel="stylesheet" href="./styles/components/navbar.css">
+  <link rel="stylesheet" href="./styles/components/hero.css">
+  <link rel="stylesheet" href="./styles/components/toolbar.css">
+  <link rel="stylesheet" href="./styles/components/product-grid.css">
+  <link rel="stylesheet" href="./styles/components/cart-drawer.css">
+  <link rel="stylesheet" href="./styles/components/modal.css">
+  <link rel="stylesheet" href="./styles/components/toast.css">
+  <link rel="stylesheet" href="./styles/components/contact-footer.css">
+  <link rel="stylesheet" href="./styles/components/language-switcher.css">
+  <link rel="stylesheet" href="./styles/responsive.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shopping bag outline -->
+            <path d="M6 10L8 26H24L26 10H6Z" stroke="currentColor" stroke-width="2" fill="none"/>
+            <!-- Shopping bag handles -->
+            <path d="M11 10V8C11 5.79086 12.7909 4 15 4H17C19.2091 4 21 5.79086 21 8V10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <!-- Modern accent dot -->
+            <circle cx="16" cy="18" r="3" fill="currentColor" opacity="0.8"/>
+            <!-- Geometric lines for modern touch -->
+            <path d="M11 14L14 17M18 17L21 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>ShopMate</span>
+        <!-- <span class="badge">Modern UI</span> -->
+      </div>
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn ghost theme-toggle" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="openCart" class="btn secondary cart-btn" aria-label="Open cart">
+          <span class="cart-icon">🛒</span>
+          <span id="cartCount" class="cart-count">0</span>
+        </button>
+        <button class="btn" id="checkoutQuick" data-i18n="nav.checkout">Quick Checkout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <div class="hero-card">
+      <div>
+        <h1 data-i18n="hero.title">Discover sleek gear crafted for your everyday flow.</h1>
+        <p data-i18n="hero.subtitle">Beautiful, responsive, and fast. Filter, search, and add to cart — all with zero frameworks.</p>
+        <div class="toolbar-row">
+          <input id="search" class="input" placeholder="Search products… (e.g. headphones)" data-i18n="hero.search" />
+          <button class="btn" id="clearSearch" data-i18n="hero.clear">Clear</button>
+        </div>
+      </div>
+      <div class="hero-visual" data-i18n="hero.offer">SAVE 15% • NEW DROPS</div>
+    </div>
+  </section>
+
+  <!-- Toolbar -->
+  <section class="container">
+    <div class="toolbar">
+      <div class="toolbar-row">
+        <label class="muted" for="category" data-i18n="toolbar.category">Category</label>
+        <select id="category">
+          <option value="all" data-i18n="category.all">All</option>
+        </select>
+      </div>
+      <div class="toolbar-row">
+        <label class="muted" for="sort" data-i18n="toolbar.sort">Sort</label>
+        <select id="sort">
+          <option value="popular" data-i18n="sort.popular">Most Popular</option>
+          <option value="price-asc" data-i18n="sort.priceAsc">Price: Low → High</option>
+          <option value="price-desc" data-i18n="sort.priceDesc">Price: High → Low</option>
+          <option value="new" data-i18n="sort.new">Newest</option>
+          <option value="name" data-i18n="sort.name">Name A → Z</option>
+        </select>
+      </div>
+      <div class="toolbar-row">
+        <label class="muted" for="priceRange"><span data-i18n="toolbar.maxPrice">Max Price</span> <span id="priceValue" class="badge">—</span></label>
+        <input id="priceRange" class="range" type="range" min="10" max="600" value="600" />
+      </div>
+      <div class="toolbar-row">
+        <label class="muted" for="onlyStock" data-i18n="toolbar.availability">Availability</label>
+        <select id="onlyStock">
+          <option value="all" data-i18n="availability.all">Show All</option>
+          <option value="in" data-i18n="availability.in">In Stock</option>
+          <option value="out" data-i18n="availability.out">Out of Stock</option>
+        </select>
+      </div>
+      <div class="toolbar-row">
+        <label class="muted" for="showFavorites">
+          <span data-i18n="toolbar.favorites">Favorites</span>
+          <span id="favoritesCount" class="badge">0</span>
+        </label>
+        <select id="showFavorites">
+          <option value="all" data-i18n="favorites.all">Show All</option>
+          <option value="favorites" data-i18n="favorites.only">Favorites Only</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grid -->
+  <main class="container" style="margin-top: 10px;">
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <!-- Cart Drawer -->
+  <aside id="drawer" class="drawer" aria-label="Shopping Cart" aria-hidden="true">
+    <div class="drawer-header">
+      <strong data-i18n="cart.title">Your Cart</strong>
+      <button id="closeCart" class="btn ghost" data-i18n="cart.close">Close</button>
+    </div>
+    <div id="cartBody" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="muted" data-i18n="cart.subtotal">Subtotal</span>
+        <strong id="subtotal">$0.00</strong>
+      </div>
+      <button id="checkout" class="btn" data-i18n="cart.checkout">Checkout</button>
+      <button id="emptyCart" class="btn secondary" data-i18n="cart.emptyCart">Empty Cart</button>
+    </div>
+  </aside>
+  <div id="backdrop" class="drawer-backdrop"></div>
+
+  <!-- Checkout Modal -->
+  <dialog id="checkoutModal">
+    <form method="dialog" style="padding: 16px;">
+      <div class="modal-head">
+        <h3 style="margin:0;" data-i18n="checkout.title">Checkout</h3>
+        <button class="btn ghost" value="cancel" data-i18n="cart.close">Close</button>
+      </div>
+      <div class="modal-grid">
+        <div>
+          <label class="muted" data-i18n="checkout.fullName">Full Name</label>
+          <input class="input" placeholder="e.g. Alex Doe" data-i18n="checkout.nameExample" required />
+        </div>
+        <div>
+          <label class="muted" data-i18n="checkout.email">Email</label>
+          <input type="email" class="input" placeholder="you@example.com" data-i18n="checkout.emailExample" required />
+        </div>
+        <div>
+          <label class="muted" data-i18n="checkout.address">Address</label>
+          <input class="input" placeholder="Street, City" data-i18n="checkout.addressExample" required />
+        </div>
+        <div>
+          <label class="muted" data-i18n="checkout.card">Card</label>
+          <input class="input" placeholder="•••• •••• •••• ••••" data-i18n="checkout.cardExample" required />
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 10px;"><span data-i18n="checkout.disclaimer">This demo does not process real payments. Subtotal:</span> <strong id="checkoutTotal">$0.00</strong></p>
+      <menu style="display:flex; gap:10px; justify-content:flex-end; margin: 10px 0 0; padding:0;">
+        <button class="btn secondary" value="cancel" data-i18n="checkout.cancel">Cancel</button>
+        <button id="placeOrder" class="btn" value="confirm" data-i18n="checkout.placeOrder">Place Order</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Added to cart</div>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="contact-content">
+        <div class="contact-header">
+          <h2 data-i18n="contact.title">Get in Touch</h2>
+          <p data-i18n="contact.subtitle">Have questions about our products or need support? We'd love to hear from you.</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div>
+                <h4 data-i18n="contact.email">Email</h4>
+                <p>support@shopmate.com</p>
+                <p>sales@shopmate.com</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📱</div>
+              <div>
+                <h4 data-i18n="contact.phone">Phone</h4>
+                <p>+1 (555) 123-4567</p>
+                <p data-i18n="contact.hours">Mon-Fri 9AM-6PM EST</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div>
+                <h4 data-i18n="contact.office">Office</h4>
+                <p>123 Tech Street</p>
+                <p>San Francisco, CA 94105</p>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-container">
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <input type="text" class="input" placeholder="Your Name" data-i18n="contact.yourName" required>
+                <input type="email" class="input" placeholder="Your Email" data-i18n="contact.yourEmail" required>
+              </div>
+              <input type="text" class="input" placeholder="Subject" data-i18n="contact.subject" required>
+              <textarea class="input" rows="4" placeholder="Your Message" data-i18n="contact.message" required></textarea>
+              <button type="submit" class="btn" data-i18n="contact.send">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <div class="brand">
+              <div class="brand-logo" aria-hidden="true">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Shopping bag outline -->
+                  <path d="M6 10L8 26H24L26 10H6Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <!-- Shopping bag handles -->
+                  <path d="M11 10V8C11 5.79086 12.7909 4 15 4H17C19.2091 4 21 5.79086 21 8V10" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <!-- Modern accent dot -->
+                  <circle cx="16" cy="18" r="3" fill="currentColor" opacity="0.8"/>
+                  <!-- Geometric lines for modern touch -->
+                  <path d="M11 14L14 17M18 17L21 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span>ShopMate</span>
+            </div>
+            <p data-i18n="footer.description">Discover sleek gear crafted for your everyday flow. Modern e-commerce experience with zero frameworks.</p>
+            <div class="social-links">
+              <a href="#" aria-label="Twitter">🐦</a>
+              <a href="#" aria-label="Facebook">📘</a>
+              <a href="#" aria-label="Instagram">📷</a>
+              <a href="#" aria-label="LinkedIn">💼</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4 data-i18n="footer.shop">Shop</h4>
+          <ul>
+            <li><a href="#" data-category="Audio">Audio</a></li>
+            <li><a href="#" data-category="Peripherals">Peripherals</a></li>
+            <li><a href="#" data-category="Wearables">Wearables</a></li>
+            <li><a href="#" data-category="Accessories">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 data-i18n="footer.support">Support</h4>
+          <ul>
+            <li><a href="#contact" data-i18n="footer.contactUs">Contact Us</a></li>
+            <li><a href="#" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="#" data-i18n="footer.shipping">Shipping Info</a></li>
+            <li><a href="#" data-i18n="footer.returns">Returns</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 data-i18n="footer.company">Company</h4>
+          <ul>
+            <li><a href="#" data-i18n="footer.about">About Us</a></li>
+            <li><a href="#" data-i18n="footer.privacy">Privacy Policy</a></li>
+            <li><a href="#" data-i18n="footer.terms">Terms of Service</a></li>
+            <li><a href="#" data-i18n="footer.careers">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer.rights">&copy; 2025 ShopMate. All rights reserved. Made with ♥ — pure HTML/CSS/JS</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Modules -->
+  <script src="./js/utils/helpers.js"></script>
+  <script src="./js/data/languages.js"></script>
+  <script src="./js/data/products.js"></script>
+  <script src="./js/utils/state.js"></script>
+  <script src="./js/components/productCard.js"></script>
+  <script src="./js/components/cart.js"></script>
+  <script src="./js/components/filters.js"></script>
+  <script src="./js/components/favorites.js"></script>
+  <script src="./js/components/checkout.js"></script>
+  <script src="./js/components/language-switcher.js"></script>
+  <script src="./js/components/theme-contact.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
