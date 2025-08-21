@@ -1,17 +1,21 @@
 
 // when add checkout is called, it should add the current date  of order order id 
 order  and create new order with his data also 
-reduce the  quantity by orderQuntityNumber 
+reduce the  quantity by orderQuntityNumber  the order  stored in file json
+// and update the product data in the json file
+
 
 // edit contact and footer
 
 //link with google sheet 
 
-//add informaiton of the seller  wilaya  ...etc 
+// ###add informaiton of the seller  wilaya    phone number insted of card number  ...
 
-// add multi language support
-
+// ##add multi language support
+ //add multi language for product data  
 //use da currency
+
+
 
 // create dashboard add the ability to add new product and edit delete it in dashboard
 and put it in category and add the ability to add new category and edit delete it in dashboard
@@ -22,4 +26,5 @@ and put it in category and add the ability to add new category and edit delete i
 
 //add static data in dashboard
 
-correct ui max price  and favorite in light mode
+//optimize the ui for all screen size
+#correct ui max price  and favorite in light mode

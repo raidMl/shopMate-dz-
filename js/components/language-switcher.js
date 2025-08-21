@@ -119,6 +119,11 @@ class LanguageSwitcher {
         updateCartUI();
       }
       
+      // Update wilaya dropdown language
+      if (typeof updateWilayaDropdownLanguage === 'function') {
+        updateWilayaDropdownLanguage();
+      }
+      
       // Update any open modals
       this.updateModals();
     }, 50);

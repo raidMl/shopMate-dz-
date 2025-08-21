@@ -33,6 +33,26 @@ dialog::backdrop {
   gap: 12px; 
 }
 
+/* Full width elements in modal grid */
+.modal-grid textarea,
+.modal-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+/* Select styling in modal */
+.modal-grid select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+[data-theme="light"] .modal-grid select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23374151' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
 /* Variant Selection Modal */
 .variant-selection-modal {
   max-width: 600px;
@@ -261,6 +281,21 @@ dialog::backdrop {
 
 .variant-actions .btn {
   flex: 1;
+}
+
+/* Error styles for form validation */
+.modal-grid input.error,
+.modal-grid select.error,
+.modal-grid textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="light"] .modal-grid input.error,
+[data-theme="light"] .modal-grid select.error,
+[data-theme="light"] .modal-grid textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 /* Responsive */
