@@ -222,6 +222,22 @@
   color: var(--primary);
 }
 
+/* Light mode qty button styles */
+[data-theme="light"] .qty-btn {
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+[data-theme="light"] .qty-btn:hover {
+  background: #e2e8f0;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+[data-theme="light"] .qty-display {
+  color: #334155;
+}
+
 .qty-display {
   min-width: 24px;
   text-align: center;
