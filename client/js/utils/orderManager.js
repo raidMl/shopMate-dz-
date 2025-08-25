@@ -151,17 +151,17 @@ class OrderManager {
 
     console.log('Created order:', order);
 
-    // Add order to collection
-    this.orders.push(order);
+  // Add order to collection
+  this.orders.push(order);
     
-    // Save orders
-    const saveResult = this.saveOrders();
-    console.log('Order save result:', saveResult);
+  // Save orders
+  const saveResult = this.saveOrders();
+  console.log('Order save result:', saveResult);
     
-    // Update product quantities
-    this.updateProductQuantities(orderItems);
+  // Update product quantities
+  this.updateProductQuantities(orderItems);
     
-    return order;
+  return order;
   }
 
   /**
