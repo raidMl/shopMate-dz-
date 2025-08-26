@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 // @access  Public
 router.get("/:id", async (req, res) => {
   try {
-    const product = await Product.findOne({ id: req.params.id });
+    const product = await Product.findById(req.params.id);
 
     if (product) {
       res.json(product);
@@ -59,7 +59,7 @@ router.put(
   admin,
   async (req, res) => {
     try {
-      const product = await Product.findOne({ id: req.params.id });
+      const product = await Product.findById(req.params.id);
 
       if (product) {
         Object.keys(req.body).forEach((key) => {
@@ -86,7 +86,7 @@ router.delete(
   admin,
   async (req, res) => {
     try {
-      const product = await Product.findOne({ id: req.params.id });
+      const product = await Product.findById(req.params.id);
 
       if (product) {
         await product.deleteOne();

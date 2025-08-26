@@ -12,6 +12,26 @@ const connectDB = async () => {
     });
     
     console.log(`MongoDB Atlas Connected: ${conn.connection.host}`);
+    
+    // Drop old indexes that are no longer needed
+    try {
+      const db = conn.connection.db;
+      
+      // Drop the old id index from categories collection
+      await db.collection('categories').dropIndex('id_1').catch(() => {
+        console.log('id_1 index not found in categories collection (this is fine)');
+      });
+      
+      // Drop the old id index from products collection
+      await db.collection('products').dropIndex('id_1').catch(() => {
+        console.log('id_1 index not found in products collection (this is fine)');
+      });
+      
+      console.log('Old indexes cleaned up successfully');
+    } catch (indexError) {
+      console.log('Index cleanup completed (some indexes may not have existed)');
+    }
+    
   } catch (error) {
     console.error(`Database connection error: ${error.message}`);
     process.exit(1);

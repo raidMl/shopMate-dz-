@@ -17,7 +17,7 @@ const User = mongoose.model("User", userSchema);
    CATEGORY SCHEMA
 ================================*/
 const categorySchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true }, // e.g. "audio"
+  // _id: { type: String, required: true, unique: true }, // e.g. "audio"
   name: { type: String, required: true },             // e.g. "Audio"
   description: { type: String },
 });
@@ -28,7 +28,7 @@ const Category = mongoose.model("Category", categorySchema);
    PRODUCT SCHEMA
 ================================*/
 const productSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true }, // e.g. "p1"
+  // _id: { type: String, required: true, unique: true }, // e.g. "p1"
   name: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: String },

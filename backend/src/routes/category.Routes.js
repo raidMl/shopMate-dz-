@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
   try {
-    const category = await Category.findOne({ id: req.params.id });
+    const category = await Category.findById(req.params.id);
     
     if (category) {
       res.json(category);
@@ -37,10 +37,31 @@ router.get('/:id', async (req, res) => {
 // @access  Private/Admin
 router.post('/', protect, admin, async (req, res) => {
   try {
-    const category = new Category(req.body);
+    console.log('Creating category with data:', req.body);
+    console.log('User making request:', req.user);
+    
+    const { name, description } = req.body;
+    
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ message: 'Category name is required' });
+    }
+    
+    // Check if category with same name already exists
+    const existingCategory = await Category.findOne({ name: name.trim() });
+    if (existingCategory) {
+      return res.status(400).json({ message: 'Category with this name already exists' });
+    }
+    
+    const category = new Category({
+      name: name.trim(),
+      description: description ? description.trim() : ''
+    });
+    
     const createdCategory = await category.save();
+    console.log('Category created successfully:', createdCategory);
     res.status(201).json(createdCategory);
   } catch (error) {
+    console.error('Category creation error:', error);
     res.status(400).json({ message: error.message });
   }
 });
@@ -50,7 +71,7 @@ router.post('/', protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.put('/:id', protect, admin, async (req, res) => {
   try {
-    const category = await Category.findOne({ id: req.params.id });
+    const category = await Category.findById(req.params.id);
     
     if (category) {
       category.name = req.body.name || category.name;
@@ -71,7 +92,7 @@ router.put('/:id', protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.delete('/:id', protect, admin, async (req, res) => {
   try {
-    const category = await Category.findOne({ id: req.params.id });
+    const category = await Category.findById(req.params.id);
     
     if (category) {
       await category.deleteOne();
@@ -79,6 +100,16 @@ router.delete('/:id', protect, admin, async (req, res) => {
     } else {
       res.status(404).json({ message: 'Category not found' });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Temporary route to clear categories collection (remove after use)
+router.delete('/clear-all', protect, admin, async (req, res) => {
+  try {
+    await Category.deleteMany({});
+    res.json({ message: 'All categories cleared' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

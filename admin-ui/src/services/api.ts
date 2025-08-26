@@ -19,20 +19,24 @@ api.interceptors.request.use(
         const user = JSON.parse(userData);
         if (user.token) {
           config.headers.Authorization = `Bearer ${user.token}`;
+          console.log('Adding auth token to request');
         }
       } catch (error) {
         console.error('Error parsing user data:', error);
       }
+    } else {
+      console.warn('No user data found in localStorage');
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Add response interceptor for error handling
+// Add response interceptor for better error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.error('API Error:', error.response?.data);
     if (error.response?.status === 401) {
       localStorage.removeItem('user');
       window.location.href = '/login';
@@ -45,8 +49,14 @@ api.interceptors.response.use(
 export const productsAPI = {
   getAll: () => api.get('/products'),
   getById: (id: string) => api.get(`/products/${id}`),
-  create: (productData: any) => api.post('/products', productData),
-  update: (id: string, productData: any) => api.put(`/products/${id}`, productData),
+  create: (productData: any) => {
+    console.log('Creating product:', productData);
+    return api.post('/products', productData);
+  },
+  update: (id: string, productData: any) => {
+    console.log('Updating product:', id, productData);
+    return api.put(`/products/${id}`, productData);
+  },
   delete: (id: string) => api.delete(`/products/${id}`),
 };
 
@@ -54,8 +64,14 @@ export const productsAPI = {
 export const categoriesAPI = {
   getAll: () => api.get('/categories'),
   getById: (id: string) => api.get(`/categories/${id}`),
-  create: (categoryData: any) => api.post('/categories', categoryData),
-  update: (id: string, categoryData: any) => api.put(`/categories/${id}`, categoryData),
+  create: (categoryData: any) => {
+    console.log('Creating category:', categoryData);
+    return api.post('/categories', categoryData);
+  },
+  update: (id: string, categoryData: any) => {
+    console.log('Updating category:', id, categoryData);
+    return api.put(`/categories/${id}`, categoryData);
+  },
   delete: (id: string) => api.delete(`/categories/${id}`),
 };
 
