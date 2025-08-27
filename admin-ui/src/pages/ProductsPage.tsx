@@ -5,14 +5,13 @@ import Navbar from '../components/common/Navbar';
 
 interface Product {
   _id: string;
-  // id: string; // Add this line - it was missing
   name: string;
   description: string;
   image?: string;
   price: number;
   originalPrice?: number;
   discount?: number;
-  category: string;
+  category: Category; // Change this to Category object instead of string
   rating?: number;
   stock: number;
   createdAt: string;
@@ -118,7 +117,7 @@ const ProductsPage: React.FC = () => {
       price: product.price,
       originalPrice: product.originalPrice || 0,
       discount: product.discount || 0,
-      category: product.category,
+      category: typeof product.category === 'object' ? product.category._id : product.category,
       rating: product.rating || 0,
       stock: product.stock,
       hue: product.hue || 0,
@@ -227,7 +226,7 @@ const ProductsPage: React.FC = () => {
                   )}
                 </div>
                 <div className="text-sm text-gray-500 mb-2">
-                  <p>Category: {product.category}</p>
+                  <p>Category: {typeof product.category === 'object' ? product.category.name : product.category}</p>
                   <p>Stock: {product.stock}</p>
                   {product.rating && <p>Rating: {product.rating}/5</p>}
                 </div>

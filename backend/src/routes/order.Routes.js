@@ -46,7 +46,13 @@ router.get("/:id", protect, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate("user", "name email")
-      .populate("products.product");
+      .populate({
+        path: "products.product",
+        populate: {
+          path: "category",
+          select: "name description",
+        },
+      });
 
     if (order) {
       // Check if user is admin or order belongs to user
@@ -91,7 +97,14 @@ router.put("/:id/status", protect, admin, async (req, res) => {
 // @access  Private
 router.get("/my/orders", protect, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id });
+    const orders = await Order.find({ user: req.user._id })
+      .populate({
+        path: "products.product",
+        populate: {
+          path: "category",
+          select: "name description",
+        },
+      });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -103,7 +116,15 @@ router.get("/my/orders", protect, async (req, res) => {
 // @access  Private/Admin
 router.get("/", protect, admin, async (req, res) => {
   try {
-    const orders = await Order.find({}).populate("user", "id name");
+    const orders = await Order.find({})
+      .populate("user", "id name")
+      .populate({
+        path: "products.product",
+        populate: {
+          path: "category",
+          select: "name description",
+        },
+      });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
