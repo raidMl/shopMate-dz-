@@ -248,7 +248,7 @@
       </div>
       <div class="toolbar-row">
         <label class="muted" for="priceRange">Max Price <span id="priceValue" class="badge">—</span></label>
-        <input id="priceRange" class="range" type="range" min="10" max="600" value="600" />
+        <input id="priceRange" class="range" type="range" min="1000" max="60000" value="60000" />
       </div>
       <div class="toolbar-row">
         <label class="muted" for="onlyStock">Availability</label>
@@ -286,7 +286,7 @@
     <div class="drawer-footer">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span class="muted">Subtotal</span>
-        <strong id="subtotal">$0.00</strong>
+        <strong id="subtotal">0.00 da</strong>
       </div>
       <button id="checkout" class="btn">Checkout</button>
       <button id="emptyCart" class="btn secondary">Empty Cart</button>
@@ -319,7 +319,7 @@
           <input class="input" placeholder="•••• •••• •••• ••••" required />
         </div>
       </div>
-      <p class="muted" style="margin-top: 10px;">This demo does not process real payments. Subtotal: <strong id="checkoutTotal">$0.00</strong></p>
+      <p class="muted" style="margin-top: 10px;">This demo does not process real payments. Subtotal: <strong id="checkoutTotal">0.00 da</strong></p>
       <menu style="display:flex; gap:10px; justify-content:flex-end; margin: 10px 0 0; padding:0;">
         <button class="btn secondary" value="cancel">Cancel</button>
         <button id="placeOrder" class="btn" value="confirm">Place Order</button>
@@ -336,7 +336,17 @@
   // ——————————————— Helpers
   const $ = (sel, parent=document) => parent.querySelector(sel);
   const $$ = (sel, parent=document) => Array.from(parent.querySelectorAll(sel));
-  const money = (n) => new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(n);
+  const money = (n) => {
+    if (typeof n !== 'number') {
+      n = parseFloat(n) || 0;
+    }
+    return new Intl.NumberFormat('ar-DZ', { 
+      style: 'currency', 
+      currency: 'DZD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(n).replace('DZD', 'da').replace('د.ج.', 'da');
+  };
   const debounce = (fn, ms=250) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); } };
   const toast = (msg, type = 'default') => { 
     const t = $('#toast'); 
@@ -348,20 +358,20 @@
     setTimeout(() => t.classList.remove('show'), 2500); 
   };
 
-  // ——————————————— Data (sample products)
+  // ——————————————— Data (sample products with DA prices)
   const products = [
-    { id: 'p1', name: 'Nimbus Headphones', price: 149, category: 'Audio', rating: 4.7, stock: 16, createdAt: 20250110, hue: 210 },
-    { id: 'p2', name: 'Aurora Keyboard', price: 129, category: 'Peripherals', rating: 4.6, stock: 9, createdAt: 20250102, hue: 190 },
-    { id: 'p3', name: 'Pulse Mouse Pro', price: 59,  category: 'Peripherals', rating: 4.4, stock: 0, createdAt: 20241212, hue: 160 },
-    { id: 'p4', name: 'Flux Smartwatch', price: 199, category: 'Wearables', rating: 4.2, stock: 7, createdAt: 20250118, hue: 270 },
-    { id: 'p5', name: 'Echo Mini Speaker', price: 39,  category: 'Audio', rating: 4.1, stock: 24, createdAt: 20241106, hue: 20 },
-    { id: 'p6', name: 'Glide Laptop Stand', price: 32,  category: 'Accessories', rating: 4.5, stock: 52, createdAt: 20240914, hue: 40 },
-    { id: 'p7', name: 'Zen Monitor Light', price: 69,  category: 'Accessories', rating: 4.3, stock: 15, createdAt: 20240703, hue: 120 },
-    { id: 'p8', name: 'Orbit USB‑C Hub',    price: 49,  category: 'Accessories', rating: 4.5, stock: 12, createdAt: 20240330, hue: 300 },
-    { id: 'p9', name: 'Nebula Webcam 4K',   price: 89,  category: 'Peripherals', rating: 4.4, stock: 18, createdAt: 20240221, hue: 10 },
-    { id: 'p10', name: 'Vibe ANC Earbuds',  price: 99,  category: 'Audio', rating: 4.2, stock: 0, createdAt: 20230818, hue: 230 },
-    { id: 'p11', name: 'Lumen Desk Lamp',   price: 45,  category: 'Home', rating: 4.3, stock: 26, createdAt: 20231201, hue: 60 },
-    { id: 'p12', name: 'Aero Backpack 20L', price: 79,  category: 'Bags', rating: 4.6, stock: 21, createdAt: 20230619, hue: 200 },
+    { id: 'p1', name: 'Nimbus Headphones', price: 14900, category: 'Audio', rating: 4.7, stock: 16, createdAt: 20250110, hue: 210 },
+    { id: 'p2', name: 'Aurora Keyboard', price: 12900, category: 'Peripherals', rating: 4.6, stock: 9, createdAt: 20250102, hue: 190 },
+    { id: 'p3', name: 'Pulse Mouse Pro', price: 5900,  category: 'Peripherals', rating: 4.4, stock: 0, createdAt: 20241212, hue: 160 },
+    { id: 'p4', name: 'Flux Smartwatch', price: 19900, category: 'Wearables', rating: 4.2, stock: 7, createdAt: 20250118, hue: 270 },
+    { id: 'p5', name: 'Echo Mini Speaker', price: 3900,  category: 'Audio', rating: 4.1, stock: 24, createdAt: 20241106, hue: 20 },
+    { id: 'p6', name: 'Glide Laptop Stand', price: 3200,  category: 'Accessories', rating: 4.5, stock: 52, createdAt: 20240914, hue: 40 },
+    { id: 'p7', name: 'Zen Monitor Light', price: 6900,  category: 'Accessories', rating: 4.3, stock: 15, createdAt: 20240703, hue: 120 },
+    { id: 'p8', name: 'Orbit USB‑C Hub',    price: 4900,  category: 'Accessories', rating: 4.5, stock: 12, createdAt: 20240330, hue: 300 },
+    { id: 'p9', name: 'Nebula Webcam 4K',   price: 8900,  category: 'Peripherals', rating: 4.4, stock: 18, createdAt: 20240221, hue: 10 },
+    { id: 'p10', name: 'Vibe ANC Earbuds',  price: 9900,  category: 'Audio', rating: 4.2, stock: 0, createdAt: 20230818, hue: 230 },
+    { id: 'p11', name: 'Lumen Desk Lamp',   price: 4500,  category: 'Home', rating: 4.3, stock: 26, createdAt: 20231201, hue: 60 },
+    { id: 'p12', name: 'Aero Backpack 20L', price: 7900,  category: 'Bags', rating: 4.6, stock: 21, createdAt: 20230619, hue: 200 },
   ];
   const categories = [...new Set(products.map(p => p.category))];
 
@@ -392,7 +402,7 @@
     category: 'all',
     onlyStock: 'all',
     showFavorites: 'all',
-    maxPrice: 600,
+    maxPrice: 60000,
     sort: 'popular',
     cart: JSON.parse(localStorage.getItem('cart')||'{}'), // {id: qty}
     favorites: JSON.parse(localStorage.getItem('favorites')||'[]'), // [id]

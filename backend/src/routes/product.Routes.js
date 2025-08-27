@@ -8,7 +8,8 @@ const { protect, admin } = require("../middleware/authMiddleware");
 // @access  Public
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({})
+          .populate("category", "name _id"); // only return category name + id
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

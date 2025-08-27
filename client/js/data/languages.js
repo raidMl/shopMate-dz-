@@ -32,7 +32,9 @@ const languages = {
       "category.accessories": "Accessories",
       "category.home": "Home",
       "category.bags": "Bags",
-      
+      "category.shoes": "Shoes",
+      "category.tshirt": "T-Shirt",
+
       // Sort Options
       "sort.popular": "Most Popular",
       "sort.priceAsc": "Price: Low → High",
@@ -156,7 +158,11 @@ const languages = {
       
       // Theme names
       "theme.light": "light",
-      "theme.dark": "dark"
+      "theme.dark": "dark",
+      
+      // Currency
+      "currency.symbol": "da",
+      "currency.name": "Algerian Dinar"
     }
   },
   
@@ -192,7 +198,9 @@ const languages = {
       "category.accessories": "الإكسسوارات",
       "category.home": "المنزل",
       "category.bags": "الحقائب",
-      
+      "category.shoes": "أحذية",
+      "category.tshirt": "قميص",
+
       // Sort Options
       "sort.popular": "الأكثر شعبية",
       "sort.priceAsc": "السعر: منخفض ← مرتفع",
@@ -316,7 +324,11 @@ const languages = {
       
       // Theme names
       "theme.light": "فاتح",
-      "theme.dark": "داكن"
+      "theme.dark": "داكن",
+      
+      // Currency
+      "currency.symbol": "د.ج",
+      "currency.name": "دينار جزائري"
     }
   },
   
@@ -352,7 +364,9 @@ const languages = {
       "category.accessories": "Accessoires",
       "category.home": "Maison",
       "category.bags": "Sacs",
-      
+      "category.shoes": "Chaussures",
+      "category.tshirt": "T-Shirt",
+
       // Sort Options
       "sort.popular": "Plus populaire",
       "sort.priceAsc": "Prix: Bas → Haut",
@@ -476,7 +490,11 @@ const languages = {
       
       // Theme names
       "theme.light": "clair",
-      "theme.dark": "sombre"
+      "theme.dark": "sombre",
+      
+      // Currency
+      "currency.symbol": "da",
+      "currency.name": "Dinar Algérien"
     }
   }
 };
@@ -537,9 +555,6 @@ function updatePageTranslations() {
   if (cartButton) {
     cartButton.setAttribute('aria-label', t('nav.cart'));
   }
-  
-  // Update specific elements that need special handling
-  updateDynamicTranslations();
 }
 
 function updateDynamicTranslations() {
@@ -558,7 +573,7 @@ function updateDynamicTranslations() {
     updateFilters();
   }
 }
-
+  
 // Initialize language on page load
 document.addEventListener('DOMContentLoaded', () => {
   // Set initial language direction
@@ -568,5 +583,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update translations after a short delay to ensure all elements are loaded
   setTimeout(() => {
     updatePageTranslations();
+    updateDynamicTranslations();
   }, 100);
 });

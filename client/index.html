@@ -5,7 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ShopMate — Modern E‑Commerce</title>
   <meta name="description" content="A modern e‑commerce UI in pure HTML/CSS/JS with products grid, filters, cart, and checkout." />
-  
+  <!-- Currency Configuration -->
+  <script>
+    // Set up currency formatter for Algerian Dinar
+    window.currencyFormatter = new Intl.NumberFormat('ar-DZ', {
+      style: 'currency',
+      currency: 'DZD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+    
+    // Helper function to format prices
+    window.formatPrice = (price) => {
+      return currencyFormatter.format(price).replace(/DZD/g, 'da');
+    };
+    
+    // Set the currency symbol and code for the application
+    window.CURRENCY = {
+      code: 'DZD',
+      symbol: 'da'
+    };
+  </script>
   <!-- Stylesheets -->
   <link rel="stylesheet" href="./styles/variables.css">
   <link rel="stylesheet" href="./styles/base.css">
@@ -89,8 +109,8 @@
         </select>
       </div>
       <div class="toolbar-row">
-        <label class="muted" for="priceRange"><span data-i18n="toolbar.maxPrice">Max Price</span> <span id="priceValue" class="badge">—</span></label>
-        <input id="priceRange" class="range" type="range" min="10" max="600" value="600" />
+        <label class="muted" for="priceRange"><span data-i18n="toolbar.maxPrice">Max Price</span> <span id="priceValue" class="badge" style="padding:4px 0px;margin:auto -4px;border:none"></span></label>
+        <input id="priceRange" class="range" type="range" min="100" max="90000" value="90000" />
       </div>
       <div class="toolbar-row">
         <label class="muted" for="onlyStock" data-i18n="toolbar.availability">Availability</label>
@@ -128,7 +148,7 @@
     <div class="drawer-footer">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span class="muted" data-i18n="cart.subtotal">Subtotal</span>
-        <strong id="subtotal">$0.00</strong>
+        <strong id="subtotal">0.00 da</strong>
       </div>
       <button id="checkout" class="btn" data-i18n="cart.checkout">Checkout</button>
       <button id="emptyCart" class="btn secondary" data-i18n="cart.emptyCart">Empty Cart</button>
@@ -167,7 +187,7 @@
           <textarea class="input" rows="2" placeholder="Street, Commune, Daira"  required></textarea>
         </div>
       </div>
-      <p class="muted" style="margin-top: 10px;"><span data-i18n="checkout.disclaimer">Order will be processed for delivery. Subtotal:</span> <strong id="checkoutTotal">$0.00</strong></p>
+      <p class="muted" style="margin-top: 10px;"><span data-i18n="checkout.disclaimer">Order will be processed for delivery. Subtotal:</span> <strong id="checkoutTotal">0.00 da</strong></p>
       <menu style="display:flex; gap:10px; justify-content:flex-end; margin: 10px 0 0; padding:0;">
         <button class="btn secondary" value="cancel" data-i18n="checkout.cancel">Cancel</button>
         <button id="placeOrder" class="btn" value="confirm" data-i18n="checkout.placeOrder">Place Order</button>
@@ -319,21 +339,22 @@
     </div>
   </footer>
 
-  <!-- JavaScript Modules -->
+  <!-- JavaScript Modules - Updated loading order -->
   <script src="./js/utils/helpers.js"></script>
   <script src="./js/data/languages.js"></script>
   <script src="./js/data/wilayas.js"></script>
   <script src="./js/data/products.js"></script>
   <script src="./js/utils/state.js"></script>
   <script src="./js/utils/orderManager.js"></script>
+  <script src="./js/components/language-switcher.js"></script>
   <script src="./js/components/productCard.js"></script>
   <script src="./js/components/cart.js"></script>
   <script src="./js/components/filters.js"></script>
   <script src="./js/components/favorites.js"></script>
   <script src="./js/components/checkout.js"></script>
-  <script src="./js/components/language-switcher.js"></script>
   <script src="./js/components/admin.js"></script>
   <script src="./js/components/theme-contact.js"></script>
   <script src="./js/app.js"></script>
 </body>
+</html>
 </html>

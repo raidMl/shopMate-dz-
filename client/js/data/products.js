@@ -1,80 +1,105 @@
-// Products Data - Loaded from JSON with localStorage persistence
+// Products Data - Loaded from API with localStorage persistence
 let products = [];
 let categories = [];
-let productData = null;
 
-// Load products from localStorage or JSON file
-async function loadProducts() {
+// API configuration
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// Fetch products from API
+async function fetchProducts() {
   try {
-    // First try to load from localStorage (for updated quantities)
-    const savedProducts = localStorage.getItem('products');
-    if (savedProducts) {
-      products = JSON.parse(savedProducts);
-      console.log('Products loaded from localStorage');
-    } else {
-      // Load from JSON file if no localStorage data
-      const response = await fetch('./data/products.json');
-      productData = await response.json();
-      products = productData.products;
-      
-      // Save initial products to localStorage
-      saveProductsToStorage();
-      console.log('Products loaded from JSON file');
+    console.log('Fetching products from API...');
+    const response = await fetch(`${API_BASE_URL}/products`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    // Load categories from JSON (these don't change)
-    if (!productData) {
-      const response = await fetch('./data/products.json');
-      productData = await response.json();
-    }
-    categories = productData.categories.map(c => c.name);
+    const data = await response.json();
     
-    // Initialize the app after products are loaded
-    if (typeof initializeApp === 'function') {
-      initializeApp();
-    }
+    // Transform API data to match frontend format
+    products = data.map(product => ({
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      image: product.image,
+      price: product.price,
+      originalPrice: product.originalPrice || product.price,
+      discount: product.discount || 0,
+      category: product.category, // Keep as object with { _id, name, description }
+      rating: product.rating || 4.5,
+      stock: product.stock || 0,
+      createdAt: product.createdAt,
+      hue: product.hue || Math.floor(Math.random() * 360),
+      colors: product.colors || [],
+      sizes: product.sizes || [],
+      specifications: product.specifications || {}
+    }));
+    
+    // Extract unique categories - use category names for dropdown values
+    categories = [...new Set(products.map(p => getCategoryName(p.category)))].filter(Boolean);
+    
+    console.log(`Loaded ${products.length} products from API`);
+    console.log('Categories:', categories);
+    return products;
   } catch (error) {
-    console.error('Failed to load products:', error);
-    // Fallback to empty arrays
+    console.error('Error fetching products:', error);
+    
+    // Fallback to empty array
     products = [];
     categories = [];
-  }
-}
-
-// Save products to localStorage
-function saveProductsToStorage() {
-  try {
-    localStorage.setItem('products', JSON.stringify(products, null, 2));
-    console.log('Products saved to localStorage');
-    return true;
-  } catch (error) {
-    console.error('Error saving products to localStorage:', error);
-    return false;
-  }
-}
-
-// Reset products to original JSON data
-function resetProductsFromJSON() {
-  if (productData && productData.products) {
-    products = [...productData.products];
-    saveProductsToStorage();
-    if (typeof renderProducts === 'function') {
-      renderProducts();
+    
+    // Show user-friendly error message using existing toast function
+    if (typeof toast === 'function') {
+      toast('Failed to load products. Please try again later.', 'error');
     }
-    return true;
+    return [];
   }
-  return false;
 }
 
-// Helper function to get product by ID
-function getProduct(id) {
-  return products.find(p => p.id === id);
+// Fetch categories from API (if available)
+async function fetchCategories() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/categories`);
+    if (response.ok) {
+      const data = await response.json();
+      categories = data.map(cat => cat.name || cat._id);
+    }
+  } catch (error) {
+    console.log('Categories endpoint not available, using product categories');
+  }
 }
 
-// Helper function to get category info
-function getCategory(name) {
-  return productData?.categories.find(c => c.name === name);
+// Initialize products and categories
+async function initializeProducts() {
+  await fetchProducts();
+  await fetchCategories();
+  
+  // Populate category dropdown
+  populateCategoryDropdown();
+  
+  return products;
 }
 
-// Load products when script loads
-loadProducts();
+// Populate category dropdown with fetched categories
+function populateCategoryDropdown() {
+  const categorySelect = document.getElementById('category');
+  if (!categorySelect) return;
+  
+  // Clear existing options except "All"
+  const allOption = categorySelect.querySelector('option[value="all"]');
+  categorySelect.innerHTML = '';
+  if (allOption) categorySelect.appendChild(allOption);
+  
+  // Add categories from API
+  categories.forEach(category => {
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;
+    option.setAttribute('data-i18n', `category.${category.toLowerCase()}`);
+    categorySelect.appendChild(option);
+  });
+}
+
+// Don't auto-initialize, let app.js control the flow
+// initializeProducts();

@@ -23,8 +23,9 @@ function updateFilters() {
   // Add category options with translations
   categories.forEach(c => { 
     const o = document.createElement('option'); 
-    o.value = c; 
-    o.textContent = t(`category.${c.toLowerCase()}`) || c; 
+    // Use category name as value for comparison
+    o.value = getCategoryName(c); 
+    o.textContent = t(`category.${getCategoryName(c).toLowerCase()}`) || getCategoryName(c); 
     catSel.appendChild(o); 
   });
   

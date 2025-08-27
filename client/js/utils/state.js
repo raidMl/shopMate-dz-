@@ -4,7 +4,7 @@ const state = {
   category: 'all',
   onlyStock: 'all',
   showFavorites: 'all',
-  maxPrice: 600,
+  maxPrice: 90000,
   sort: 'popular',
   cart: JSON.parse(localStorage.getItem('cart') || '{}'), // {id: qty}
   cartVariants: JSON.parse(localStorage.getItem('cartVariants') || '{}'), // {key: {baseId, color, size}}

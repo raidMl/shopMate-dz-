@@ -31,7 +31,7 @@ function productCard(p) {
       <div class="title">${p.name}</div>
       <div class="description">${p.description}</div>
       <div style="display:flex; justify-content:space-between; align-items:center; gap: 8px; margin-top: 8px;">
-        <div class="muted">${p.category} • ⭐ ${p.rating.toFixed(1)} • Stock: ${p.stock}</div>
+        <div class="muted">${p.category.name} • ⭐ ${p.rating.toFixed(1)} • Stock: ${p.stock}</div>
         <div class="price-container">
           ${originalPriceText}
           <div class="price">${money(p.price)}</div>
@@ -276,6 +276,28 @@ function showVariantSelection(product) {
   modal.showModal();
 }
 
+// Refresh products function for manual reload
+async function refreshProducts() {
+  try {
+    showLoadingState();
+    await fetchProducts();
+    renderProducts();
+    hideLoadingState();
+    showToast('Products refreshed successfully');
+  } catch (error) {
+    hideLoadingState();
+    showToast('Failed to refresh products', 'error');
+  }
+}
+
+// Update results count display
+function updateResultsCount(count) {
+  const resultsElement = document.querySelector('.results-count');
+  if (resultsElement) {
+    resultsElement.textContent = `${count} ${count === 1 ? 'product' : 'products'} found`;
+  }
+}
+
 // Render products grid
 function renderProducts() {
   const grid = $('#grid');
@@ -285,7 +307,13 @@ function renderProducts() {
   
   // Apply filters
   if (state.category !== 'all') {
-    list = list.filter(p => p.category === state.category);
+    list = list.filter(p => {
+      // Handle both object and string category formats
+      const categoryName = getCategoryName(p.category);
+      const categoryId = getCategoryId(p.category);
+      return categoryName === state.category || categoryId === state.category || 
+             (typeof p.category === 'string' && p.category === state.category);
+    });
   }
   
   if (state.onlyStock === 'in') {
@@ -304,7 +332,7 @@ function renderProducts() {
     const q = state.query.toLowerCase();
     list = list.filter(p => 
       p.name.toLowerCase().includes(q) || 
-      p.category.toLowerCase().includes(q) ||
+      getCategoryName(p.category).toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q)
     );
   }
@@ -329,7 +357,10 @@ function renderProducts() {
 
   // Render cards
   list.forEach(p => grid.appendChild(productCard(p)));
-
+  
+  // Update results count
+  updateResultsCount(list.length);
+  
   // Show empty state if no products
   if (list.length === 0) {
     const empty = document.createElement('div');

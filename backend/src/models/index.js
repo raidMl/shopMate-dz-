@@ -28,20 +28,20 @@ const Category = mongoose.model("Category", categorySchema);
    PRODUCT SCHEMA
 ================================*/
 const productSchema = new mongoose.Schema({
-  // _id: { type: String, required: true, unique: true }, // e.g. "p1"
   name: { type: String, required: true },
   description: { type: String, required: true },
   image: { type: String },
   price: { type: Number, required: true },
   originalPrice: { type: Number },
   discount: { type: Number, default: 0 },
-  category: { type: String, ref: "Category", required: true },
+
+  // 👇 change from String → ObjectId reference
+  category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
+
   rating: { type: Number, min: 0, max: 5 },
   stock: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   hue: { type: Number },
-
-  // Available colors
   colors: [
     {
       name: String,
@@ -49,18 +49,15 @@ const productSchema = new mongoose.Schema({
       stock: { type: Number, default: 0 },
     },
   ],
-
-  // Optional sizes (for wearables, bags, etc.)
   sizes: [
     {
       name: String,
       stock: { type: Number, default: 0 },
     },
   ],
-
-  // Flexible specifications object
   specifications: { type: mongoose.Schema.Types.Mixed },
 });
+
 
 const Product = mongoose.model("Product", productSchema);
 
@@ -77,7 +74,7 @@ const orderSchema = new mongoose.Schema({
       selectedSize: { type: String },
     },
   ],
-  totalPrice: { type: Number, required: true },
+  totalPrice: { type: Number, required: true }, // Total price in Algerian Dinar
   status: {
     type: String,
     enum: ["pending", "paid", "shipped", "delivered", "cancelled"],

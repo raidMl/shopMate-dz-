@@ -154,21 +154,20 @@ class LanguageSwitcher {
 }
 
 // Utility function to format currency based on language
-function formatCurrency(amount, currency = 'USD') {
+function formatCurrency(amount, currency = 'DZD') {
   const languageMap = {
-    'en': 'en-US',
-    'ar': 'ar-SA',
-    'fr': 'fr-FR'
+    'en': 'en-DZ',
+    'ar': 'ar-DZ',
+    'fr': 'fr-DZ'
   };
   
-  const locale = languageMap[getCurrentLanguage()] || 'en-US';
+  const locale = languageMap[getCurrentLanguage()] || 'en-DZ';
   
   return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency,
+    style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }).format(amount);
+  }).format(amount) + ' da';
 }
 
 // Utility function to format numbers based on language
@@ -182,6 +181,12 @@ function formatNumber(number) {
   const locale = languageMap[getCurrentLanguage()] || 'en-US';
   
   return new Intl.NumberFormat(locale).format(number);
+}
+
+// Provide legacy function compatibility for app.js
+function setupLanguageSwitcher() {
+  // Modern language switcher is already initialized via class
+  console.log('Modern language switcher already initialized');
 }
 
 // Initialize language switcher when DOM is loaded

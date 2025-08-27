@@ -2,10 +2,17 @@
 const $ = (sel, parent = document) => parent.querySelector(sel);
 const $$ = (sel, parent = document) => Array.from(parent.querySelectorAll(sel));
 
-const money = (n) => new Intl.NumberFormat(undefined, { 
-  style: 'currency', 
-  currency: 'USD' 
-}).format(n);
+const money = (n) => {
+  if (typeof n !== 'number') {
+    n = parseFloat(n) || 0;
+  }
+  return new Intl.NumberFormat('ar-DZ', { 
+    style: 'currency', 
+    currency: 'DZD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(n).replace('DZD', 'da').replace('د.ج.', 'da');
+};
 
 const debounce = (fn, ms = 250) => { 
   let t; 
@@ -24,6 +31,21 @@ const toast = (msg, type = 'default') => {
   }
   setTimeout(() => t.classList.remove('show'), 2500); 
 };
+
+// Enhanced formatCurrency alias for consistency - only if not already defined
+if (typeof formatCurrency === 'undefined') {
+  const formatCurrency = money;
+}
+
+// Enhanced formatNumber function - only if not already defined
+if (typeof formatNumber === 'undefined') {
+  const formatNumber = (n) => {
+    if (typeof n !== 'number') {
+      n = parseFloat(n) || 0;
+    }
+    return new Intl.NumberFormat().format(n);
+  };
+}
 
 // Generate placeholder image as data URL (gradient card with hue)
 function imageFor(hue, title) {
@@ -44,4 +66,15 @@ function imageFor(hue, title) {
       <text x='40' y='510' font-size='42' font-weight='700' font-family='system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial' fill='rgba(255,255,255,.92)'>${title}</text>
     </svg>`);
   return `data:image/svg+xml;charset=utf-8,${svg}`;
+}
+
+// Helper functions for category handling
+function getCategoryName(category) {
+  if (typeof category === 'string') return category;
+  return category?.name || 'Unknown';
+}
+
+function getCategoryId(category) {
+  if (typeof category === 'string') return category;
+  return category?._id || category?.name || category;
 }
