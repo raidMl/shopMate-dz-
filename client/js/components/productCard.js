@@ -276,6 +276,36 @@ function showVariantSelection(product) {
   modal.showModal();
 }
 
+// Add to cart with variant information
+function addToCartWithVariant(productId, variantKey, variantInfo) {
+  const product = products.find(p => p.id === productId);
+  if (!product || product.stock === 0) return;
+  
+  const currentQty = state.cart[variantKey] || 0;
+  const newQty = currentQty + 1;
+  
+  // Check stock availability
+  if (newQty > product.stock) {
+    toast(`Can't add more - only ${product.stock - currentQty} more available`, 'error');
+    return;
+  }
+  
+  state.cart[variantKey] = newQty;
+  
+  // Store variant information separately
+  if (!state.cartVariants) {
+    state.cartVariants = {};
+  }
+  state.cartVariants[variantKey] = variantInfo;
+  
+  saveCart();
+  updateCartUI();
+  renderProducts();
+  
+  const variantText = [variantInfo.color, variantInfo.size].filter(Boolean).join(', ');
+  toast(`Added ${product.name} ${variantText ? `(${variantText})` : ''} to cart!`, 'success');
+}
+
 // Refresh products function for manual reload
 async function refreshProducts() {
   try {

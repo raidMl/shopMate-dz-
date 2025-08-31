@@ -64,13 +64,15 @@ const languages = {
       // Cart
       "cart.title": "Your Cart",
       "cart.close": "Close",
-      "cart.empty": "Your cart is empty.",
+      "cart.empty": "Your cart is empty",
+      "cart.emptySubtext": "Add some amazing products to get started!",
       "cart.subtotal": "Subtotal",
       "cart.checkout": "Checkout",
       "cart.emptyCart": "Empty Cart",
       "cart.remove": "Remove",
       "cart.each": "each",
-      
+      "cart.continueShopping": "Continue Shopping",
+
       // Variant Selection
       "variant.selectOptions": "Select Options for",
       "variant.color": "Color",
@@ -107,7 +109,28 @@ const languages = {
       "order.total": "Total",
       "order.created": "Order created successfully!",
       "order.processing": "Processing your order...",
+      "order.print": "Print Order",
+      "order.close": "Close",
+      
+      // Order Confirmation
+      "order.confirmationTitle": "Order Confirmed!",
+      "order.confirmationSubtitle": "Thank you for your purchase. Your order has been successfully placed.",
+      "order.summary": "Order Summary",
+      "order.customerInfo": "Customer Information",
+      "order.deliveryTo": "Delivery To",
+      "order.item": "item",
+      "order.qrCode": "Order QR Code",
+      "order.qrCodeDescription": "Show this QR code for order verification",
+      "order.guestOrderNotice": "Guest Order",
+      "order.guestOrderDescription": "Please save this information for order tracking. You can contact us with your order ID for updates.",
+      "order.copyDetails": "Copy Details",
+      "order.copiedToClipboard": "Order details copied to clipboard!",
+      "order.copyFailed": "Failed to copy order details",
+      
+      // Customer information
       "customer.name": "Customer",
+      "customer.email": "Email",
+      "customer.phone": "Phone",
       "customer.wilaya": "Delivery Wilaya",
       
       // Contact
@@ -230,13 +253,15 @@ const languages = {
       // Cart
       "cart.title": "سلتك",
       "cart.close": "إغلاق",
-      "cart.empty": "سلتك فارغة.",
+      "cart.empty": "سلتك فارغة",
+      "cart.emptySubtext": "أضف بعض المنتجات للبدء",
       "cart.subtotal": "المجموع الفرعي",
       "cart.checkout": "الدفع",
       "cart.emptyCart": "إفراغ السلة",
       "cart.remove": "إزالة",
       "cart.each": "لكل قطعة",
-      
+      "cart.continueShopping": "تابع التسوق",
+
       // Variant Selection
       "variant.selectOptions": "اختر الخيارات لـ",
       "variant.color": "اللون",
@@ -273,8 +298,29 @@ const languages = {
       "order.total": "المجموع الإجمالي",
       "order.created": "تم إنشاء الطلب بنجاح!",
       "order.processing": "جاري معالجة طلبك...",
-      "customer.name": "العميل",
-      "customer.wilaya": "ولاية التوصيل",
+      "order.print": "طباعة الطلب",
+      "order.close": "إغلاق",
+      
+      // Order Confirmation
+      "order.confirmationTitle": "تم تأكيد الطلب!",
+      "order.confirmationSubtitle": "شكراً لك على الشراء. تم تقديم طلبك بنجاح.",
+      "order.summary": "ملخص الطلب",
+      "order.customerInfo": "معلومات العميل",
+      "order.deliveryTo": "التوصيل إلى",
+      "order.item": "عنصر",
+      "order.qrCode": "رمز الاستجابة السريعة للطلب",
+      "order.qrCodeDescription": "اعرض رمز الاستجابة السريعة هذا للتحقق من الطلب",
+      "order.guestOrderNotice": "طلب كضيف",
+      "order.guestOrderDescription": "يرجى حفظ هذه المعلومات لتتبع الطلب. يمكنك الاتصال بنا برقم تعريف الطلب الخاص بك للحصول على التحديثات.",
+      "order.copyDetails": "نسخ التفاصيل",
+      "order.copiedToClipboard": "تم نسخ تفاصيل الطلب إلى الحافظة!",
+      "order.copyFailed": "فشل نسخ تفاصيل الطلب",
+      
+      // Customer information
+      "customer.name": "Customer",
+      "customer.email": "Email",
+      "customer.phone": "Phone",
+      "customer.wilaya": "Delivery Wilaya",
       
       // Contact
       "contact.title": "تواصل معنا",
@@ -397,12 +443,14 @@ const languages = {
       "cart.title": "Votre Panier",
       "cart.close": "Fermer",
       "cart.empty": "Votre panier est vide.",
+      "cart.emptySubtext": "Ajoutez des produits pour commencer",
       "cart.subtotal": "Sous-total",
       "cart.checkout": "Commander",
       "cart.emptyCart": "Vider le panier",
       "cart.remove": "Retirer",
       "cart.each": "chaque",
-      
+      "cart.continueShopping": "Continuer vos achats",
+
       // Variant Selection
       "variant.selectOptions": "Sélectionner les options pour",
       "variant.color": "Couleur",
@@ -439,8 +487,29 @@ const languages = {
       "order.total": "Total",
       "order.created": "Commande créée avec succès!",
       "order.processing": "Traitement de votre commande...",
-      "customer.name": "Client",
-      "customer.wilaya": "Wilaya de livraison",
+      "order.print": "Imprimer la commande",
+      "order.close": "Fermer",
+      
+      // Order Confirmation
+      "order.confirmationTitle": "Commande confirmée !",
+      "order.confirmationSubtitle": "Merci pour votre achat. Votre commande a été passée avec succès.",
+      "order.summary": "Résumé de la commande",
+      "order.customerInfo": "Informations sur le client",
+      "order.deliveryTo": "Livraison à",
+      "order.item": "article",
+      "order.qrCode": "Code QR de la commande",
+      "order.qrCodeDescription": "Montrez ce code QR pour vérification de la commande",
+      "order.guestOrderNotice": "Commande invité",
+      "order.guestOrderDescription": "Veuillez enregistrer ces informations pour le suivi de la commande. Vous pouvez nous contacter avec votre ID de commande pour des mises à jour.",
+      "order.copyDetails": "Copier les détails",
+      "order.copiedToClipboard": "Détails de la commande copiés dans le presse-papiers !",
+      "order.copyFailed": "Échec de la copie des détails de la commande",
+      
+      // Customer information
+      "customer.name": "Customer",
+      "customer.email": "Email",
+      "customer.phone": "Phone",
+      "customer.wilaya": "Delivery Wilaya",
       
       // Contact
       "contact.title": "Contactez-nous",

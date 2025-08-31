@@ -3,38 +3,104 @@ const router = express.Router();
 const { Order } = require("../models");
 const { protect, admin } = require("../middleware/authMiddleware");
 const QRCode = require("qrcode");
+const mongoose = require("mongoose");
 
 // @desc    Create new order
 // @route   POST /api/orders
-// @access  Private
-router.post("/", protect, async (req, res) => {
+// @access  Public (guest orders allowed)
+router.post("/", async (req, res) => {
   try {
-    const { products, totalPrice } = req.body;
+    const { customerInfo, products, totalPrice } = req.body;
 
-    if (products && products.length === 0) {
+    if (!products || products.length === 0) {
       return res.status(400).json({ message: "No order items" });
     }
 
-    // Create order
+    if (!customerInfo) {
+      return res.status(400).json({ message: "Customer information is required" });
+    }
+
+    // Validate required customer info fields
+    const requiredFields = ['fullName', 'email', 'phone', 'wilaya', 'address'];
+    for (const field of requiredFields) {
+      if (!customerInfo[field] || !customerInfo[field].trim()) {
+        return res.status(400).json({ message: `${field} is required` });
+      }
+    }
+
+    // For guest orders, create a temporary/guest user or use null
+    let userId = null;
+    if (req.user) {
+      // If user is authenticated, use their ID
+      userId = req.user._id;
+    } else {
+      // For guest orders, we can either:
+      // 1. Set userId to null (current approach)
+      // 2. Create a temporary guest user
+      // 3. Use a special "guest" user ID
+      
+      // Option: Create a guest user entry (optional)
+      // You could create a guest user here if needed for tracking
+    }
+
+    // Validate and transform products data
+    const orderProducts = products.map((item, index) => {
+      // Validate product ID is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(item.product)) {
+        throw new Error(`Invalid product ID at index ${index}: ${item.product}`);
+      }
+      
+      return {
+        product: item.product,
+        quantity: item.quantity || 1,
+        selectedColor: item.selectedColor || null,
+        selectedSize: item.selectedSize || null
+      };
+    });
+
+    // Create order with customer info (userId can be null for guest orders)
     const order = new Order({
-      user: req.user._id,
-      products,
+      user: userId, // Can be null for guest orders
+      products: orderProducts,
       totalPrice,
+      customerInfo: {
+        fullName: customerInfo.fullName.trim(),
+        email: customerInfo.email.trim().toLowerCase(),
+        phone: customerInfo.phone.trim(),
+        wilaya: customerInfo.wilaya.trim(),
+        address: customerInfo.address.trim()
+      }
     });
 
     // Generate QR code for the order
     const qrCodeData = JSON.stringify({
       orderId: order._id,
       totalPrice,
-      date: new Date(),
+      customerName: customerInfo.fullName,
+      email: customerInfo.email,
+      phone: customerInfo.phone,
+      date: new Date().toISOString(),
     });
 
     const qrCode = await QRCode.toDataURL(qrCodeData);
     order.qrCode = qrCode;
 
     const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
+    
+    // Populate the order with product and category details
+    const populatedOrder = await Order.findById(createdOrder._id)
+      .populate({
+        path: "products.product",
+        populate: {
+          path: "category",
+          select: "name description"
+        }
+      })
+      .populate("user", "name email");
+
+    res.status(201).json(populatedOrder);
   } catch (error) {
+    console.error("Error creating order:", error);
     res.status(400).json({ message: error.message });
   }
 });

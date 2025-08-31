@@ -65,7 +65,7 @@ const Product = mongoose.model("Product", productSchema);
    ORDER SCHEMA
 ================================*/
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false }, // Made optional for guest orders
   products: [
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
@@ -75,13 +75,29 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   totalPrice: { type: Number, required: true }, // Total price in Algerian Dinar
+  customerInfo: {
+    fullName: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    wilaya: { type: String, required: true },
+    address: { type: String, required: true }
+  },
   status: {
     type: String,
     enum: ["pending", "paid", "shipped", "delivered", "cancelled"],
     default: "pending",
   },
   qrCode: { type: String }, // stores QR code as base64 image string
+  isGuestOrder: { type: Boolean, default: false }, // Flag to identify guest orders
   createdAt: { type: Date, default: Date.now },
+});
+
+// Add a pre-save hook to set isGuestOrder flag
+orderSchema.pre('save', function(next) {
+  if (!this.user) {
+    this.isGuestOrder = true;
+  }
+  next();
 });
 
 

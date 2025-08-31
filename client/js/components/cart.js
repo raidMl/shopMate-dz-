@@ -25,55 +25,33 @@ function addToCart(id, qty = 1) {
   toast(t('message.addedToCart') + ` (${newQty}/${prod.stock})`, 'success');
 }
 
-function addToCartWithVariant(baseId, variantKey, variantInfo) {
-  const prod = products.find(p => p.id === baseId);
-  if (!prod || prod.stock === 0) return;
-  
-  // Check variant stock availability
-  let maxStock = prod.stock;
-  if (variantInfo.color && prod.colors) {
-    const colorOption = prod.colors.find(c => c.name === variantInfo.color);
-    if (!colorOption || colorOption.stock === 0) {
-      toast(t('message.outOfStock', {color: variantInfo.color}), 'error');
-      return;
-    }
-    maxStock = Math.min(maxStock, colorOption.stock);
-  }
-  
-  if (variantInfo.size && prod.sizes) {
-    const sizeOption = prod.sizes.find(s => s.name === variantInfo.size);
-    if (!sizeOption || sizeOption.stock === 0) {
-      toast(t('message.sizeOutOfStock', {size: variantInfo.size}), 'error');
-      return;
-    }
-    maxStock = Math.min(maxStock, sizeOption.stock);
-  }
+function addToCartWithVariant(productId, variantKey, variantInfo) {
+  const product = products.find(p => p.id === productId);
+  if (!product || product.stock === 0) return;
   
   const currentQty = state.cart[variantKey] || 0;
   const newQty = currentQty + 1;
   
-  if (newQty > maxStock) {
-    toast(t('message.cantAddVariant', {max: maxStock - currentQty}), 'error');
+  // Check stock availability
+  if (newQty > product.stock) {
+    toast(`Can't add more - only ${product.stock - currentQty} more available`, 'error');
     return;
   }
   
-  // Store variant information in cart
+  state.cart[variantKey] = newQty;
+  
+  // Store variant information separately
   if (!state.cartVariants) {
     state.cartVariants = {};
   }
-  
-  state.cart[variantKey] = newQty;
-  state.cartVariants[variantKey] = {
-    baseId: baseId,
-    ...variantInfo
-  };
+  state.cartVariants[variantKey] = variantInfo;
   
   saveCart();
   updateCartUI();
   renderProducts();
   
   const variantText = [variantInfo.color, variantInfo.size].filter(Boolean).join(', ');
-  toast(t('message.addedVariant', {name: prod.name, variant: variantText}), 'success');
+  toast(`Added ${product.name} ${variantText ? `(${variantText})` : ''} to cart!`, 'success');
 }
 
 function removeFromCart(key) { 
@@ -86,29 +64,31 @@ function removeFromCart(key) {
   renderProducts(); // Re-render to update button states
 }
 
-function changeQty(id, delta) { 
-  const prod = products.find(p => p.id === id);
+function changeQty(cartKey, delta) { 
+  // Extract product ID from cart key (handle variants)
+  const productId = cartKey.split('-')[0];
+  const prod = products.find(p => p.id === productId);
   if (!prod) return;
   
-  const newQty = Math.max(1, (state.cart[id] || 1) + delta);
+  const newQty = Math.max(1, (state.cart[cartKey] || 1) + delta);
   
   if (newQty > prod.stock) {
     toast(t('message.maxQuantity', {max: prod.stock}), 'error');
     return;
   }
   
-  state.cart[id] = newQty; 
+  state.cart[cartKey] = newQty; 
   saveCart(); 
   updateCartUI(); 
 }
 
-function changeQtyVariant(key, delta) {
-  const variantInfo = state.cartVariants?.[key];
-  const productId = variantInfo ? variantInfo.baseId : key;
+function changeQtyVariant(cartKey, delta) {
+  const variantInfo = state.cartVariants?.[cartKey];
+  const productId = cartKey.split('-')[0]; // Extract product ID from cart key
   const prod = products.find(p => p.id === productId);
   if (!prod) return;
   
-  const newQty = Math.max(1, (state.cart[key] || 1) + delta);
+  const newQty = Math.max(1, (state.cart[cartKey] || 1) + delta);
   
   // Check variant stock limits
   let maxStock = prod.stock;
@@ -126,7 +106,7 @@ function changeQtyVariant(key, delta) {
     return;
   }
   
-  state.cart[key] = newQty;
+  state.cart[cartKey] = newQty;
   saveCart();
   updateCartUI();
 }
@@ -143,98 +123,231 @@ function saveCart() {
   saveToLocalStorage('cartVariants', state.cartVariants || {});
 }
 
-function cartItems() { 
-  return Object.entries(state.cart).map(([key, qty]) => {
-    const variantInfo = state.cartVariants?.[key];
-    const productId = variantInfo ? variantInfo.baseId : key;
+function cartItems() {
+  return Object.entries(state.cart).map(([cartKey, qty]) => {
+    const productId = cartKey.split('-')[0]; // Extract base product ID
     const product = products.find(p => p.id === productId);
     
+    // Get variant info if available
+    let variantInfo = null;
+    if (state.cartVariants && state.cartVariants[cartKey]) {
+      variantInfo = state.cartVariants[cartKey];
+    }
+    
     return { 
-      key,
-      product,
-      qty,
-      variant: variantInfo || null
-    }; 
-  }); 
+      cartKey: cartKey,
+      product: product, 
+      qty: qty,
+      variant: variantInfo
+    };
+  }).filter(item => item.product); // Remove items where product wasn't found
 }
 
-function cartSubtotal() { 
-  return cartItems().reduce((s, it) => s + it.product.price * it.qty, 0); 
+function cartSubtotal() {
+  return cartItems().reduce((sum, item) => sum + item.product.price * item.qty, 0);
 }
 
 function updateCartUI() {
   const count = Object.values(state.cart).reduce((s, n) => s + n, 0);
-  $('#cartCount').textContent = count;
+  const subtotal = cartSubtotal();
+  
+  // Update cart count with animation
+  const cartCountEl = $('#cartCount');
+  cartCountEl.textContent = count;
+  cartCountEl.classList.add('updated');
+  setTimeout(() => cartCountEl.classList.remove('updated'), 400);
 
-  const body = $('#cartBody'); 
+  const body = $('#cartBody');
   body.innerHTML = '';
   
-  if (count === 0) { 
-    body.innerHTML = `<div class="muted">${t('cart.empty')}</div>`; 
-    $('#subtotal').textContent = formatCurrency(0);
-    $('#checkoutTotal').textContent = formatCurrency(0);
+  if (count === 0) {
+    body.innerHTML = `
+      <div class="cart-empty-state">
+        <div class="empty-icon">🛒</div>
+        <h3>${t('cart.empty')}</h3>
+        <p class="muted">${t('cart.emptySubtext') || 'Add some amazing products to get started!'}</p>
+        <button class="btn secondary" onclick="openDrawer(false)">${t('cart.continueShopping') || 'Continue Shopping'}</button>
+      </div>`;
     return;
   }
 
-  cartItems().forEach(({key, product: p, qty, variant}) => {
+  // Create cart header with item count
+  const cartHeader = document.createElement('div');
+  cartHeader.className = 'cart-header-info';
+  cartHeader.innerHTML = `
+    <div class="cart-summary">
+      <span class="cart-item-count">${count} ${count === 1 ? 'item' : 'items'}</span>
+      <span class="cart-total-price">${money(subtotal)}</span>
+    </div>
+  `;
+  body.appendChild(cartHeader);
+
+  // Create cart items container
+  const itemsContainer = document.createElement('div');
+  itemsContainer.className = 'cart-items-container';
+
+  cartItems().forEach(({ cartKey, product: p, qty, variant }) => {
     const row = document.createElement('div');
-    row.className = 'cart-item';
+    row.className = 'cart-item enhanced';
     
+    // Create variant display text
     const variantText = variant ? 
-      ` • ${[variant.color, variant.size].filter(Boolean).join(', ')}` : '';
+      [variant.color, variant.size].filter(Boolean).join(' • ') : '';
     
-    const imageUrl = p.image || imageFor(p.hue, p.name);
-    const hasDiscount = p.discount && p.discount > 0;
+    // Calculate item total and savings
     const itemTotal = p.price * qty;
+    const hasDiscount = p.discount && p.discount > 0;
+    const savings = hasDiscount ? (p.originalPrice - p.price) * qty : 0;
     
     row.innerHTML = `
-      <div class="cart-item-image">
-        <img alt="${p.name}" 
-             src="${imageUrl}" 
-             onerror="this.src='${imageFor(p.hue, p.name)}'"
-             loading="lazy"/>
-        ${hasDiscount ? `<div class="cart-discount-badge">${p.discount}% OFF</div>` : ''}
+      <div class="item-image">
+        <img alt="${p.name}" src="${p.image || imageFor(p.hue, p.name)}" />
+        ${hasDiscount ? `<div class="item-discount-badge">${p.discount}%</div>` : ''}
       </div>
-      <div class="cart-item-details">
-        <div class="cart-item-header">
-          <h4 class="cart-item-title">${p.name}</h4>
-          <div class="cart-item-rating">⭐ ${p.rating.toFixed(1)}</div>
+      <div class="item-details">
+        <div class="item-header">
+          <h4 class="item-name">${p.name}</h4>
+          <button class="item-remove" data-del="${cartKey}" aria-label="Remove ${p.name}">
+            ×
+          </button>
         </div>
-        <div class="cart-item-description">${p.description}</div>
-        <div class="cart-item-meta">
-          <span class="cart-item-category">${p.category}</span>
-          ${variantText ? `<span class="cart-item-variant">${variantText}</span>` : ''}
+        ${variantText ? `<div class="item-variant">${variantText}</div>` : ''}
+        <div class="item-category">${getCategoryName(p.category)}</div>
+        <div class="item-price-info">
+          ${hasDiscount ? `
+            <span class="item-original-price">${money(p.originalPrice)}</span>
+            <span class="item-current-price">${money(p.price)}</span>
+          ` : `
+            <span class="item-current-price">${money(p.price)}</span>
+          `}
+          <span class="item-unit-label">${t('cart.each')}</span>
         </div>
-        <div class="cart-item-price-info">
-          ${hasDiscount ? `<span class="cart-original-price">${formatCurrency(p.originalPrice)}</span>` : ''}
-          <span class="cart-unit-price">${formatCurrency(p.price)} ${t('cart.each')}</span>
+        <div class="item-controls">
+          <div class="quantity-controls">
+            <button class="qty-btn minus" data-dec="${cartKey}" aria-label="Decrease quantity" ${qty <= 1 ? 'disabled' : ''}>
+              <svg width="12" height="2" viewBox="0 0 12 2" fill="currentColor">
+                <rect width="12" height="2"/>
+              </svg>
+            </button>
+            <span class="qty-number">${qty}</span>
+            <button class="qty-btn plus" data-inc="${cartKey}" aria-label="Increase quantity" ${qty >= p.stock ? 'disabled' : ''}>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <rect x="5" y="0" width="2" height="12"/>
+                <rect x="0" y="5" width="12" height="2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="item-total">
+            <div class="item-total-price">${money(itemTotal)}</div>
+            ${savings > 0 ? `<div class="item-savings">Save ${money(savings)}</div>` : ''}
+          </div>
         </div>
-      </div>
-      <div class="cart-item-actions">
-        <div class="cart-qty-controls">
-          <button class="qty-btn" aria-label="Decrease" data-dec="${key}">−</button>
-          <span class="qty-display">${qty}</span>
-          <button class="qty-btn" aria-label="Increase" data-inc="${key}">+</button>
-        </div>
-        <div class="cart-item-total">${formatCurrency(itemTotal)}</div>
-        <button class="btn-remove" data-del="${key}" title="${t('cart.remove')}">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-          </svg>
-        </button>
+        ${qty >= p.stock ? `<div class="stock-warning">Maximum quantity reached</div>` : ''}
       </div>`;
 
-    // Event listeners for cart item actions
-    row.querySelector('[data-dec]')?.addEventListener('click', () => changeQtyVariant(key, -1));
-    row.querySelector('[data-inc]')?.addEventListener('click', () => changeQtyVariant(key, 1));
-    row.querySelector('[data-del]')?.addEventListener('click', () => removeFromCart(key));
+    // Add event listeners with better UX feedback
+    const decBtn = row.querySelector('[data-dec]');
+    const incBtn = row.querySelector('[data-inc]');
+    const delBtn = row.querySelector('[data-del]');
+    
+    decBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (qty > 1) {
+        changeQty(cartKey, -1);
+        decBtn.classList.add('clicked');
+        setTimeout(() => decBtn.classList.remove('clicked'), 150);
+      }
+    });
+    
+    incBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (qty < p.stock) {
+        changeQty(cartKey, 1);
+        incBtn.classList.add('clicked');
+        setTimeout(() => incBtn.classList.remove('clicked'), 150);
+      }
+    });
+    
+    delBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Add confirmation for expensive items
+      if (itemTotal > 10000) {
+        if (confirm(`Remove ${p.name} (${money(itemTotal)}) from cart?`)) {
+          removeFromCart(cartKey);
+        }
+      } else {
+        removeFromCart(cartKey);
+      }
+    });
 
-    body.appendChild(row);
+    itemsContainer.appendChild(row);
   });
 
-  $('#subtotal').textContent = formatCurrency(cartSubtotal());
-  $('#checkoutTotal').textContent = formatCurrency(cartSubtotal());
+  body.appendChild(itemsContainer);
+
+  // Create cart footer with totals and checkout
+  // const cartFooter = document.createElement('div');
+  // cartFooter.className = 'cart-footer-enhanced';
+  
+  const totalSavings = cartItems().reduce((total, item) => {
+    if (item.product.discount && item.product.discount > 0) {
+      return total + (item.product.originalPrice - item.product.price) * item.qty;
+    }
+    return total;
+  }, 0);
+
+  // cartFooter.innerHTML = `
+  //   <div class="cart-totals">
+  //     ${totalSavings > 0 ? `
+  //       <div class="cart-savings">
+  //         <span>You're saving</span>
+  //         <span class="savings-amount">${money(totalSavings)}</span>
+  //       </div>
+  //     ` : ''}
+  //     <div class="cart-subtotal">
+  //       <span>${t('cart.subtotal')}</span>
+  //       <strong class="subtotal-amount">${money(subtotal)}</strong>
+  //     </div>
+  //   </div>
+  //   <div class="cart-actions">
+  //     <button class="btn checkout-btn" onclick="proceedToCheckout()">
+  //       <span class="checkout-icon">🛒</span>
+  //       <span>${t('cart.checkout')} • ${money(subtotal)}</span>
+  //     </button>
+  //     <div class="cart-secondary-actions">
+  //       <button class="btn ghost small" onclick="openDrawer(false)">${t('cart.continueShopping') || 'Continue Shopping'}</button>
+  //       <button class="btn ghost small danger" onclick="confirmEmptyCart()">${t('cart.emptyCart')}</button>
+  //     </div>
+  //   </div>
+  // `;
+
+  // body.appendChild(cartFooter);
+
+  // Update checkout button in main footer (legacy)
+  $('#subtotal').textContent = money(subtotal);
+  $('#checkoutTotal').textContent = money(subtotal);
+}
+
+// Enhanced checkout function
+function proceedToCheckout() {
+  if (Object.keys(state.cart).length === 0) {
+    toast(t('cart.empty'), 'error');
+    return;
+  }
+  
+  openDrawer(false);
+  $('#checkoutModal').showModal();
+}
+
+// Confirm before emptying cart
+function confirmEmptyCart() {
+  const count = Object.values(state.cart).reduce((s, n) => s + n, 0);
+  const subtotal = cartSubtotal();
+  
+  if (confirm(`Empty cart with ${count} items (${money(subtotal)})?`)) {
+    emptyCart();
+    toast('Cart emptied', 'info');
+  }
 }
 
 // Initialize cart event listeners
@@ -244,6 +357,7 @@ function initCartEvents() {
   $('#closeCart').addEventListener('click', () => openDrawer(false));
   $('#backdrop').addEventListener('click', () => openDrawer(false));
   
-  // Empty cart button
-  $('#emptyCart').addEventListener('click', () => emptyCart());
+  // Legacy checkout and empty cart buttons
+  $('#checkout').addEventListener('click', proceedToCheckout);
+  $('#emptyCart').addEventListener('click', confirmEmptyCart);
 }
