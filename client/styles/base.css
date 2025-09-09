@@ -23,6 +23,50 @@ body {
               var(--bg);
 }
 
+/* Enhanced Responsive Base Styles */
+html {
+  /* Prevent zoom on input focus on iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Ensure proper touch targets on mobile */
+button, 
+input, 
+select, 
+textarea,
+a {
+  /* min-height: 44px; iOS recommended touch target */
+  min-width: 44px;
+}
+
+/* Improve text rendering on all devices */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Enhanced focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Prevent horizontal scroll on small devices */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Utility Classes */
 .container { 
   max-width: 1200px; 
@@ -179,4 +223,77 @@ footer {
   margin: 40px 0; 
   color: var(--muted); 
   text-align: center; 
+}
+
+/* Device-specific optimizations */
+@media (max-width: 480px) {
+  /* Increase touch targets on very small screens */
+  .btn {
+    min-height: 48px;
+    padding: 12px 16px;
+  }
+  
+  /* Improve readability */
+  body {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Optimize container padding */
+  .container {
+    padding: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Respect user preference for reduced motion */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark mode optimizations for PWA */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: #fff;
+    --text: #fff;
+    --bg: #000;
+  }
+}
+
+/* Print styles optimization */
+@media print {
+  /* Hide unnecessary elements when printing */
+  .navbar,
+  .drawer,
+  .drawer-backdrop,
+  .toast,
+  .cart-btn,
+  .theme-toggle {
+    display: none !important;
+  }
+  
+  /* Optimize for print */
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #000;
+    background: #fff;
+  }
+  
+  .container {
+    max-width: none;
+    padding: 0;
+  }
 }

@@ -117,11 +117,31 @@ async function initApp() {
     // Hide loading state
     hideLoadingState();
     
+    // Add favicon fallback check
+    checkFaviconLoad();
+    
     console.log('App initialized successfully');
   } catch (error) {
     console.error('Error initializing app:', error);
     hideLoadingState();
     showToast('Failed to initialize app. Please refresh the page.', 'error');
+  }
+}
+
+// Check if favicon loads properly and provide fallback
+function checkFaviconLoad() {
+  const favicon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+  if (favicon) {
+    // Test if SVG favicon is supported
+    const testSvg = new Image();
+    testSvg.onload = () => {
+      console.log('SVG favicon loaded successfully');
+    };
+    testSvg.onerror = () => {
+      console.warn('SVG favicon failed to load, using data URI fallback');
+      // The data URI fallback is already in the HTML
+    };
+    testSvg.src = favicon.href;
   }
 }
 
@@ -162,7 +182,5 @@ function initKeyboardShortcuts() {
   });
 }
 
-// Initialize app when DOM is loaded
-document.addEventListener('DOMContentLoaded', initApp);
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);

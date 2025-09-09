@@ -27,6 +27,11 @@ class ThemeManager {
     if (themeIcon) {
       themeIcon.textContent = icon;
     }
+    
+    // Update mobile theme icon
+    if (window.mobileNavbar) {
+      window.mobileNavbar.updateThemeIcon(icon);
+    }
   }
 
   toggle() {
@@ -269,7 +274,8 @@ function initSmoothScroll() {
 
 // Initialize theme and contact functionality
 document.addEventListener('DOMContentLoaded', () => {
-  new ThemeManager();
+  // Make theme manager globally available
+  window.themeManager = new ThemeManager();
   new ContactForm();
   new FooterNavigation();
   initSmoothScroll();

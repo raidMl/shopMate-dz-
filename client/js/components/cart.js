@@ -157,6 +157,14 @@ function updateCartUI() {
   cartCountEl.classList.add('updated');
   setTimeout(() => cartCountEl.classList.remove('updated'), 400);
 
+  // Notify mobile navbar of cart update
+  if (window.mobileNavbar) {
+    window.mobileNavbar.updateCartCount();
+  }
+
+  // Dispatch custom event for cart updates
+  document.dispatchEvent(new CustomEvent('cartUpdated', { detail: { count, subtotal } }));
+
   const body = $('#cartBody');
   body.innerHTML = '';
   

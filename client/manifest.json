@@ -1,0 +1,35 @@
+{
+  "name": "ShopMate — Modern E‑Commerce",
+  "short_name": "ShopMate",
+  "description": "Discover sleek gear crafted for your everyday flow. Modern e-commerce experience with zero frameworks.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6ee7b7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "categories": ["shopping", "business"],
+  "lang": "en",
+  "dir": "ltr"
+}

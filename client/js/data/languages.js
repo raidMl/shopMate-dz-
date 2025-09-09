@@ -6,9 +6,11 @@ const languages = {
     dir: "ltr",
     translations: {
       // Navigation
-      "nav.cart": "Cart",
-      "nav.checkout": "Quick Checkout",
-      "nav.theme": "Toggle theme",
+      "nav.cart": "Shopping Cart",
+      "nav.checkout": "Quick Checkout", 
+      "nav.contact": "Contact Us",
+      "nav.language": "Language",
+      "nav.theme": "Toggle Theme",
       
       // Hero Section
       "hero.title": "Discover sleek gear crafted for your everyday flow.",

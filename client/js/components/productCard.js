@@ -298,7 +298,16 @@ function addToCartWithVariant(productId, variantKey, variantInfo) {
   }
   state.cartVariants[variantKey] = variantInfo;
   
-  saveCart();
+  // Use the saveToLocalStorage function directly
+  if (typeof saveToLocalStorage === 'function') {
+    saveToLocalStorage('cart', state.cart);
+    saveToLocalStorage('cartVariants', state.cartVariants || {});
+  } else {
+    // Fallback to localStorage directly
+    localStorage.setItem('cart', JSON.stringify(state.cart));
+    localStorage.setItem('cartVariants', JSON.stringify(state.cartVariants || {}));
+  }
+  
   updateCartUI();
   renderProducts();
   
