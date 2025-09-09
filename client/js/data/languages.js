@@ -147,6 +147,15 @@ const languages = {
       "contact.send": "Send Message",
       "contact.sending": "Sending...",
       
+      // Contact Form
+      "contact.success": "Thank you! Your message has been sent successfully.",
+      "contact.error": "Sorry, there was an error sending your message. Please try again.",
+      "contact.successTitle": "Message Sent!",
+      "contact.successMessage": "Thank you for contacting us! We have received your message and will get back to you soon.",
+      "contact.messageSummary": "Message Summary:",
+      "contact.responseTime": "We typically respond within 24 hours during business days.",
+      "contact.close": "Close",
+      
       // Footer
       "footer.shop": "Shop",
       "footer.support": "Support",
@@ -336,6 +345,15 @@ const languages = {
       "contact.send": "إرسال الرسالة",
       "contact.sending": "جاري الإرسال...",
       
+      // Contact Form
+      "contact.success": "شكراً لك! تم إرسال رسالتك بنجاح.",
+      "contact.error": "عذراً، حدث خطأ في إرسال رسالتك. يرجى المحاولة مرة أخرى.",
+      "contact.successTitle": "تم إرسال الرسالة!",
+      "contact.successMessage": "شكراً لتواصلكم معنا! لقد استلمنا رسالتك وسنعود إليك قريبًا.",
+      "contact.messageSummary": "ملخص الرسالة:",
+      "contact.responseTime": "نحن عادةً نرد في غضون 24 ساعة خلال أيام العمل.",
+      "contact.close": "إغلاق",
+      
       // Footer
       "footer.shop": "تسوق",
       "footer.support": "الدعم",
@@ -524,6 +542,15 @@ const languages = {
       "contact.message": "Votre message",
       "contact.send": "Envoyer le message",
       "contact.sending": "Envoi en cours...",
+      
+      // Contact Form
+      "contact.success": "Merci ! Votre message a été envoyé avec succès.",
+      "contact.error": "Désolé, il y a eu une erreur lors de l'envoi de votre message. Veuillez réessayer.",
+      "contact.successTitle": "Message envoyé !",
+      "contact.successMessage": "Merci de nous avoir contactés ! Nous avons reçu votre message et nous vous répondrons bientôt.",
+      "contact.messageSummary": "Résumé du message :",
+      "contact.responseTime": "Nous répondons généralement dans les 24 heures pendant les jours ouvrables.",
+      "contact.close": "Fermer",
       
       // Footer
       "footer.shop": "Boutique",

@@ -52,6 +52,7 @@ class ThemeManager {
 class ContactForm {
   constructor() {
     this.form = document.getElementById('contactForm');
+    this.apiUrl = 'http://localhost:5000/api/contact'; // Backend API endpoint
     this.init();
   }
 
@@ -65,31 +66,127 @@ class ContactForm {
     e.preventDefault();
     
     const formData = new FormData(this.form);
-    const data = Object.fromEntries(formData);
+    const inputs = this.form.querySelectorAll('input, textarea');
+    
+    // Get form data
+    const data = {
+      name: formData.get('name') || inputs[0].value,
+      mail: formData.get('email') || inputs[1].value,
+      subject: formData.get('subject') || inputs[2].value,
+      msgContent: formData.get('message') || inputs[3].value
+    };
+    
+    // Validate required fields
+    if (!data.name || !data.mail || !data.subject || !data.msgContent) {
+      toast('Please fill in all required fields.', 'error');
+      return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.mail)) {
+      toast('Please enter a valid email address.', 'error');
+      return;
+    }
     
     // Add loading state
     const submitButton = this.form.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
-    submitButton.textContent = 'Sending...';
+    submitButton.textContent = t('contact.sending') || 'Sending...';
     submitButton.disabled = true;
     submitButton.classList.add('loading');
     
+    // Disable form inputs
+    inputs.forEach(input => input.disabled = true);
+    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch(this.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
       
-      // Show success message
-      toast('Thank you! Your message has been sent successfully.', 'success');
-      this.form.reset();
+      if (response.ok) {
+        // Show success message
+        toast(t('contact.success') || 'Thank you! Your message has been sent successfully.', 'success');
+        this.form.reset();
+        
+        // Optional: Show confirmation modal
+        this.showSuccessModal(data);
+        
+      } else {
+        throw new Error(`Server responded with status: ${response.status}`);
+      }
       
     } catch (error) {
-      toast('Sorry, there was an error sending your message. Please try again.', 'error');
+      console.error('Contact form error:', error);
+      toast(t('contact.error') || 'Sorry, there was an error sending your message. Please try again.', 'error');
     } finally {
-      // Reset button state
+      // Reset button and form state
       submitButton.textContent = originalText;
       submitButton.disabled = false;
       submitButton.classList.remove('loading');
+      
+      // Re-enable form inputs
+      inputs.forEach(input => input.disabled = false);
     }
+  }
+  
+  showSuccessModal(data) {
+    const modal = document.createElement('dialog');
+    modal.className = 'contact-success-modal';
+    
+    modal.innerHTML = `
+      <div class="success-modal-content">
+        <div class="success-header">
+          <div class="success-icon">✅</div>
+          <h3>${t('contact.successTitle') || 'Message Sent!'}</h3>
+          <button class="btn ghost close-success">×</button>
+        </div>
+        <div class="success-body">
+          <p>${t('contact.successMessage') || 'Thank you for contacting us! We have received your message and will get back to you soon.'}</p>
+          <div class="message-summary">
+            <h4>${t('contact.messageSummary') || 'Message Summary:'}</h4>
+            <div class="summary-item">
+              <span class="summary-label">${t('contact.yourName') || 'Name'}:</span>
+              <span class="summary-value">${data.name}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">${t('contact.yourEmail') || 'Email'}:</span>
+              <span class="summary-value">${data.mail}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">${t('contact.subject') || 'Subject'}:</span>
+              <span class="summary-value">${data.subject}</span>
+            </div>
+          </div>
+          <p class="response-time">${t('contact.responseTime') || 'We typically respond within 24 hours during business days.'}</p>
+        </div>
+        <div class="success-footer">
+          <button class="btn close-success">${t('contact.close') || 'Close'}</button>
+        </div>
+      </div>
+    `;
+    
+    // Add event listeners
+    modal.querySelectorAll('.close-success').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.close();
+        modal.remove();
+      });
+    });
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.close();
+        modal.remove();
+      }
+    });
+    
+    document.body.appendChild(modal);
+    modal.showModal();
   }
 }
 

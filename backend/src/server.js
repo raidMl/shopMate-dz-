@@ -6,6 +6,7 @@ const userRoutes = require('./routes/auth.Routes');
 const productRoutes = require('./routes/product.Routes');
 const categoryRoutes = require('./routes/category.Routes');
 const orderRoutes = require('./routes/order.Routes');
+const msgRoutes=require('./routes/sendMsg.Routes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
 // Load env vars
@@ -29,7 +30,8 @@ app.get('/api', (req, res) => {
       users: '/api/users',
       products: '/api/products',
       categories: '/api/categories',
-      orders: '/api/orders'
+      orders: '/api/orders',
+      messages: '/api/messages'
     }
   });
 });
@@ -39,6 +41,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/contact', msgRoutes); // Add contact route
 
 // Error middleware
 app.use(notFound);
