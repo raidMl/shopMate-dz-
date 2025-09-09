@@ -89,10 +89,23 @@ class MobileNavbar {
       this.updateCartCount();
     });
     
-    // Listen for language changes
+    // Listen for language changes from the main language switcher
     document.addEventListener('languageChanged', () => {
       this.updateCurrentLanguage();
     });
+    
+    // Listen for changes on the main language switcher
+    const mainLanguageSwitcher = document.getElementById('languageSelect');
+    if (mainLanguageSwitcher) {
+      mainLanguageSwitcher.addEventListener('change', () => {
+        this.updateCurrentLanguage();
+      });
+    }
+    
+    // Update on initialization
+    setTimeout(() => {
+      this.updateCurrentLanguage();
+    }, 100);
   }
 
   toggleDrawer() {
@@ -156,9 +169,20 @@ class MobileNavbar {
   }
 
   changeLanguage(lang) {
-    if (typeof changeLanguage === 'function') {
+    // Use the existing language switcher functionality
+    if (typeof setLanguage === 'function') {
+      setLanguage(lang);
+    } else if (typeof changeLanguage === 'function') {
       changeLanguage(lang);
+    } else {
+      // Fallback: trigger the existing language switcher
+      const languageSwitcher = document.getElementById('languageSelect');
+      if (languageSwitcher) {
+        languageSwitcher.value = lang;
+        languageSwitcher.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
+    
     this.languageOptions?.classList.remove('open');
     this.updateCurrentLanguage();
     
@@ -169,11 +193,33 @@ class MobileNavbar {
         option.classList.add('active');
       }
     });
+    
+    // Close the mobile drawer after language change
+    setTimeout(() => {
+      this.closeDrawer();
+    }, 500);
   }
 
   updateCurrentLanguage() {
     if (this.currentLang) {
-      const currentLanguage = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+      // Get current language from the existing system
+      let currentLanguage = 'en';
+      
+      // Try different ways to get current language
+      if (typeof getCurrentLanguage === 'function') {
+        currentLanguage = getCurrentLanguage();
+      } else if (window.currentLanguage) {
+        currentLanguage = window.currentLanguage;
+      } else if (localStorage.getItem('language')) {
+        currentLanguage = localStorage.getItem('language');
+      } else {
+        // Check the main language switcher value
+        const languageSwitcher = document.getElementById('languageSelect');
+        if (languageSwitcher) {
+          currentLanguage = languageSwitcher.value || 'en';
+        }
+      }
+      
       const langMap = {
         'en': 'EN',
         'ar': 'ع',
@@ -182,11 +228,20 @@ class MobileNavbar {
       this.currentLang.textContent = langMap[currentLanguage] || 'EN';
     }
     
-    // Update active state
+    // Update active state for language options
     document.querySelectorAll('.mobile-lang-option').forEach(option => {
       option.classList.remove('active');
       const optionLang = option.getAttribute('data-lang');
-      const currentLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+      let currentLang = 'en';
+      
+      if (typeof getCurrentLanguage === 'function') {
+        currentLang = getCurrentLanguage();
+      } else if (window.currentLanguage) {
+        currentLang = window.currentLanguage;
+      } else if (localStorage.getItem('language')) {
+        currentLang = localStorage.getItem('language');
+      }
+      
       if (optionLang === currentLang) {
         option.classList.add('active');
       }

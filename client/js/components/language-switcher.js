@@ -185,8 +185,31 @@ function formatNumber(number) {
 
 // Provide legacy function compatibility for app.js
 function setupLanguageSwitcher() {
-  // Modern language switcher is already initialized via class
-  console.log('Modern language switcher already initialized');
+  const languageSelect = document.getElementById('languageSelect');
+  if (!languageSelect) return;
+
+  // Populate language options
+  languageSelect.innerHTML = Object.keys(languages).map(langCode => `
+    <option value="${langCode}" ${langCode === window.currentLanguage ? 'selected' : ''}>
+      ${languages[langCode].name}
+    </option>
+  `).join('');
+
+  // Set initial language
+  const savedLanguage = localStorage.getItem('language') || 'en';
+  setLanguage(savedLanguage);
+
+  // Handle language change
+  languageSelect.addEventListener('change', (e) => {
+    setLanguage(e.target.value);
+  });
+  
+  // Notify mobile navbar after setup
+  setTimeout(() => {
+    if (window.mobileNavbar) {
+      window.mobileNavbar.updateCurrentLanguage();
+    }
+  }, 100);
 }
 
 // Initialize language switcher when DOM is loaded

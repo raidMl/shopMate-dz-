@@ -206,8 +206,10 @@ const languages = {
     dir: "rtl",
     translations: {
       // Navigation
-      "nav.cart": "السلة",
-      "nav.checkout": "الدفع السريع",
+      "nav.cart": "سلة التسوق",
+      "nav.checkout": "الدفع السريع", 
+      "nav.contact": "اتصل بنا",
+      "nav.language": "اللغة",
       "nav.theme": "تغيير المظهر",
       
       // Hero Section
@@ -406,7 +408,9 @@ const languages = {
       // Navigation
       "nav.cart": "Panier",
       "nav.checkout": "Commande Rapide",
-      "nav.theme": "Changer de thème",
+      "nav.contact": "Contactez-nous",
+      "nav.language": "Langue",
+      "nav.theme": "Basculer le Thème",
       
       // Hero Section
       "hero.title": "Découvrez des équipements élégants conçus pour votre quotidien.",
