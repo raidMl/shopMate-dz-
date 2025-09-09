@@ -12,7 +12,7 @@ const languages = {
       
       // Hero Section
       "hero.title": "Discover sleek gear crafted for your everyday flow.",
-      "hero.subtitle": "Beautiful, responsive, and fast. Filter, search, and add to cart — all with zero frameworks.",
+      "hero.subtitle": "Beautiful, responsive, and fast. Filter, search, and add to cart .",
       "hero.search": "Search products… (e.g. headphones)",
       "hero.clear": "Clear",
       "hero.offer": "SAVE 15% • NEW DROPS",
@@ -159,7 +159,7 @@ const languages = {
       "footer.privacy": "Privacy Policy",
       "footer.terms": "Terms of Service",
       "footer.careers": "Careers",
-      "footer.description": "Discover sleek gear crafted for your everyday flow. Modern e-commerce experience with zero frameworks.",
+      "footer.description": "Discover sleek gear crafted for your everyday flow. Modern e-commerce experience .",
       "footer.rights": "All rights reserved. Created by: Rdesign Company",
       
       // Messages
@@ -201,7 +201,7 @@ const languages = {
       
       // Hero Section
       "hero.title": "اكتشف الأجهزة الأنيقة المصممة لحياتك اليومية.",
-      "hero.subtitle": "جميل ومتجاوب وسريع. تصفية وبحث وإضافة إلى السلة — كل ذلك بدون إطارات عمل.",
+      "hero.subtitle": "جميل ومتجاوب وسريع. تصفية وبحث وإضافة إلى السلة.",
       "hero.search": "البحث في المنتجات... (مثل سماعات الرأس)",
       "hero.clear": "مسح",
       "hero.offer": "وفر 15% • منتجات جديدة",
@@ -348,7 +348,7 @@ const languages = {
       "footer.privacy": "سياسة الخصوصية",
       "footer.terms": "شروط الخدمة",
       "footer.careers": "الوظائف",
-      "footer.description": "اكتشف الأجهزة الأنيقة المصممة لحياتك اليومية. تجربة تجارة إلكترونية حديثة بدون إطارات عمل.",
+      "footer.description": "اكتشف الأجهزة الأنيقة المصممة لحياتك اليومية. تجربة تجارة إلكترونية حديثة .",
       "footer.rights": "جميع الحقوق محفوظة. صُنع من طرف Rdesign Company",
       
       // Messages
@@ -390,7 +390,7 @@ const languages = {
       
       // Hero Section
       "hero.title": "Découvrez des équipements élégants conçus pour votre quotidien.",
-      "hero.subtitle": "Beau, réactif et rapide. Filtrez, recherchez et ajoutez au panier — le tout sans frameworks.",
+      "hero.subtitle": "Beau, réactif et rapide. Filtrez, recherchez et ajoutez au panier .",
       "hero.search": "Rechercher des produits... (ex. écouteurs)",
       "hero.clear": "Effacer",
       "hero.offer": "ÉCONOMISEZ 15% • NOUVEAUTÉS",
@@ -537,7 +537,7 @@ const languages = {
       "footer.privacy": "Politique de confidentialité",
       "footer.terms": "Conditions d'utilisation",
       "footer.careers": "Carrières",
-      "footer.description": "Découvrez des équipements élégants conçus pour votre quotidien. Expérience e-commerce moderne sans frameworks.",
+      "footer.description": "Découvrez des équipements élégants conçus pour votre quotidien. Expérience e-commerce moderne .",
       "footer.rights": "Tous droits réservés. Fait par: Rdesign boite de dev",
       
       // Messages

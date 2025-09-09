@@ -17,6 +17,7 @@ reduce the  quantity by orderQuntityNumber  the order  stored in file json
 
 
 
+
 // create dashboard add the ability to add new product and edit delete it in dashboard
 and put it in category and add the ability to add new category and edit delete it in dashboard
 // add the ability to add new user and edit delete it in dashboard
@@ -28,3 +29,10 @@ and put it in category and add the ability to add new category and edit delete i
 
 //optimize the ui for all screen size
 #correct ui max price  and favorite in light mode
+
+
+#9 /9 /2025
+//edit order page 
+// add livraison price  for  each wilaya we can fix it 500 da
+// add send email option
+//add loading spinner and fade in element body 

@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ShopMate — Modern E‑Commerce</title>
-  <meta name="description" content="A modern e‑commerce UI in pure HTML/CSS/JS with products grid, filters, cart, and checkout." />
+  
+
+      
+      <meta name="description" content="A modern e‑commerce UI in pure HTML/CSS/JS with products grid, filters, cart, and checkout." />
   <!-- Currency Configuration -->
   <script>
     // Set up currency formatter for Algerian Dinar
@@ -69,7 +72,6 @@
           <span id="cartCount" class="cart-count">0</span>
         </button>
         <button class="btn" id="checkoutQuick" data-i18n="nav.checkout">Quick Checkout</button>
-        <button class="btn ghost" id="adminPanel" title="Admin Panel">⚙️</button>
       </div>
     </div>
   </nav>
@@ -147,7 +149,7 @@
     <div id="cartBody" class="drawer-body"></div>
     <div class="drawer-footer" style="
       padding: 16px;
-      border-top: 1px solid #1f2634;
+      border-top: 1px solid #96969661;
       display: grid;
       gap: 10px;
     ">
@@ -200,31 +202,7 @@
     </form>
   </dialog>
 
-  <!-- Admin Panel Modal -->
-  <dialog id="adminModal">
-    <form method="dialog" style="padding: 16px; min-width: 400px;">
-      <div class="modal-head">
-        <h3 style="margin:0;">Admin Panel</h3>
-        <button class="btn ghost" value="cancel">Close</button>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 12px; margin: 16px 0;">
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <strong>Orders Management:</strong>
-          <span id="orderCount" class="badge">0</span>
-        </div>
-        <button type="button" class="btn secondary" id="exportOrders">📥 Export Orders JSON</button>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <input type="file" id="importOrders" accept=".json" style="display: none;">
-          <button type="button" class="btn secondary" id="importOrdersBtn">📤 Import Orders JSON</button>
-        </div>
-        <button type="button" class="btn secondary" id="viewOrders">👁️ View All Orders</button>
-        <button type="button" class="btn secondary" id="resetProducts">🔄 Reset Product Stock</button>
-        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px;">
-          <button type="button" class="btn danger" id="clearAllOrders">🗑️ Clear All Orders</button>
-        </div>
-      </div>
-    </form>
-  </dialog>
+
 
   <!-- Toast -->
   <div id="toast" class="toast">Added to cart</div>
@@ -243,24 +221,24 @@
               <div class="contact-icon">📧</div>
               <div>
                 <h4 data-i18n="contact.email">Email</h4>
-                <p>support@shopmate.com</p>
-                <p>sales@shopmate.com</p>
+                <p>shopemate.dz@gmail.com</p>
+                <!-- <p>sales@shopmate.com</p> -->
               </div>
             </div>
             <div class="contact-item">
               <div class="contact-icon">📱</div>
               <div>
                 <h4 data-i18n="contact.phone">Phone</h4>
-                <p>+1 (555) 123-4567</p>
-                <p data-i18n="contact.hours">Mon-Fri 9AM-6PM EST</p>
+                <p> (+213) 669453240</p>
+                <p data-i18n="contact.hours">Mon-Fri 9AM-4PM EST</p>
               </div>
             </div>
             <div class="contact-item">
               <div class="contact-icon">📍</div>
               <div>
                 <h4 data-i18n="contact.office">Office</h4>
-                <p>123 Tech Street</p>
-                <p>San Francisco, CA 94105</p>
+                <p>setif</p>
+                <p>street constontine setif</p>
               </div>
             </div>
           </div>
@@ -357,7 +335,6 @@
   <script src="./js/components/filters.js"></script>
   <script src="./js/components/favorites.js"></script>
   <script src="./js/components/checkout.js"></script>
-  <script src="./js/components/admin.js"></script>
   <script src="./js/components/theme-contact.js"></script>
   <script src="./js/app.js"></script>
 </body>
