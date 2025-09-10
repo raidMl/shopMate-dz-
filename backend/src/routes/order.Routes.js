@@ -1,9 +1,151 @@
 const express = require("express");
 const router = express.Router();
-const { Order } = require("../models");
+const { Order, Product } = require("../models");
 const { protect, admin } = require("../middleware/authMiddleware");
 const QRCode = require("qrcode");
 const mongoose = require("mongoose");
+
+// Helper function to reduce product stock
+const reduceProductStock = async (products) => {
+  const stockUpdates = [];
+  
+  for (const item of products) {
+    const product = await Product.findById(item.product);
+    if (!product) {
+      throw new Error(`Product with ID ${item.product} not found`);
+    }
+
+    // Check main stock
+    if (product.stock < item.quantity) {
+      throw new Error(`Insufficient stock for product ${product.name}. Available: ${product.stock}, Requested: ${item.quantity}`);
+    }
+
+    // Prepare stock update operations
+    const stockUpdate = {
+      productId: item.product,
+      quantity: item.quantity,
+      mainStockReduction: item.quantity,
+      colorStockReduction: null,
+      sizeStockReduction: null
+    };
+
+    // Check color stock if color is selected
+    if (item.selectedColor) {
+      const colorVariant = product.colors.find(color => color.name === item.selectedColor);
+      if (colorVariant) {
+        if (colorVariant.stock < item.quantity) {
+          throw new Error(`Insufficient stock for color ${item.selectedColor} of product ${product.name}. Available: ${colorVariant.stock}, Requested: ${item.quantity}`);
+        }
+        stockUpdate.colorStockReduction = {
+          colorName: item.selectedColor,
+          quantity: item.quantity
+        };
+      }
+    }
+
+    // Check size stock if size is selected
+    if (item.selectedSize) {
+      const sizeVariant = product.sizes.find(size => size.name === item.selectedSize);
+      if (sizeVariant) {
+        if (sizeVariant.stock < item.quantity) {
+          throw new Error(`Insufficient stock for size ${item.selectedSize} of product ${product.name}. Available: ${sizeVariant.stock}, Requested: ${item.quantity}`);
+        }
+        stockUpdate.sizeStockReduction = {
+          sizeName: item.selectedSize,
+          quantity: item.quantity
+        };
+      }
+    }
+
+    stockUpdates.push(stockUpdate);
+  }
+
+  // Apply all stock reductions
+  for (const update of stockUpdates) {
+    // Build the update operation
+    const updateOperation = {
+      $inc: { stock: -update.mainStockReduction }
+    };
+
+    const arrayFilters = [];
+
+    // Add color stock reduction if needed
+    if (update.colorStockReduction) {
+      updateOperation.$inc[`colors.$[color].stock`] = -update.colorStockReduction.quantity;
+      arrayFilters.push({ "color.name": update.colorStockReduction.colorName });
+    }
+
+    // Add size stock reduction if needed
+    if (update.sizeStockReduction) {
+      updateOperation.$inc[`sizes.$[size].stock`] = -update.sizeStockReduction.quantity;
+      arrayFilters.push({ "size.name": update.sizeStockReduction.sizeName });
+    }
+
+    // Apply the update
+    const updateOptions = {};
+    if (arrayFilters.length > 0) {
+      updateOptions.arrayFilters = arrayFilters;
+    }
+
+    console.log(`🔧 Reducing stock for product ${update.productId}:`, {
+      mainStock: -update.mainStockReduction,
+      color: update.colorStockReduction?.colorName,
+      colorReduction: update.colorStockReduction?.quantity,
+      size: update.sizeStockReduction?.sizeName,
+      sizeReduction: update.sizeStockReduction?.quantity
+    });
+
+    await Product.findByIdAndUpdate(
+      update.productId,
+      updateOperation,
+      updateOptions
+    );
+  }
+
+  return stockUpdates;
+};
+
+// Helper function to restore product stock
+const restoreProductStock = async (products) => {
+  for (const item of products) {
+    // Base update for main stock
+    const updateOperation = {
+      $inc: { stock: item.quantity }
+    };
+
+    const arrayFilters = [];
+
+    // Handle color stock restoration
+    if (item.selectedColor) {
+      updateOperation.$inc[`colors.$[color].stock`] = item.quantity;
+      arrayFilters.push({ "color.name": item.selectedColor });
+    }
+
+    // Handle size stock restoration
+    if (item.selectedSize) {
+      updateOperation.$inc[`sizes.$[size].stock`] = item.quantity;
+      arrayFilters.push({ "size.name": item.selectedSize });
+    }
+
+    // Apply the update
+    const updateOptions = {};
+    if (arrayFilters.length > 0) {
+      updateOptions.arrayFilters = arrayFilters;
+    }
+
+    console.log(`🔧 Restoring stock for product ${item.product}:`, {
+      mainStock: item.quantity,
+      color: item.selectedColor,
+      size: item.selectedSize
+    });
+
+    await Product.findByIdAndUpdate(
+      item.product,
+      updateOperation,
+      updateOptions
+    );
+  }
+};
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -33,14 +175,6 @@ router.post("/", async (req, res) => {
     if (req.user) {
       // If user is authenticated, use their ID
       userId = req.user._id;
-    } else {
-      // For guest orders, we can either:
-      // 1. Set userId to null (current approach)
-      // 2. Create a temporary guest user
-      // 3. Use a special "guest" user ID
-      
-      // Option: Create a guest user entry (optional)
-      // You could create a guest user here if needed for tracking
     }
 
     // Validate and transform products data
@@ -57,6 +191,11 @@ router.post("/", async (req, res) => {
         selectedSize: item.selectedSize || null
       };
     });
+
+    // Check and reduce stock for all products
+    console.log("🔍 Checking product stock availability...");
+    await reduceProductStock(orderProducts);
+    console.log("✅ Stock reduced successfully for all products");
 
     // Create order with customer info (userId can be null for guest orders)
     const order = new Order({
@@ -98,6 +237,7 @@ router.post("/", async (req, res) => {
       })
       .populate("user", "name email");
 
+    console.log(`📦 Order ${createdOrder._id} created successfully with stock reduction`);
     res.status(201).json(populatedOrder);
   } catch (error) {
     console.error("Error creating order:", error);
@@ -151,15 +291,50 @@ router.put("/:id/status", protect, admin, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 
-    if (order) {
-      order.status = req.body.status || order.status;
-
-      const updatedOrder = await order.save();
-      res.json(updatedOrder);
-    } else {
-      res.status(404).json({ message: "Order not found" });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
     }
+
+    const oldStatus = order.status;
+    const newStatus = req.body.status;
+
+    // Update order status
+    order.status = newStatus || order.status;
+    const updatedOrder = await order.save();
+
+    // Handle stock restoration when order is cancelled
+    if (newStatus === "cancelled" && oldStatus !== "cancelled") {
+      console.log(`🔄 Order ${order._id} status changed to cancelled - restoring stock...`);
+      try {
+        await restoreProductStock(order.products);
+        console.log(`✅ Stock restored successfully for cancelled order ${order._id}`);
+      } catch (stockError) {
+        console.error(`❌ Error restoring stock for order ${order._id}:`, stockError);
+        // Note: We don't revert the status change if stock restoration fails
+        // as the cancellation is more important than the stock discrepancy
+      }
+    }
+
+    // Handle stock reduction when order is reactivated (moved from cancelled to another status)
+    if (oldStatus === "cancelled" && newStatus !== "cancelled") {
+      console.log(`🔄 Order ${order._id} status changed from cancelled to ${newStatus} - reducing stock...`);
+      try {
+        await reduceProductStock(order.products);
+        console.log(`✅ Stock reduced successfully for reactivated order ${order._id}`);
+      } catch (stockError) {
+        console.error(`❌ Error reducing stock for reactivated order ${order._id}:`, stockError);
+        // Revert the status change if stock reduction fails
+        order.status = oldStatus;
+        await order.save();
+        return res.status(400).json({ 
+          message: `Cannot reactivate order: ${stockError.message}` 
+        });
+      }
+    }
+
+    res.json(updatedOrder);
   } catch (error) {
+    console.error(`Error updating order status:`, error);
     res.status(400).json({ message: error.message });
   }
 });
@@ -169,21 +344,32 @@ router.put("/:id/status", protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.delete("/:id", protect, admin, async (req, res) => {
   try {
-    console.log(`Attempting to delete order with ID: ${req.params.id}`);
+    console.log(`🗑️  DELETE route hit - Attempting to delete order with ID: ${req.params.id}`);
     
     const order = await Order.findById(req.params.id);
-    // console.log('Order found:', order);
 
     if (order) {
+      // Restore stock if order is not already cancelled
+      if (order.status !== "cancelled") {
+        console.log(`🔄 Restoring stock for deleted order ${order._id}...`);
+        try {
+          await restoreProductStock(order.products);
+          console.log(`✅ Stock restored successfully for deleted order ${order._id}`);
+        } catch (stockError) {
+          console.error(`❌ Error restoring stock for deleted order ${order._id}:`, stockError);
+          // Continue with deletion even if stock restoration fails
+        }
+      }
+
       await Order.findByIdAndDelete(req.params.id);
-      console.log(`Order ${req.params.id} deleted successfully`);
+      console.log(`✅ Order ${req.params.id} deleted successfully`);
       res.json({ message: "Order deleted successfully" });
     } else {
-      console.log(`Order ${req.params.id} not found`);
+      console.log(`❌ Order ${req.params.id} not found`);
       res.status(404).json({ message: "Order not found" });
     }
   } catch (error) {
-    console.error(`Error deleting order ${req.params.id}:`, error);
+    console.error(`💥 Error deleting order ${req.params.id}:`, error);
     res.status(500).json({ message: error.message });
   }
 });
