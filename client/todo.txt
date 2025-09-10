@@ -25,17 +25,23 @@ and put it in category and add the ability to add new category and edit delete i
 // add the ability to add new slider and edit delete it in dashboard
 
 
-//add static data in dashboard
+#//add static data in dashboard
 
 //optimize the ui for all screen size
 #correct ui max price  and favorite in light mode
 
 
 #9 /9 /2025
-//edit order page 
 // add livraison price  for  each wilaya we can fix it 500 da
 # // add send email option
 # //add loading spinner and fade in element body 
 
 // create page for support
 // create page for company 
+
+
+# 10/9/2025
+//reduce the quantity of the product when the order is created but if change the order status to cancelled the quantity should be added again to the product quantity
+#//edit order page 
+
+#//add select chackbox for order status  ord delete order

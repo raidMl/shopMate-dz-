@@ -105,59 +105,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// @desc    Get order by ID
-// @route   GET /api/orders/:id
-// @access  Private
-router.get("/:id", protect, async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id)
-      .populate("user", "name email")
-      .populate({
-        path: "products.product",
-        populate: {
-          path: "category",
-          select: "name description",
-        },
-      });
-
-    if (order) {
-      // Check if user is admin or order belongs to user
-      if (
-        req.user.role === "admin" ||
-        order.user._id.toString() === req.user._id.toString()
-      ) {
-        res.json(order);
-      } else {
-        res.status(401).json({ message: "Not authorized to view this order" });
-      }
-    } else {
-      res.status(404).json({ message: "Order not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// @desc    Update order status
-// @route   PUT /api/orders/:id/status
-// @access  Private/Admin
-router.put("/:id/status", protect, admin, async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
-
-    if (order) {
-      order.status = req.body.status || order.status;
-
-      const updatedOrder = await order.save();
-      res.json(updatedOrder);
-    } else {
-      res.status(404).json({ message: "Order not found" });
-    }
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
 // @desc    Get logged in user orders
 // @route   GET /api/orders/myorders
 // @access  Private
@@ -196,5 +143,84 @@ router.get("/", protect, admin, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// @desc    Update order status
+// @route   PUT /api/orders/:id/status
+// @access  Private/Admin
+router.put("/:id/status", protect, admin, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.status = req.body.status || order.status;
+
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
+    } else {
+      res.status(404).json({ message: "Order not found" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// @desc    Delete order
+// @route   DELETE /api/orders/:id
+// @access  Private/Admin
+router.delete("/:id", protect, admin, async (req, res) => {
+  try {
+    console.log(`Attempting to delete order with ID: ${req.params.id}`);
+    
+    const order = await Order.findById(req.params.id);
+    // console.log('Order found:', order);
+
+    if (order) {
+      await Order.findByIdAndDelete(req.params.id);
+      console.log(`Order ${req.params.id} deleted successfully`);
+      res.json({ message: "Order deleted successfully" });
+    } else {
+      console.log(`Order ${req.params.id} not found`);
+      res.status(404).json({ message: "Order not found" });
+    }
+  } catch (error) {
+    console.error(`Error deleting order ${req.params.id}:`, error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// @desc    Get order by ID
+// @route   GET /api/orders/:id
+// @access  Private
+router.get("/:id", protect, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate("user", "name email")
+      .populate({
+        path: "products.product",
+        populate: {
+          path: "category",
+          select: "name description",
+        },
+      });
+
+    if (order) {
+      // Check if user is admin or order belongs to user
+      if (
+        req.user.role === "admin" ||
+        (order.user && order.user._id.toString() === req.user._id.toString())
+      ) {
+        res.json(order);
+      } else {
+        res.status(401).json({ message: "Not authorized to view this order" });
+      }
+    } else {
+      res.status(404).json({ message: "Order not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+console.log('Order routes loaded - DELETE /api/orders/:id should be available');
 
 module.exports = router;
