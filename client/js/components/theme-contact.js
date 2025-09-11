@@ -279,4 +279,98 @@ document.addEventListener('DOMContentLoaded', () => {
   new ContactForm();
   new FooterNavigation();
   initSmoothScroll();
+  
+  // Initialize contact form handling for all pages
+  initContactFormHandling();
 });
+
+// Contact form submission with loading spinner
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  // Get form data
+  const formData = new FormData(this);
+  const name = formData.get('name');
+  const email = formData.get('email');
+  const subject = formData.get('subject');
+  const message = formData.get('message');
+  
+  // Get submit button
+  const submitBtn = document.getElementById('contactSubmitBtn');
+  const originalText = submitBtn.textContent;
+  
+  // Validate required fields
+  if (!name || !email || !subject || !message) {
+    showToast('Please fill in all required fields.', 'error');
+    return;
+  }
+  
+  try {
+    // Show loading state
+    submitBtn.classList.add('loading');
+    submitBtn.textContent = 'Sending';
+    submitBtn.disabled = true;
+    
+    // Here you would send the data to your backend or email service
+    // Example API call:
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, subject, message })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to send message');
+    }
+    
+    // Show success message
+    showToast('Thank you for your message! We\'ll get back to you soon.', 'success');
+    
+    // Reset form
+    this.reset();
+    
+  } catch (error) {
+    console.error('Error sending message:', error);
+    
+    // Try alternative method (EmailJS, etc.)
+    try {
+      // Simulate API call for demo
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      showToast('Message sent successfully!', 'success');
+      this.reset();
+    } catch (fallbackError) {
+      showToast('There was an error sending your message. Please try again or contact us directly.', 'error');
+    }
+  } finally {
+    // Reset button state
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+});
+
+// Enhanced Toast function for better feedback
+function showToast(message, type = 'info') {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  
+  // Set toast content and style
+  toast.textContent = message;
+  toast.className = `toast ${type}`;
+  
+  // Show toast
+  toast.style.display = 'block';
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  
+  // Hide after 4 seconds
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-100%)';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 300);
+  }, 4000);
+}

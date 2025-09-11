@@ -115,7 +115,25 @@ function handlePlaceOrder(e) {
   }
   
   if (!isValid) {
+    // Enhanced error feedback with better UX
     toast(t('checkout.fillRequired'), 'error');
+    
+    // Add shake animation to the form
+    form.classList.add('shake-error');
+    setTimeout(() => form.classList.remove('shake-error'), 600);
+    
+    // Focus on the first invalid field
+    const firstInvalidField = form.querySelector('input.error, select.error, textarea.error');
+    if (firstInvalidField) {
+      firstInvalidField.focus();
+      firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // Add subtle error animation to button
+    const btn = e.target;
+    btn.classList.add('error-pulse');
+    setTimeout(() => btn.classList.remove('error-pulse'), 600);
+    
     return;
   }
 

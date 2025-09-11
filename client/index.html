@@ -518,12 +518,12 @@
           <div class="contact-form-container">
             <form class="contact-form" id="contactForm">
               <div class="form-row">
-                <input type="text" class="input" placeholder="Your Name" data-i18n="contact.yourName" required>
-                <input type="email" class="input" placeholder="Your Email" data-i18n="contact.yourEmail" required>
+                <input type="text" name="name" class="input" placeholder="Your Name" data-i18n="contact.yourName" required>
+                <input type="email" name="email" class="input" placeholder="Your Email" data-i18n="contact.yourEmail" required>
               </div>
-              <input type="text" class="input" placeholder="Subject" data-i18n="contact.subject" required>
-              <textarea class="input" rows="4" placeholder="Your Message" data-i18n="contact.message" required></textarea>
-              <button type="submit" class="btn" data-i18n="contact.send">Send Message</button>
+              <input type="text" name="subject" class="input" placeholder="Subject" data-i18n="contact.subject" required>
+              <textarea name="message" class="input" rows="4" placeholder="Your Message" data-i18n="contact.message" required></textarea>
+              <button type="submit" class="btn" id="contactSubmitBtn" data-i18n="contact.send">Send Message</button>
             </form>
           </div>
         </div>
@@ -580,31 +580,29 @@
         
         <div class="footer-section">
           <h4 data-i18n="footer.shop">Shop</h4>
-          <ul>
-            <li><a href="#" data-category="Audio">Audio</a></li>
-            <li><a href="#" data-category="Peripherals">Peripherals</a></li>
-            <li><a href="#" data-category="Wearables">Wearables</a></li>
-            <li><a href="#" data-category="Accessories">Accessories</a></li>
+          <ul id="footerCategories">
+            <!-- Categories will be loaded dynamically from backend -->
+            <li><span class="loading-placeholder">Loading categories...</span></li>
           </ul>
         </div>
         
         <div class="footer-section">
           <h4 data-i18n="footer.support">Support</h4>
           <ul>
-            <li><a href="#contact" data-i18n="footer.contactUs">Contact Us</a></li>
-            <li><a href="#" data-i18n="footer.faq">FAQ</a></li>
-            <li><a href="#" data-i18n="footer.shipping">Shipping Info</a></li>
-            <li><a href="#" data-i18n="footer.returns">Returns</a></li>
+            <li><a href="support.html#contact" data-i18n="footer.contactUs">Contact Us</a></li>
+            <li><a href="support.html#faq" data-i18n="footer.faq">FAQ</a></li>
+            <li><a href="support.html#shipping" data-i18n="footer.shipping">Shipping Info</a></li>
+            <li><a href="support.html#returns" data-i18n="footer.returns">Returns</a></li>
           </ul>
         </div>
         
         <div class="footer-section">
           <h4 data-i18n="footer.company">Company</h4>
           <ul>
-            <li><a href="#" data-i18n="footer.about">About Us</a></li>
-            <li><a href="#" data-i18n="footer.privacy">Privacy Policy</a></li>
-            <li><a href="#" data-i18n="footer.terms">Terms of Service</a></li>
-            <li><a href="#" data-i18n="footer.careers">Careers</a></li>
+            <li><a href="company.html#about" data-i18n="footer.about">About Us</a></li>
+            <li><a href="company.html#privacy" data-i18n="footer.privacy">Privacy Policy</a></li>
+            <li><a href="company.html#terms" data-i18n="footer.terms">Terms of Service</a></li>
+            <li><a href="company.html#careers" data-i18n="footer.careers">Careers</a></li>
           </ul>
         </div>
       </div>
@@ -623,6 +621,7 @@
   <script src="./js/data/products.js"></script>
   <script src="./js/utils/state.js"></script>
   <script src="./js/utils/orderManager.js"></script>
+  <script src="./js/components/categoriesManager.js"></script>
   <script src="./js/components/language-switcher.js"></script>
   <script src="./js/components/navbar.js"></script>
   <script src="./js/components/productCard.js"></script>
