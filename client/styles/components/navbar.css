@@ -48,6 +48,8 @@
   justify-content: center;
   color: white;
   flex-shrink: 0;
+  margin-left: 10px;
+
 }
 
 .brand-logo svg {
@@ -119,6 +121,7 @@
 /* Quick checkout button responsive text */
 #checkoutQuick {
   white-space: nowrap;
+  margin-right: 10px;
 }
 
 /* Tablet styles */
