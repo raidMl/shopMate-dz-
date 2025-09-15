@@ -13,6 +13,7 @@
   pointer-events: none; 
   transition: opacity .2s ease, transform .2s ease; 
   z-index: 80; 
+  height: 40px;
 }
 
 .toast.show { 
