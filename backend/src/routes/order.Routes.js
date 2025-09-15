@@ -202,6 +202,8 @@ router.post("/", async (req, res) => {
       user: userId, // Can be null for guest orders
       products: orderProducts,
       totalPrice,
+      deliveryPrice: 500, // Fixed delivery price
+      finalTotal: totalPrice + 500, // Total including delivery
       customerInfo: {
         fullName: customerInfo.fullName.trim(),
         email: customerInfo.email.trim().toLowerCase(),

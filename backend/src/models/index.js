@@ -74,7 +74,12 @@ const orderSchema = new mongoose.Schema({
       selectedSize: { type: String },
     },
   ],
-  totalPrice: { type: Number, required: true }, // Total price in Algerian Dinar
+  // Total price in Algerian Dinar (products only)
+  totalPrice: { type: Number, required: true },
+  // Delivery price 
+  deliveryPrice: { type: Number, required: true, default: 500 },
+  // Final total (products + delivery)
+  finalTotal: { type: Number, required: true },
   customerInfo: {
     fullName: { type: String, required: true },
     email: { type: String, required: true },

@@ -5,7 +5,7 @@ reduce the  quantity by orderQuntityNumber  the order  stored in file json
 // and update the product data in the json file
 
 
-// edit contact and footer
+# // edit contact and footer
 
 //link with google sheet 
 
@@ -13,16 +13,16 @@ reduce the  quantity by orderQuntityNumber  the order  stored in file json
 
 // ##add multi language support
  //add multi language for product data  
-//use da currency
+# //use da currency
 
 
 
 
-// create dashboard add the ability to add new product and edit delete it in dashboard
-and put it in category and add the ability to add new category and edit delete it in dashboard
-// add the ability to add new user and edit delete it in dashboard
-// add the ability to add new order and edit delete it in dashboard
-// add the ability to add new slider and edit delete it in dashboard
+# // create dashboard add the ability to add new product and edit delete it in dashboard
+# and put it in category and add the ability to add new category and edit delete it in dashboard
+# // add the ability to add new user and edit delete it in dashboard
+# // add the ability to add new order and edit delete it in dashboard
+# // add the ability to add new slider and edit delete it in dashboard
 
 
 #//add static data in dashboard
@@ -32,16 +32,16 @@ and put it in category and add the ability to add new category and edit delete i
 
 
 #9 /9 /2025
-// add livraison price  for  each wilaya we can fix it 500 da
+#// add livraison price  for  each wilaya we can fix it 500 da
 # // add send email option
 # //add loading spinner and fade in element body 
 
-// create page for support
+#// create page for support
 // create page for company 
 
 
 # 10/9/2025
-//reduce the quantity of the product when the order is created but if change the order status to cancelled the quantity should be added again to the product quantity
+#//reduce the quantity of the product when the order is created but if change the order status to cancelled the quantity should be added again to the product quantity
 #//edit order page 
 
 #//add select chackbox for order status  ord delete order
@@ -54,3 +54,8 @@ and put it in category and add the ability to add new category and edit delete i
 # - Added PWA styles for install banner, offline indicator, and loading spinner
 # - Added network status monitoring and update checking
 # - Added toast notifications and proper PWA meta tags
+
+
+# ✅ 15/9/2025 -
+use all senstive data from env file -
+add livrision price for each wilaya

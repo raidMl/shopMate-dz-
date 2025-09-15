@@ -120,10 +120,172 @@ function getWilayaByCode(code) {
   return ALGERIA_WILAYAS.find(wilaya => wilaya.code === code) || null;
 }
 
+/**
+ * Get wilaya by name (any language)
+ * @param {string} name - Wilaya name
+ * @returns {Object|null} Wilaya object or null if not found
+ */
+function getWilayaByName(name) {
+  if (!name) return null;
+  
+  const searchName = name.toLowerCase().trim();
+  return ALGERIA_WILAYAS.find(wilaya => 
+    wilaya.name.toLowerCase() === searchName ||
+    wilaya.nameAr === name ||
+    wilaya.nameFr.toLowerCase() === searchName
+  ) || null;
+}
+
+/**
+ * Calculate delivery price based on wilaya
+ * @param {string} wilayaCodeOrName - Wilaya code or name
+ * @returns {number} Delivery price in DA
+ */
+function calculateWilayaDeliveryPrice(wilayaCodeOrName) {
+  if (!wilayaCodeOrName) return 500; // Default price
+  
+  // Get wilaya object
+  let wilaya = getWilayaByCode(wilayaCodeOrName) || getWilayaByName(wilayaCodeOrName);
+  
+  // If not found by code/name, try partial match
+  if (!wilaya) {
+    const searchTerm = wilayaCodeOrName.toLowerCase();
+    wilaya = ALGERIA_WILAYAS.find(w => 
+      w.name.toLowerCase().includes(searchTerm) ||
+      w.nameFr.toLowerCase().includes(searchTerm) ||
+      w.nameAr.includes(wilayaCodeOrName)
+    );
+  }
+  
+  if (!wilaya) return 500; // Default if not found
+  
+  // Southern/remote wilayas (800 DA)
+  const southernWilayaCodes = [
+    "01", // Adrar
+    "08", // Béchar  
+    "11", // Tamanrasset
+    "30", // Ouargla
+    "32", // El Bayadh
+    "33", // Illizi
+    "37", // Tindouf
+    "39", // El Oued
+    "45", // Naâma
+    "47", // Ghardaïa
+    "49", // Timimoun
+    "50", // Bordj Badji Mokhtar
+    "52", // Béni Abbès
+    "53", // In Salah
+    "54", // In Guezzam
+    "56", // Djanet
+    "58"  // El Meniaa
+  ];
+  
+  // Check if wilaya is in southern list (higher price)
+  const isRemoteWilaya = southernWilayaCodes.includes(wilaya.code);
+  
+  return isRemoteWilaya ? 800 : 500;
+}
+
+/**
+ * Get wilaya name for display (handles both code and name input)
+ * @param {string} wilayaCodeOrName - Wilaya code or name
+ * @param {string} language - Display language
+ * @returns {string} Wilaya display name
+ */
+function getWilayaDisplayNameFromInput(wilayaCodeOrName, language = 'en') {
+  if (!wilayaCodeOrName) return '';
+  
+  // First try to get by code
+  let wilaya = getWilayaByCode(wilayaCodeOrName);
+  
+  // If not found, try by name
+  if (!wilaya) {
+    wilaya = getWilayaByName(wilayaCodeOrName);
+  }
+  
+  // If still not found, return the input as is
+  if (!wilaya) {
+    return wilayaCodeOrName;
+  }
+  
+  // Return name based on language
+  switch (language) {
+    case 'ar':
+      return wilaya.nameAr;
+    case 'fr':
+      return wilaya.nameFr;
+    default:
+      return wilaya.name;
+  }
+}
+
+/**
+ * Get delivery pricing category for a wilaya
+ * @param {string} wilayaCodeOrName - Wilaya code or name
+ * @returns {Object} Pricing information
+ */
+function getWilayaDeliveryInfo(wilayaCodeOrName) {
+  const price = calculateWilayaDeliveryPrice(wilayaCodeOrName);
+  const isRemote = price === 800;
+  
+  return {
+    price: price,
+    category: isRemote ? 'remote' : 'standard',
+    isRemote: isRemote,
+    description: isRemote ? 'Remote/Southern Wilaya' : 'Standard Delivery'
+  };
+}
+
+/**
+ * Get all wilayas grouped by delivery price
+ * @returns {Object} Wilayas grouped by delivery zones
+ */
+function getWilayasByDeliveryZone() {
+  const standard = [];
+  const remote = [];
+  
+  ALGERIA_WILAYAS.forEach(wilaya => {
+    const deliveryPrice = calculateWilayaDeliveryPrice(wilaya.code);
+    if (deliveryPrice === 800) {
+      remote.push(wilaya);
+    } else {
+      standard.push(wilaya);
+    }
+  });
+  
+  return {
+    standard: {
+      price: 500,
+      wilayas: standard,
+      count: standard.length
+    },
+    remote: {
+      price: 800,
+      wilayas: remote,
+      count: remote.length
+    }
+  };
+}
+
+/**
+ * Check if a wilaya is in the remote delivery zone
+ * @param {string} wilayaCodeOrName - Wilaya code or name
+ * @returns {boolean} True if remote delivery zone
+ */
+function isRemoteWilaya(wilayaCodeOrName) {
+  return calculateWilayaDeliveryPrice(wilayaCodeOrName) === 800;
+}
+
 // Export for use in other modules
 if (typeof window !== 'undefined') {
   window.ALGERIA_WILAYAS = ALGERIA_WILAYAS;
   window.populateWilayaSelect = populateWilayaSelect;
   window.getWilayaDisplayName = getWilayaDisplayName;
   window.getWilayaByCode = getWilayaByCode;
+  window.getWilayaByName = getWilayaByName;
+  window.calculateWilayaDeliveryPrice = calculateWilayaDeliveryPrice;
+  window.getWilayaDisplayNameFromInput = getWilayaDisplayNameFromInput;
+  window.getWilayaDeliveryInfo = getWilayaDeliveryInfo;
+  window.getWilayasByDeliveryZone = getWilayasByDeliveryZone;
+  window.isRemoteWilaya = isRemoteWilaya;
 }

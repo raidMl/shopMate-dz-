@@ -1,3 +1,32 @@
+/**
+ * Calculate delivery price based on wilaya location
+ * @param {string} wilaya - Selected wilaya name or code
+ * @returns {number} - Delivery price in DA
+ */
+function calculateDeliveryPrice(wilaya) {
+  // Use the centralized wilaya function if available
+  if (typeof calculateWilayaDeliveryPrice === 'function') {
+    return calculateWilayaDeliveryPrice(wilaya);
+  }
+  
+  // Fallback implementation
+  if (!wilaya) return 500; // Default price
+  
+  // Southern/remote wilayas (800 DA)
+  const southernWilayas = [
+    'Tamanrasset', 'Adrar', 'Ouargla', 'El Oued', 'Ghardaïa', 'Laghouat',
+    'Biskra', 'Béchar', 'Tindouf', 'Illizi', 'El Bayadh', 'Naâma'
+  ];
+  
+  // Check if wilaya is in southern list (higher price)
+  const isRemoteWilaya = southernWilayas.some(southWilaya => 
+    wilaya.toLowerCase().includes(southWilaya.toLowerCase()) ||
+    southWilaya.toLowerCase().includes(wilaya.toLowerCase())
+  );
+  
+  return isRemoteWilaya ? 800 : 500;
+}
+
 // Checkout Management
 function initCheckoutEvents() {
   // Initialize wilaya dropdown
@@ -62,7 +91,39 @@ function initWilayaDropdown() {
   const wilayaSelect = $('#wilayaSelect');
   if (wilayaSelect && typeof populateWilayaSelect === 'function') {
     populateWilayaSelect(wilayaSelect, currentLanguage);
+    
+    // Add event listener to update delivery price when wilaya changes
+    wilayaSelect.addEventListener('change', function() {
+      const selectedWilaya = this.value;
+      const deliveryPrice = calculateDeliveryPrice(selectedWilaya);
+      
+      // Update delivery price display in the modal
+      updateCheckoutDeliveryPrice(deliveryPrice);
+      
+      // Update cart UI with new delivery price
+      if (typeof updateCartUI === 'function') {
+        updateCartUI();
+      }
+    });
   }
+}
+
+/**
+ * Update delivery price display in checkout modal
+ * @param {number} deliveryPrice - New delivery price
+ */
+function updateCheckoutDeliveryPrice(deliveryPrice) {
+  const deliveryElements = document.querySelectorAll('.delivery-price');
+  deliveryElements.forEach(element => {
+    element.textContent = money(deliveryPrice);
+  });
+  
+  // Update total in checkout modal
+  const subtotal = cartSubtotal();
+  const totalElements = document.querySelectorAll('.checkout-total');
+  totalElements.forEach(element => {
+    element.textContent = money(subtotal + deliveryPrice);
+  });
 }
 
 /**
@@ -78,6 +139,29 @@ function updateWilayaDropdownLanguage() {
       wilayaSelect.value = selectedValue;
     }
   }
+}
+
+/**
+ * Get wilaya name from code for order storage
+ * @param {string} wilayaCode - Wilaya code
+ * @returns {string} Wilaya name
+ */
+function getWilayaNameFromCode(wilayaCode) {
+  if (typeof getWilayaByCode === 'function') {
+    const wilaya = getWilayaByCode(wilayaCode);
+    if (wilaya) {
+      const language = getCurrentLanguage ? getCurrentLanguage() : 'en';
+      switch (language) {
+        case 'ar':
+          return wilaya.nameAr;
+        case 'fr':
+          return wilaya.nameFr;
+        default:
+          return wilaya.name;
+      }
+    }
+  }
+  return wilayaCode;
 }
 
 function handlePlaceOrder(e) {
@@ -155,7 +239,7 @@ function handlePlaceOrder(e) {
     fullName: form.querySelector('input[data-i18n="checkout.nameExample"]').value.trim(),
     email: form.querySelector('input[type="email"]').value.trim(),
     phone: form.querySelector('input[type="tel"]').value.trim(),
-    wilaya: wilayaSelect.value,
+    wilaya: getWilayaNameFromCode(wilayaSelect.value) || wilayaSelect.value,
     address: form.querySelector('textarea').value.trim()
   };
   
@@ -194,10 +278,14 @@ function handlePlaceOrder(e) {
     return sum + (product ? product.price * state.cart[cartKey] : 0);
   }, 0);
   
+  // Calculate delivery price based on wilaya location
+  const deliveryPrice = calculateDeliveryPrice(wilayaSelect.value);
+  
   const orderData = {
     customerInfo: checkoutData,
     products: orderProducts,
-    totalPrice: subtotal
+    totalPrice: subtotal,
+    deliveryPrice: deliveryPrice
   };
   
   // Make API call to create order
@@ -343,7 +431,7 @@ function showOrderConfirmation(order) {
               <div class="detail-icon">💰</div>
               <div class="detail-content">
                 <span class="detail-label">${t('order.total') || 'Total Amount'}</span>
-                <span class="detail-value total-amount">${money(order.totalPrice)}</span>
+                <span class="detail-value total-amount">${money(order.finalTotal || (order.totalPrice + order.deliveryPrice))}</span>
               </div>
             </div>
             

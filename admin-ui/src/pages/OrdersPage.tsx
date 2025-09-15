@@ -18,12 +18,14 @@ interface Order {
     selectedSize?: string;
   }>;
   totalPrice: number;
+  deliveryPrice: number;
+  finalTotal: number;
   customerInfo: {
     fullName: string;
     email: string;
     phone: string;
-    wilaya: string;
     address: string;
+    wilaya: string;
   };
   status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
   qrCode?: string;
@@ -377,12 +379,23 @@ const OrdersPage: React.FC = () => {
                 `).join('')}
               </tbody>
             </table>
+            
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-weight: bold;">Subtotal:</span>
+                <span>${order.totalPrice.toFixed(2)} DA</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="font-weight: bold;">Delivery:</span>
+                <span>${(order.deliveryPrice || 500).toFixed(2)} DA</span>
+              </div>
+            </div>
           </div>
 
           <div class="total-section">
             <div class="total-row">
               <span>TOTAL AMOUNT:</span>
-              <span>${order.totalPrice.toFixed(2)} DA</span>
+              <span>${order.finalTotal ? order.finalTotal.toFixed(2) : (order.totalPrice + (order.deliveryPrice || 500)).toFixed(2)} DA</span>
             </div>
           </div>
 
@@ -526,7 +539,7 @@ const OrdersPage: React.FC = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">
-                          {order.totalPrice.toFixed(2)} DA
+                          {order.finalTotal ? order.finalTotal.toFixed(2) : (order.totalPrice + (order.deliveryPrice || 500)).toFixed(2)} DA
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>
@@ -666,14 +679,21 @@ const OrdersPage: React.FC = () => {
                                           {(item.product.price * item.quantity).toFixed(2)} DA
                                         </div>
                                       </div>
+                                      
                                     ))}
                                   </div>
                                   
                                   {/* Order Summary */}
                                   <div className="mt-4 pt-3 border-t border-gray-200">
+                                   <div className="text-xs font-semibold text-gray-600">
+                                     Livraison: {order.deliveryPrice ? order.deliveryPrice.toFixed(2) : '500.00'} DA
+                                   </div>
+                                    <br />
                                     <div className="flex justify-between items-center">
                                       <span className="text-lg font-semibold text-gray-900">Total:</span>
-                                      <span className="text-lg font-bold text-blue-600">{order.totalPrice.toFixed(2)} DA</span>
+                                      <span className="text-lg font-bold text-blue-600">
+                                        {order.finalTotal ? order.finalTotal.toFixed(2) : (order.totalPrice + (order.deliveryPrice || 500)).toFixed(2)} DA
+                                      </span>
                                     </div>
                                     {order.qrCode && (
                                       <div className="mt-3">

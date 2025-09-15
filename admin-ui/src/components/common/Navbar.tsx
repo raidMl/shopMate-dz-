@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">E-Commerce Admin</h1>
+              <h1 className="text-xl font-bold text-gray-900">ShopMate</h1>
             </div>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               {navLinks.map((link) => (

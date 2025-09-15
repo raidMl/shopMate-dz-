@@ -11,6 +11,35 @@ class OrderManager {
   }
 
   /**
+   * Calculate delivery price based on wilaya location
+   * @param {string} wilaya - Selected wilaya name or code
+   * @returns {number} - Delivery price in DA
+   */
+  calculateDeliveryPrice(wilaya) {
+    // Use the centralized wilaya function if available
+    if (typeof calculateWilayaDeliveryPrice === 'function') {
+      return calculateWilayaDeliveryPrice(wilaya);
+    }
+    
+    // Fallback implementation
+    if (!wilaya) return 500; // Default price
+    
+    // Southern/remote wilayas (800 DA)
+    const southernWilayas = [
+      'Tamanrasset', 'Adrar', 'Ouargla', 'El Oued', 'Ghardaïa', 'Laghouat',
+      'Biskra', 'Béchar', 'Tindouf', 'Illizi', 'El Bayadh', 'Naâma'
+    ];
+    
+    // Check if wilaya is in southern list (higher price)
+    const isRemoteWilaya = southernWilayas.some(southWilaya => 
+      wilaya.toLowerCase().includes(southWilaya.toLowerCase()) ||
+      southWilaya.toLowerCase().includes(wilaya.toLowerCase())
+    );
+    
+    return isRemoteWilaya ? 800 : 500;
+  }
+
+  /**
    * Load orders from localStorage (simulating JSON file storage)
    */
   loadOrders() {
@@ -105,26 +134,37 @@ class OrderManager {
     const orderId = this.generateOrderId();
     const currentDate = new Date();
     
-    // Calculate order items with quantities
-    const orderItems = Object.keys(cart).map(productId => {
-      const product = products.find(p => p.id === parseInt(productId));
-      const quantity = cart[productId];
+    // Calculate order items with quantities (handle variants)
+    const orderItems = Object.keys(cart).map(cartKey => {
+      // Extract product ID from cart key (handle variants)
+      const productId = cartKey.split('-')[0];
+      const product = products.find(p => p.id === productId);
+      const quantity = cart[cartKey];
+      
+      // Get variant info if available
+      let variantInfo = null;
+      if (window.state && window.state.cartVariants && window.state.cartVariants[cartKey]) {
+        variantInfo = window.state.cartVariants[cartKey];
+      }
       
       console.log(`Processing item: Product ID ${productId}, Quantity ${quantity}`, product);
       
       return {
-        productId: parseInt(productId),
+        productId: productId,
         productName: product ? product.name : 'Unknown Product',
         productPrice: product ? product.price : 0,
         quantity: quantity,
-        itemTotal: product ? product.price * quantity : 0
+        itemTotal: product ? product.price * quantity : 0,
+        selectedColor: variantInfo ? variantInfo.color : null,
+        selectedSize: variantInfo ? variantInfo.size : null,
+        cartKey: cartKey // Store for reference
       };
     });
 
     // Calculate totals
     const orderSubtotal = orderItems.reduce((sum, item) => sum + item.itemTotal, 0);
-    const orderTax = orderSubtotal * 0.19; // 19% tax (typical for Algeria)
-    const orderTotal = orderSubtotal + orderTax;
+    const deliveryPrice = this.calculateDeliveryPrice(checkoutData.wilaya);
+    const orderTotal = orderSubtotal + deliveryPrice;
 
     const order = {
       orderId: orderId,
@@ -142,26 +182,27 @@ class OrderManager {
       items: orderItems,
       pricing: {
         subtotal: orderSubtotal,
-        tax: orderTax,
+        deliveryPrice: deliveryPrice,
         total: orderTotal
       },
       language: getCurrentLanguage(),
-      createdAt: currentDate.getTime()
+      createdAt: currentDate.getTime(),
+      isGuestOrder: true // Since this is frontend-only order management
     };
 
     console.log('Created order:', order);
 
-  // Add order to collection
-  this.orders.push(order);
+    // Add order to collection
+    this.orders.push(order);
     
-  // Save orders
-  const saveResult = this.saveOrders();
-  console.log('Order save result:', saveResult);
+    // Save orders
+    const saveResult = this.saveOrders();
+    console.log('Order save result:', saveResult);
     
-  // Update product quantities
-  this.updateProductQuantities(orderItems);
+    // Update product quantities
+    this.updateProductQuantities(orderItems);
     
-  return order;
+    return order;
   }
 
   /**
@@ -195,13 +236,30 @@ class OrderManager {
     orderItems.forEach(item => {
       const product = products.find(p => p.id === item.productId);
       if (product) {
-        // Reduce quantity
+        // Reduce main stock
         product.stock = Math.max(0, product.stock - item.quantity);
+        
+        // Reduce variant stock if applicable
+        if (item.selectedColor && product.colors) {
+          const colorVariant = product.colors.find(c => c.name === item.selectedColor);
+          if (colorVariant) {
+            colorVariant.stock = Math.max(0, colorVariant.stock - item.quantity);
+          }
+        }
+        
+        if (item.selectedSize && product.sizes) {
+          const sizeVariant = product.sizes.find(s => s.name === item.selectedSize);
+          if (sizeVariant) {
+            sizeVariant.stock = Math.max(0, sizeVariant.stock - item.quantity);
+          }
+        }
         
         // Update availability status
         if (product.stock === 0) {
           product.available = false;
         }
+        
+        console.log(`Updated product ${product.name}: stock ${product.stock}, available ${product.available}`);
       }
     });
 
@@ -256,6 +314,17 @@ class OrderManager {
    */
   getOrdersByStatus(status) {
     return this.orders.filter(order => order.status === status);
+  }
+
+  /**
+   * Get current delivery price for selected wilaya
+   * Used by cart system for real-time price updates
+   * @returns {number} Current delivery price
+   */
+  getCurrentDeliveryPrice() {
+    const wilayaSelect = document.getElementById('wilayaSelect');
+    const selectedWilaya = wilayaSelect ? wilayaSelect.value : '';
+    return this.calculateDeliveryPrice(selectedWilaya);
   }
 
   /**
@@ -324,7 +393,7 @@ class OrderManager {
    * @returns {string} Formatted order summary
    */
   generateOrderSummary(order) {
-    const currency = getCurrentLanguage() === 'ar' ? 'دج' : (getCurrentLanguage() === 'fr' ? '€' : '$');
+    const currency = getCurrentLanguage() === 'ar' ? 'دج' : (getCurrentLanguage() === 'fr' ? 'DA' : 'DA');
     
     let summary = `${t('order.confirmation')}\n\n`;
     summary += `${t('order.id')}: ${order.orderId}\n`;
@@ -334,11 +403,13 @@ class OrderManager {
     
     summary += `${t('order.items')}:\n`;
     order.items.forEach(item => {
-      summary += `- ${item.productName} x${item.quantity} = ${formatCurrency(item.itemTotal)}\n`;
+      const variantText = [item.selectedColor, item.selectedSize].filter(Boolean).join(', ');
+      const itemDescription = variantText ? `${item.productName} (${variantText})` : item.productName;
+      summary += `- ${itemDescription} x${item.quantity} = ${formatCurrency(item.itemTotal)}\n`;
     });
     
     summary += `\n${t('order.subtotal')}: ${formatCurrency(order.pricing.subtotal)}\n`;
-    summary += `${t('order.tax')}: ${formatCurrency(order.pricing.tax)}\n`;
+    summary += `${t('order.delivery')}: ${formatCurrency(order.pricing.deliveryPrice)}\n`;
     summary += `${t('order.total')}: ${formatCurrency(order.pricing.total)}\n`;
     
     return summary;

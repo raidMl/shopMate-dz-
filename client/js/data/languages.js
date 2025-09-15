@@ -74,6 +74,7 @@ const languages = {
       "cart.remove": "Remove",
       "cart.each": "each",
       "cart.continueShopping": "Continue Shopping",
+      "cart.deliveryTax": "Delivery Tax",
 
       // Variant Selection
       "variant.selectOptions": "Select Options for",
@@ -274,6 +275,8 @@ const languages = {
       "cart.remove": "إزالة",
       "cart.each": "لكل قطعة",
       "cart.continueShopping": "تابع التسوق",
+      "cart.deliveryTax": "ضريبة التوصيل",
+
 
       // Variant Selection
       "variant.selectOptions": "اختر الخيارات لـ",
@@ -474,6 +477,7 @@ const languages = {
       "cart.remove": "Retirer",
       "cart.each": "chaque",
       "cart.continueShopping": "Continuer vos achats",
+      "cart.deliveryTax": "Taxe de livraison",
 
       // Variant Selection
       "variant.selectOptions": "Sélectionner les options pour",

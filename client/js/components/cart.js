@@ -1,4 +1,34 @@
 // Cart Management Functions
+
+/**
+ * Calculate delivery price based on selected wilaya
+ * @param {string} wilaya - Selected wilaya name or code
+ * @returns {number} - Delivery price in DA
+ */
+function getDeliveryPrice(wilaya) {
+  // Use the centralized wilaya function if available
+  if (typeof calculateWilayaDeliveryPrice === 'function') {
+    return calculateWilayaDeliveryPrice(wilaya);
+  }
+  
+  // Fallback implementation
+  if (!wilaya) return 500; // Default price
+  
+  // Southern/remote wilayas (800 DA)
+  const southernWilayas = [
+    'Tamanrasset', 'Adrar', 'Ouargla', 'El Oued', 'Ghardaïa', 'Laghouat',
+    'Biskra', 'Béchar', 'Tindouf', 'Illizi', 'El Bayadh', 'Naâma'
+  ];
+  
+  // Check if wilaya is in southern list (higher price)
+  const isRemoteWilaya = southernWilayas.some(southWilaya => 
+    wilaya.toLowerCase().includes(southWilaya.toLowerCase()) ||
+    southWilaya.toLowerCase().includes(wilaya.toLowerCase())
+  );
+  
+  return isRemoteWilaya ? 800 : 500;
+}
+
 function openDrawer(open = true) {
   $('#drawer').classList.toggle('open', open);
   $('#drawer').setAttribute('aria-hidden', !open);
@@ -151,6 +181,11 @@ function updateCartUI() {
   const count = Object.values(state.cart).reduce((s, n) => s + n, 0);
   const subtotal = cartSubtotal();
   
+  // Get current wilaya selection from checkout modal (if available)
+  const wilayaSelect = document.getElementById('wilayaSelect');
+  const selectedWilaya = wilayaSelect ? wilayaSelect.value : '';
+  const deliveryPrice = getDeliveryPrice(selectedWilaya);
+  
   // Update cart count with animation
   const cartCountEl = $('#cartCount');
   cartCountEl.textContent = count;
@@ -163,7 +198,7 @@ function updateCartUI() {
   }
 
   // Dispatch custom event for cart updates
-  document.dispatchEvent(new CustomEvent('cartUpdated', { detail: { count, subtotal } }));
+  document.dispatchEvent(new CustomEvent('cartUpdated', { detail: { count, subtotal, deliveryPrice } }));
 
   const body = $('#cartBody');
   body.innerHTML = '';
@@ -178,17 +213,6 @@ function updateCartUI() {
       </div>`;
     return;
   }
-
-  // Create cart header with item count
-  const cartHeader = document.createElement('div');
-  cartHeader.className = 'cart-header-info';
-  cartHeader.innerHTML = `
-    <div class="cart-summary">
-      <span class="cart-item-count">${count} ${count === 1 ? 'item' : 'items'}</span>
-      <span class="cart-total-price">${money(subtotal)}</span>
-    </div>
-  `;
-  body.appendChild(cartHeader);
 
   // Create cart items container
   const itemsContainer = document.createElement('div');
@@ -293,47 +317,9 @@ function updateCartUI() {
 
   body.appendChild(itemsContainer);
 
-  // Create cart footer with totals and checkout
-  // const cartFooter = document.createElement('div');
-  // cartFooter.className = 'cart-footer-enhanced';
-  
-  const totalSavings = cartItems().reduce((total, item) => {
-    if (item.product.discount && item.product.discount > 0) {
-      return total + (item.product.originalPrice - item.product.price) * item.qty;
-    }
-    return total;
-  }, 0);
-
-  // cartFooter.innerHTML = `
-  //   <div class="cart-totals">
-  //     ${totalSavings > 0 ? `
-  //       <div class="cart-savings">
-  //         <span>You're saving</span>
-  //         <span class="savings-amount">${money(totalSavings)}</span>
-  //       </div>
-  //     ` : ''}
-  //     <div class="cart-subtotal">
-  //       <span>${t('cart.subtotal')}</span>
-  //       <strong class="subtotal-amount">${money(subtotal)}</strong>
-  //     </div>
-  //   </div>
-  //   <div class="cart-actions">
-  //     <button class="btn checkout-btn" onclick="proceedToCheckout()">
-  //       <span class="checkout-icon">🛒</span>
-  //       <span>${t('cart.checkout')} • ${money(subtotal)}</span>
-  //     </button>
-  //     <div class="cart-secondary-actions">
-  //       <button class="btn ghost small" onclick="openDrawer(false)">${t('cart.continueShopping') || 'Continue Shopping'}</button>
-  //       <button class="btn ghost small danger" onclick="confirmEmptyCart()">${t('cart.emptyCart')}</button>
-  //     </div>
-  //   </div>
-  // `;
-
-  // body.appendChild(cartFooter);
-
-  // Update checkout button in main footer (legacy)
-  $('#subtotal').textContent = money(subtotal);
-  $('#checkoutTotal').textContent = money(subtotal);
+  // Update checkout button in main footer with dynamic delivery
+  $('#subtotal').textContent = money(subtotal + deliveryPrice);
+  $('#checkoutTotal').textContent = money(subtotal + deliveryPrice);
 }
 
 // Enhanced checkout function

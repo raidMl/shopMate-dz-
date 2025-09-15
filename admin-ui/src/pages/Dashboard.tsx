@@ -32,16 +32,18 @@ const Dashboard: React.FC = () => {
           (order: any) => order.status === 'pending'
         ).length;
 
-        const totalRevenue = orders.data.reduce((sum: number, order: any) => 
-          sum + (order.totalPrice || 0), 0
-        );
+        const totalRevenue = orders.data.reduce((sum: number, order: any) => {
+          const orderTotal = order.totalPrice;
+          return sum + orderTotal;
+        }, 0);
 
         // Calculate monthly revenue for the chart
         const monthlyRevenue = Array(12).fill(0);
         orders.data.forEach((order: any) => {
           const orderDate = new Date(order.createdAt);
           const month = orderDate.getMonth();
-          monthlyRevenue[month] += order.totalPrice || 0;
+          const orderTotal = order.totalPrice;
+          monthlyRevenue[month] += orderTotal;
         });
 
         // Get recent orders (last 5)
@@ -89,7 +91,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
               <div className="w-16 text-sm text-gray-900 text-right">
-                {value.toFixed(0)} da
+                {value.toFixed(0)} DA
               </div>
             </div>
           ))}
@@ -238,7 +240,7 @@ const Dashboard: React.FC = () => {
                         <div className="ml-4 flex-1 min-w-0">
                           <dl>
                             <dt className="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
-                            <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.totalRevenue.toFixed(0)} da</dd>
+                            <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.totalRevenue.toFixed(0)} DA</dd>
                           </dl>
                         </div>
                       </div>
@@ -280,7 +282,7 @@ const Dashboard: React.FC = () => {
                           <thead className="bg-gray-50">
                             <tr>
                               <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Price</th>
                               <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                               <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
                             </tr>
@@ -292,7 +294,7 @@ const Dashboard: React.FC = () => {
                                   #{order._id.slice(-6)}
                                 </td>
                                 <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  ${order.totalPrice.toFixed(2)}
+                                  {(order.totalPrice).toFixed(2)} DA
                                 </td>
                                 <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
