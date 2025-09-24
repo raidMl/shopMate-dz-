@@ -2,7 +2,7 @@
 class CategoriesManager {
     constructor() {
         this.categories = [];
-        this.apiBaseUrl = 'http://localhost:5000/api';
+        this.apiBaseUrl = 'https://ecommerce-api-rho-liard.vercel.app/api';
         this.cache = {
             categories: null,
             lastFetch: null,

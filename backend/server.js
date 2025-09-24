@@ -1,13 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const connectDB = require('./config/db');
-const userRoutes = require('./routes/auth.Routes');
-const productRoutes = require('./routes/product.Routes');
-const categoryRoutes = require('./routes/category.Routes');
-const orderRoutes = require('./routes/order.Routes');
-const msgRoutes=require('./routes/sendMsg.Routes');
-const { errorHandler, notFound } = require('./middleware/errorMiddleware');
+const connectDB = require('./src/config/db');
+const userRoutes = require('./src/routes/auth.Routes');
+const productRoutes = require('./src/routes/product.Routes');
+const categoryRoutes = require('./src/routes/category.Routes');
+const orderRoutes = require('./src/routes/order.Routes');
+const msgRoutes=require('./src/routes/sendMsg.Routes');
+const { errorHandler, notFound } = require('./src/middleware/errorMiddleware');
 
 // Load env vars
 dotenv.config();
