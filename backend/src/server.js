@@ -19,10 +19,26 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors(
-));
+app.use(cors());
 
-// Root route
+// Root route - Add this before API routes
+app.get('/', (req, res) => {
+  res.json({
+    message: 'E-commerce API Server',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      api: '/api',
+      users: '/api/users',
+      products: '/api/products',
+      categories: '/api/categories',
+      orders: '/api/orders',
+      messages: '/api/contact'
+    }
+  });
+});
+
+// API root route
 app.get('/api', (req, res) => {
   res.json({
     message: 'E-commerce API Server',
