@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { ordersAPI } from '../services/api';
 import Navbar from '../components/common/Navbar';
@@ -35,6 +36,7 @@ interface Order {
 
 const OrdersPage: React.FC = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
@@ -425,7 +427,7 @@ const OrdersPage: React.FC = () => {
 
       <main className="p-6">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Orders</h2>
+          <h2 className="text-2xl font-bold">{t('orders.title')}</h2>
           
           {/* Bulk Actions */}
           {selectedOrders.size > 0 && (

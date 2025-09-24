@@ -13,19 +13,21 @@ const api = axios.create({
 // Add request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      try {
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
         const user = JSON.parse(userData);
         if (user.token) {
+          // Ensure headers object exists
+          if (!config.headers) {
+            config.headers = {};
+          }
           config.headers.Authorization = `Bearer ${user.token}`;
           console.log('Adding auth token to request');
         }
-      } catch (error) {
-        console.error('Error parsing user data:', error);
       }
-    } else {
-      console.warn('No user data found in localStorage');
+    } catch (error) {
+      console.error('Error parsing user data:', error);
     }
     return config;
   },

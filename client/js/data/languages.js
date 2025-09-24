@@ -197,7 +197,142 @@ const languages = {
       
       // Currency
       "currency.symbol": "da",
-      "currency.name": "Algerian Dinar"
+      "currency.name": "Algerian Dinar",
+
+      // Admin UI translations
+      "admin.title": "Admin Panel",
+      "admin.dashboard": "Dashboard",
+      "admin.orders": "Orders",
+      "admin.products": "Products",
+      "admin.categories": "Categories",
+      "admin.logout": "Logout",
+      "admin.welcome": "Welcome back",
+      "admin.totalProducts": "Total Products",
+      "admin.totalCategories": "Total Categories",
+      "admin.totalOrders": "Total Orders",
+      "admin.totalRevenue": "Total Revenue",
+      "admin.monthlyRevenue": "Monthly Revenue",
+      "admin.orderCompletion": "Order Completion Rate",
+      "admin.recentOrders": "Recent Orders",
+      "admin.noRecentOrders": "No recent orders",
+      "admin.ordersCompleted": "orders completed",
+      "admin.loading": "Loading dashboard data...",
+      
+      // Authentication
+      "auth.welcomeBack": "Welcome Back",
+      "auth.signInSubtitle": "Sign in to your admin account to manage your store",
+      "auth.email": "Email Address",
+      "auth.password": "Password",
+      "auth.emailPlaceholder": "Enter your email",
+      "auth.passwordPlaceholder": "Enter your password",
+      "auth.fillAllFields": "Please fill in all fields",
+      "auth.secureAccess": "Secure admin access with encrypted authentication",
+      "auth.needHelp": "Need help accessing your account? Contact support.",
+      
+      // Orders management
+      "orders.title": "Orders Management",
+      "orders.orderId": "Order ID",
+      "orders.totalPrice": "Total Price",
+      "orders.status": "Status",
+      "orders.createdAt": "Created At",
+      "orders.customer": "Customer",
+      "orders.actions": "Actions",
+      "orders.details": "Details",
+      "orders.confirmDelete": "Are you sure you want to delete this order?",
+      "orders.statuses.pending": "Pending",
+      "orders.statuses.paid": "Paid",
+      "orders.statuses.shipped": "Shipped",
+      "orders.statuses.delivered": "Delivered",
+      "orders.statuses.cancelled": "Cancelled",
+      
+      // Categories management
+      "categories.title": "Categories Management",
+      "categories.addNew": "Add New Category",
+      "categories.edit": "Edit",
+      "categories.delete": "Delete",
+      "categories.confirmDelete": "Are you sure you want to delete this category?",
+      "categories.name": "Category Name",
+      "categories.description": "Description",
+      "categories.namePlaceholder": "Enter category name",
+      "categories.descriptionPlaceholder": "Enter category description (optional)",
+      "categories.create": "Create Category",
+      "categories.update": "Update Category",
+      "categories.cancel": "Cancel",
+      "categories.loading": "Loading categories...",
+      "categories.noCategories": "No categories found. Create your first category to get started.",
+      
+      // Support page translations
+      "support.title": "Customer Support",
+      "support.subtitle": "How can we help you today?",
+      "support.contact": "Contact Us",
+      "support.faq": "FAQ",
+      "support.shipping": "Shipping Info",
+      "support.returns": "Returns",
+      
+      // FAQ translations
+      "faq.title": "Frequently Asked Questions",
+      "faq.subtitle": "Find quick answers to the most common questions about ShopMate Algeria.",
+      "faq.general": "General Questions",
+      "faq.orders": "Orders & Payment",
+      "faq.products": "Products & Warranty",
+      
+      "faq.whatIsShopmate": "What is ShopMate Algeria?",
+      "faq.whatIsShopmate.answer": "ShopMate Algeria is a modern e-commerce platform specializing in quality electronics, accessories, and gadgets. We serve customers across all 58 wilayas of Algeria with fast delivery and excellent customer service.",
+      
+      "faq.deliveryWilayas": "Do you deliver to all wilayas in Algeria?",
+      "faq.deliveryWilayas.answer": "Yes! We deliver to all 58 wilayas across Algeria. Delivery times and costs may vary depending on your location, but we ensure nationwide coverage.",
+      
+      "faq.languages": "What languages do you support?",
+      "faq.languages.answer": "Our website and customer support are available in three languages: Arabic, French, and English. You can switch languages using the language selector on our website.",
+      
+      "faq.paymentMethods": "What payment methods do you accept?",
+      "faq.paymentMethods.answer": "We accept various payment methods including cash on delivery (COD), bank transfers, and major credit cards. All payment methods are clearly displayed at checkout.",
+      
+      "faq.trackOrder": "How can I track my order?",
+      "faq.trackOrder.answer": "Once your order is shipped, you'll receive a tracking number via email or SMS. You can use this number to track your package through our delivery partners or contact our customer service for updates.",
+      
+      "faq.cancelOrder": "Can I cancel or modify my order?",
+      "faq.cancelOrder.answer": "You can cancel or modify your order within 2 hours of placement. After that, if the order hasn't been shipped yet, contact our customer service immediately. Once shipped, cancellation may not be possible.",
+      
+      "faq.warranty": "Do your products come with warranty?",
+      "faq.warranty.answer": "Yes! All our products come with manufacturer warranty. The warranty period varies by product and is clearly stated on each product page. We also provide after-sales support for all warranty claims.",
+      
+      "faq.authentic": "Are your products authentic?",
+      "faq.authentic.answer": "Absolutely! We only sell authentic products from authorized distributors and manufacturers. All our products are genuine and come with proper documentation and warranty.",
+      
+      // Shipping information
+      "shipping.title": "Shipping Information",
+      "shipping.subtitle": "Fast Nationwide Delivery",
+      "shipping.coverage": "Shipping Coverage",
+      "shipping.coverageText": "We proudly serve customers across all of Algeria's 58 wilayas. Our delivery network ensures that whether you're in Algiers, Constantine, Oran, Setif, or any other wilaya, your order will reach you safely and on time.",
+      "shipping.deliveryTimes": "Delivery Times & Costs",
+      "shipping.wilayaType": "Wilaya Type",
+      "shipping.deliveryTime": "Delivery Time",
+      "shipping.shippingCost": "Shipping Cost",
+      "shipping.examples": "Examples",
+      "shipping.majorCities": "Major Cities",
+      "shipping.regionalCenters": "Regional Centers",
+      "shipping.remoteAreas": "Remote Areas",
+      "shipping.freeShipping": "Free Shipping",
+      "shipping.orderProcessing": "Order Processing",
+      "shipping.partners": "Shipping Partners",
+      "shipping.notes": "Important Shipping Notes",
+      
+      // Returns policy
+      "returns.title": "Returns & Refunds",
+      "returns.subtitle": "7-Day Return Policy",
+      "returns.policy": "We want you to be completely satisfied with your purchase. If you're not happy, we offer easy returns within 7 days.",
+      "returns.eligibility": "Return Eligibility",
+      "returns.eligible": "Eligible for Return",
+      "returns.notEligible": "Not Eligible for Return",
+      "returns.process": "How to Return an Item",
+      "returns.contactUs": "Contact Us",
+      "returns.authorization": "Get Return Authorization",
+      "returns.packShip": "Pack & Ship",
+      "returns.refundProcessed": "Refund Processed",
+      "returns.refundInfo": "Refund Information",
+      "returns.defective": "Defective or Damaged Items",
+      "returns.exchange": "Exchange Policy"
     }
   },
   
@@ -344,7 +479,7 @@ const languages = {
       "contact.email": "البريد الإلكتروني",
       "contact.phone": "الهاتف",
       "contact.office": "المكتب",
-      "contact.hours": "الإثنين-الجمعة 9ص-6م بتوقيت شرق أمريكا",
+      "contact.hours": "الإثنين-الجمعة 9ص-4م",
       "contact.yourName": "اسمك",
       "contact.yourEmail": "بريدك الإلكتروني",
       "contact.subject": "الموضوع",
@@ -399,7 +534,142 @@ const languages = {
       
       // Currency
       "currency.symbol": "د.ج",
-      "currency.name": "دينار جزائري"
+      "currency.name": "دينار جزائري",
+
+      // Admin UI translations
+      "admin.title": "لوحة الإدارة",
+      "admin.dashboard": "لوحة التحكم",
+      "admin.orders": "الطلبات",
+      "admin.products": "المنتجات",
+      "admin.categories": "الفئات",
+      "admin.logout": "تسجيل الخروج",
+      "admin.welcome": "مرحباً بعودتك",
+      "admin.totalProducts": "إجمالي المنتجات",
+      "admin.totalCategories": "إجمالي الفئات",
+      "admin.totalOrders": "إجمالي الطلبات",
+      "admin.totalRevenue": "إجمالي الإيرادات",
+      "admin.monthlyRevenue": "الإيرادات الشهرية",
+      "admin.orderCompletion": "معدل إتمام الطلبات",
+      "admin.recentOrders": "الطلبات الحديثة",
+      "admin.noRecentOrders": "لا توجد طلبات حديثة",
+      "admin.ordersCompleted": "طلبات مكتملة",
+      "admin.loading": "جاري تحميل بيانات لوحة التحكم...",
+      
+      // Authentication
+      "auth.welcomeBack": "مرحباً بعودتك",
+      "auth.signInSubtitle": "سجل دخولك لحساب الإدارة لإدارة متجرك",
+      "auth.email": "عنوان البريد الإلكتروني",
+      "auth.password": "كلمة المرور",
+      "auth.emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "auth.passwordPlaceholder": "أدخل كلمة المرور",
+      "auth.fillAllFields": "يرجى ملء جميع الحقول",
+      "auth.secureAccess": "وصول آمن للمدير مع تشفير المصادقة",
+      "auth.needHelp": "تحتاج مساعدة في الوصول لحسابك؟ اتصل بالدعم.",
+      
+      // Orders management
+      "orders.title": "إدارة الطلبات",
+      "orders.orderId": "رقم الطلب",
+      "orders.totalPrice": "السعر الإجمالي",
+      "orders.status": "الحالة",
+      "orders.createdAt": "تاريخ الإنشاء",
+      "orders.customer": "العميل",
+      "orders.actions": "الإجراءات",
+      "orders.details": "التفاصيل",
+      "orders.confirmDelete": "هل أنت متأكد من حذف هذا الطلب؟",
+      "orders.statuses.pending": "قيد الانتظار",
+      "orders.statuses.paid": "مدفوع",
+      "orders.statuses.shipped": "تم الشحن",
+      "orders.statuses.delivered": "تم التسليم",
+      "orders.statuses.cancelled": "ملغى",
+      
+      // Categories management
+      "categories.title": "إدارة الفئات",
+      "categories.addNew": "إضافة فئة جديدة",
+      "categories.edit": "تعديل",
+      "categories.delete": "حذف",
+      "categories.confirmDelete": "هل أنت متأكد من حذف هذه الفئة؟",
+      "categories.name": "اسم الفئة",
+      "categories.description": "الوصف",
+      "categories.namePlaceholder": "أدخل اسم الفئة",
+      "categories.descriptionPlaceholder": "أدخل وصف الفئة (اختياري)",
+      "categories.create": "إنشاء فئة",
+      "categories.update": "تحديث الفئة",
+      "categories.cancel": "إلغاء",
+      "categories.loading": "جاري تحميل الفئات...",
+      "categories.noCategories": "لم يتم العثور على فئات. قم بإنشاء فئتك الأولى للبدء.",
+      
+      // Support page translations
+      "support.title": "دعم العملاء",
+      "support.subtitle": "كيف يمكننا مساعدتك اليوم؟",
+      "support.contact": "اتصل بنا",
+      "support.faq": "الأسئلة الشائعة",
+      "support.shipping": "معلومات الشحن",
+      "support.returns": "الإرجاع",
+      
+      // FAQ translations
+      "faq.title": "الأسئلة الشائعة",
+      "faq.subtitle": "احصل على إجابات سريعة للأسئلة الأكثر شيوعاً حول شوب مايت الجزائر",
+      "faq.general": "أسئلة عامة",
+      "faq.orders": "الطلبات والدفع",
+      "faq.products": "المنتجات والضمان",
+      
+      "faq.whatIsShopmate": "ما هو شوب مايت الجزائر؟",
+      "faq.whatIsShopmate.answer": "شوب مايت الجزائر هو منصة تجارة إلكترونية حديثة متخصصة في الإلكترونيات والإكسسوارات والأجهزة عالية الجودة. نخدم العملاء في جميع الولايات الـ58 في الجزائر مع توصيل سريع وخدمة عملاء ممتازة.",
+      
+      "faq.deliveryWilayas": "هل تقومون بالتوصيل لجميع ولايات الجزائر؟",
+      "faq.deliveryWilayas.answer": "نعم! نقوم بالتوصيل لجميع الولايات الـ58 في الجزائر. قد تختلف أوقات وتكاليف التوصيل حسب موقعك، لكننا نضمن التغطية على مستوى البلاد.",
+      
+      "faq.languages": "ما هي اللغات التي تدعمونها؟",
+      "faq.languages.answer": "موقعنا ودعم العملاء متاح بثلاث لغات: العربية والفرنسية والإنجليزية. يمكنك تغيير اللغة باستخدام محدد اللغة على موقعنا.",
+      
+      "faq.paymentMethods": "ما هي طرق الدفع التي تقبلونها؟",
+      "faq.paymentMethods.answer": "نقبل طرق دفع متنوعة تشمل الدفع عند التسليم والتحويلات البنكية وبطاقات الائتمان الرئيسية. جميع طرق الدفع معروضة بوضوح عند الدفع.",
+      
+      "faq.trackOrder": "كيف يمكنني تتبع طلبي؟",
+      "faq.trackOrder.answer": "بمجرد شحن طلبك، ستتلقى رقم تتبع عبر البريد الإلكتروني أو الرسائل النصية. يمكنك استخدام هذا الرقم لتتبع طردك من خلال شركاء التوصيل أو الاتصال بخدمة العملاء للحصول على التحديثات.",
+      
+      "faq.cancelOrder": "هل يمكنني إلغاء أو تعديل طلبي؟",
+      "faq.cancelOrder.answer": "يمكنك إلغاء أو تعديل طلبك خلال ساعتين من تقديمه. بعد ذلك، إذا لم يتم شحن الطلب بعد، اتصل بخدمة العملاء فوراً. بمجرد الشحن، قد لا يكون الإلغاء ممكناً.",
+      
+      "faq.warranty": "هل تأتي منتجاتكم مع ضمان؟",
+      "faq.warranty.answer": "نعم! جميع منتجاتنا تأتي مع ضمان الشركة المصنعة. فترة الضمان تختلف حسب المنتج وهي مذكورة بوضوح في صفحة كل منتج. نوفر أيضاً دعم ما بعد البيع لجميع مطالبات الضمان.",
+      
+      "faq.authentic": "هل منتجاتكم أصلية؟",
+      "faq.authentic.answer": "بالطبع! نبيع فقط منتجات أصلية من موزعين وشركات مصنعة معتمدة. جميع منتجاتنا أصلية وتأتي مع وثائق وضمان مناسب.",
+      
+      // Shipping information
+      "shipping.title": "معلومات الشحن",
+      "shipping.subtitle": "توصيل سريع على مستوى البلاد",
+      "shipping.coverage": "تغطية الشحن",
+      "shipping.coverageText": "نفخر بخدمة العملاء في جميع الولايات الـ58 في الجزائر. شبكة التوصيل لدينا تضمن أنه سواء كنت في الجزائر العاصمة أو قسنطينة أو وهران أو سطيف أو أي ولاية أخرى، سيصلك طلبك بأمان وفي الوقت المحدد.",
+      "shipping.deliveryTimes": "أوقات وتكاليف التوصيل",
+      "shipping.wilayaType": "نوع الولاية",
+      "shipping.deliveryTime": "وقت التوصيل",
+      "shipping.shippingCost": "تكلفة الشحن",
+      "shipping.examples": "أمثلة",
+      "shipping.majorCities": "المدن الكبرى",
+      "shipping.regionalCenters": "المراكز الإقليمية",
+      "shipping.remoteAreas": "المناطق النائية",
+      "shipping.freeShipping": "شحن مجاني",
+      "shipping.orderProcessing": "معالجة الطلب",
+      "shipping.partners": "شركاء الشحن",
+      "shipping.notes": "ملاحظات شحن مهمة",
+      
+      // Returns policy
+      "returns.title": "الإرجاع والاسترداد",
+      "returns.subtitle": "سياسة إرجاع لمدة 7 أيام",
+      "returns.policy": "نريدك أن تكون راضياً تماماً عن مشترياتك. إذا لم تكن سعيداً، نوفر إرجاع سهل خلال 7 أيام.",
+      "returns.eligibility": "أهلية الإرجاع",
+      "returns.eligible": "مؤهل للإرجاع",
+      "returns.notEligible": "غير مؤهل للإرجاع",
+      "returns.process": "كيفية إرجاع منتج",
+      "returns.contactUs": "اتصل بنا",
+      "returns.authorization": "احصل على تصريح الإرجاع",
+      "returns.packShip": "اربط واشحن",
+      "returns.refundProcessed": "تم معالجة الاسترداد",
+      "returns.refundInfo": "معلومات الاسترداد",
+      "returns.defective": "منتجات معيبة أو تالفة",
+      "returns.exchange": "سياسة التبديل"
     }
   },
   
@@ -545,7 +815,7 @@ const languages = {
       "contact.email": "E-mail",
       "contact.phone": "Téléphone",
       "contact.office": "Bureau",
-      "contact.hours": "Lun-Ven 9h-18h EST",
+      "contact.hours": "Lun-Ven 9h-16h",
       "contact.yourName": "Votre nom",
       "contact.yourEmail": "Votre e-mail",
       "contact.subject": "Sujet",
@@ -600,7 +870,142 @@ const languages = {
       
       // Currency
       "currency.symbol": "da",
-      "currency.name": "Dinar Algérien"
+      "currency.name": "Dinar Algérien",
+
+      // Admin UI translations
+      "admin.title": "Panneau d'Administration",
+      "admin.dashboard": "Tableau de Bord",
+      "admin.orders": "Commandes",
+      "admin.products": "Produits",
+      "admin.categories": "Catégories",
+      "admin.logout": "Déconnexion",
+      "admin.welcome": "Bon retour",
+      "admin.totalProducts": "Total Produits",
+      "admin.totalCategories": "Total Catégories",
+      "admin.totalOrders": "Total Commandes",
+      "admin.totalRevenue": "Chiffre d'Affaires Total",
+      "admin.monthlyRevenue": "Revenus Mensuels",
+      "admin.orderCompletion": "Taux de Completion des Commandes",
+      "admin.recentOrders": "Commandes Récentes",
+      "admin.noRecentOrders": "Aucune commande récente",
+      "admin.ordersCompleted": "commandes terminées",
+      "admin.loading": "Chargement des données du tableau de bord...",
+      
+      // Authentication
+      "auth.welcomeBack": "Bon Retour",
+      "auth.signInSubtitle": "Connectez-vous à votre compte admin pour gérer votre boutique",
+      "auth.email": "Adresse E-mail",
+      "auth.password": "Mot de Passe",
+      "auth.emailPlaceholder": "Entrez votre e-mail",
+      "auth.passwordPlaceholder": "Entrez votre mot de passe",
+      "auth.fillAllFields": "Veuillez remplir tous les champs",
+      "auth.secureAccess": "Accès admin sécurisé avec authentification chiffrée",
+      "auth.needHelp": "Besoin d'aide pour accéder à votre compte? Contactez le support.",
+      
+      // Orders management
+      "orders.title": "Gestion des Commandes",
+      "orders.orderId": "ID Commande",
+      "orders.totalPrice": "Prix Total",
+      "orders.status": "Statut",
+      "orders.createdAt": "Créé le",
+      "orders.customer": "Client",
+      "orders.actions": "Actions",
+      "orders.details": "Détails",
+      "orders.confirmDelete": "Êtes-vous sûr de vouloir supprimer cette commande?",
+      "orders.statuses.pending": "En attente",
+      "orders.statuses.paid": "Payé",
+      "orders.statuses.shipped": "Expédié",
+      "orders.statuses.delivered": "Livré",
+      "orders.statuses.cancelled": "Annulé",
+      
+      // Categories management
+      "categories.title": "Gestion des Catégories",
+      "categories.addNew": "Ajouter Nouvelle Catégorie",
+      "categories.edit": "Modifier",
+      "categories.delete": "Supprimer",
+      "categories.confirmDelete": "Êtes-vous sûr de vouloir supprimer cette catégorie?",
+      "categories.name": "Nom de la Catégorie",
+      "categories.description": "Description",
+      "categories.namePlaceholder": "Entrez le nom de la catégorie",
+      "categories.descriptionPlaceholder": "Entrez la description de la catégorie (optionnel)",
+      "categories.create": "Créer la Catégorie",
+      "categories.update": "Mettre à Jour la Catégorie",
+      "categories.cancel": "Annuler",
+      "categories.loading": "Chargement des catégories...",
+      "categories.noCategories": "Aucune catégorie trouvée. Créez votre première catégorie pour commencer.",
+      
+      // Support page translations
+      "support.title": "Support Client",
+      "support.subtitle": "Comment pouvons-nous vous aider aujourd'hui?",
+      "support.contact": "Contactez-nous",
+      "support.faq": "FAQ",
+      "support.shipping": "Infos Livraison",
+      "support.returns": "Retours",
+      
+      // FAQ translations
+      "faq.title": "Questions Fréquemment Posées",
+      "faq.subtitle": "Trouvez des réponses rapides aux questions les plus courantes sur ShopMate Algérie",
+      "faq.general": "Questions Générales",
+      "faq.orders": "Commandes et Paiement",
+      "faq.products": "Produits et Garantie",
+      
+      "faq.whatIsShopmate": "Qu'est-ce que ShopMate Algérie?",
+      "faq.whatIsShopmate.answer": "ShopMate Algérie est une plateforme e-commerce moderne spécialisée dans l'électronique de qualité, les accessoires et gadgets. Nous servons les clients dans les 58 wilayas d'Algérie avec une livraison rapide et un excellent service client.",
+      
+      "faq.deliveryWilayas": "Livrez-vous dans toutes les wilayas d'Algérie?",
+      "faq.deliveryWilayas.answer": "Oui! Nous livrons dans les 58 wilayas d'Algérie. Les délais et coûts de livraison peuvent varier selon votre localisation, mais nous assurons une couverture nationale.",
+      
+      "faq.languages": "Quelles langues supportez-vous?",
+      "faq.languages.answer": "Notre site web et support client sont disponibles en trois langues: Arabe, Français et Anglais. Vous pouvez changer de langue en utilisant le sélecteur de langue sur notre site.",
+      
+      "faq.paymentMethods": "Quels modes de paiement acceptez-vous?",
+      "faq.paymentMethods.answer": "Nous acceptons divers modes de paiement incluant le paiement à la livraison (COD), virements bancaires et cartes de crédit principales. Tous les modes de paiement sont clairement affichés lors du checkout.",
+      
+      "faq.trackOrder": "Comment puis-je suivre ma commande?",
+      "faq.trackOrder.answer": "Une fois votre commande expédiée, vous recevrez un numéro de suivi par e-mail ou SMS. Vous pouvez utiliser ce numéro pour suivre votre colis via nos partenaires de livraison ou contacter notre service client pour des mises à jour.",
+      
+      "faq.cancelOrder": "Puis-je annuler ou modifier ma commande?",
+      "faq.cancelOrder.answer": "Vous pouvez annuler ou modifier votre commande dans les 2 heures suivant le placement. Après cela, si la commande n'a pas encore été expédiée, contactez immédiatement notre service client. Une fois expédiée, l'annulation peut ne pas être possible.",
+      
+      "faq.warranty": "Vos produits sont-ils garantis?",
+      "faq.warranty.answer": "Oui! Tous nos produits viennent avec une garantie fabricant. La période de garantie varie selon le produit et est clairement indiquée sur chaque page produit. Nous fournissons aussi un support après-vente pour toutes les réclamations de garantie.",
+      
+      "faq.authentic": "Vos produits sont-ils authentiques?",
+      "faq.authentic.answer": "Absolument! Nous vendons uniquement des produits authentiques de distributeurs et fabricants autorisés. Tous nos produits sont genuins et viennent avec une documentation et garantie appropriées.",
+      
+      // Shipping information
+      "shipping.title": "Informations de Livraison",
+      "shipping.subtitle": "Livraison Rapide Nationale",
+      "shipping.coverage": "Couverture de Livraison",
+      "shipping.coverageText": "Nous sommes fiers de servir les clients dans les 58 wilayas d'Algérie. Notre réseau de livraison assure que que vous soyez à Alger, Constantine, Oran, Sétif ou toute autre wilaya, votre commande vous parviendra en sécurité et à temps.",
+      "shipping.deliveryTimes": "Délais et Coûts de Livraison",
+      "shipping.wilayaType": "Type de Wilaya",
+      "shipping.deliveryTime": "Délai de Livraison",
+      "shipping.shippingCost": "Coût d'Expédition",
+      "shipping.examples": "Exemples",
+      "shipping.majorCities": "Grandes Villes",
+      "shipping.regionalCenters": "Centres Régionaux",
+      "shipping.remoteAreas": "Zones Éloignées",
+      "shipping.freeShipping": "Livraison Gratuite",
+      "shipping.orderProcessing": "Traitement de Commande",
+      "shipping.partners": "Partenaires d'Expédition",
+      "shipping.notes": "Notes Importantes sur l'Expédition",
+      
+      // Returns policy
+      "returns.title": "Retours et Remboursements",
+      "returns.subtitle": "Politique de Retour de 7 Jours",
+      "returns.policy": "Nous voulons que vous soyez complètement satisfait de votre achat. Si vous n'êtes pas content, nous offrons des retours faciles dans les 7 jours.",
+      "returns.eligibility": "Éligibilité au Retour",
+      "returns.eligible": "Éligible au Retour",
+      "returns.notEligible": "Non Éligible au Retour",
+      "returns.process": "Comment Retourner un Article",
+      "returns.contactUs": "Contactez-nous",
+      "returns.authorization": "Obtenez l'Autorisation de Retour",
+      "returns.packShip": "Emballez et Expédiez",
+      "returns.refundProcessed": "Remboursement Traité",
+      "returns.refundInfo": "Informations de Remboursement",
+      "returns.defective": "Articles Défectueux ou Endommagés",
+      "returns.exchange": "Politique d'Échange"
     }
   }
 };

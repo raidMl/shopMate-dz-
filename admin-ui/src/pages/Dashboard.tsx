@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { productsAPI, ordersAPI, categoriesAPI } from '../services/api';
 import Navbar from '../components/common/Navbar';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     products: 0,
     categories: 0,
@@ -153,7 +155,7 @@ const Dashboard: React.FC = () => {
       <div className="py-6 sm:py-10">
         <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-2xl sm:text-3xl font-bold leading-tight text-gray-900">Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold leading-tight text-gray-900">{t('dashboard.title')}</h1>
           </div>
         </header>
         <main>
@@ -161,7 +163,7 @@ const Dashboard: React.FC = () => {
             {loading ? (
               <div className="text-center py-10">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                <p className="mt-2 text-gray-600">Loading dashboard...</p>
+                <p className="mt-2 text-gray-600">{t('dashboard.loading')}</p>
               </div>
             ) : (
               <div className="py-6 sm:py-8 space-y-6 sm:space-y-8">
@@ -179,7 +181,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="ml-4 flex-1 min-w-0">
                           <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">Total Products</dt>
+                            <dt className="text-sm font-medium text-gray-500 truncate">{t('dashboard.totalProducts')}</dt>
                             <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.products}</dd>
                           </dl>
                         </div>
@@ -199,7 +201,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="ml-4 flex-1 min-w-0">
                           <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">Total Categories</dt>
+                            <dt className="text-sm font-medium text-gray-500 truncate">{t('dashboard.totalCategories')}</dt>
                             <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.categories}</dd>
                           </dl>
                         </div>
@@ -219,7 +221,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="ml-4 flex-1 min-w-0">
                           <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">Total Orders</dt>
+                            <dt className="text-sm font-medium text-gray-500 truncate">{t('dashboard.totalOrders')}</dt>
                             <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.orders}</dd>
                           </dl>
                         </div>
@@ -239,7 +241,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="ml-4 flex-1 min-w-0">
                           <dl>
-                            <dt className="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
+                            <dt className="text-sm font-medium text-gray-500 truncate">{t('dashboard.totalRevenue')}</dt>
                             <dd className="mt-1 text-2xl sm:text-3xl font-semibold text-gray-900">{stats.totalRevenue.toFixed(0)} DA</dd>
                           </dl>
                         </div>
@@ -253,11 +255,11 @@ const Dashboard: React.FC = () => {
                   <SimpleBarChart 
                     data={stats.monthlyRevenue} 
                     labels={monthNames} 
-                    title="Monthly Revenue"
+                    title={t('dashboard.monthlyRevenue')}
                   />
 
                   <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Order Completion Rate</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">{t('dashboard.orderCompletion')}</h3>
                     <div className="flex items-center justify-center">
                       <ProgressRing 
                         percentage={stats.orders > 0 ? Math.round(((stats.orders - stats.pendingOrders) / stats.orders) * 100) : 0}
@@ -266,7 +268,7 @@ const Dashboard: React.FC = () => {
                     </div>
                     <div className="mt-4 text-center">
                       <p className="text-sm text-gray-600">
-                        {stats.orders - stats.pendingOrders} of {stats.orders} orders completed
+                        {stats.orders - stats.pendingOrders} of {stats.orders} {t('dashboard.ordersCompleted')}
                       </p>
                     </div>
                   </div>
@@ -275,16 +277,16 @@ const Dashboard: React.FC = () => {
                 {/* Recent Orders Table - Responsive */}
                 <div className="bg-white shadow rounded-lg">
                   <div className="px-4 py-5 sm:p-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Orders</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">{t('dashboard.recentOrders')}</h3>
                     {stats.recentOrders.length > 0 ? (
                       <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                           <thead className="bg-gray-50">
                             <tr>
-                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order Price</th>
-                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('orders.orderId')}</th>
+                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('orders.totalPrice')}</th>
+                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('orders.status')}</th>
+                              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">{t('orders.createdAt')}</th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
@@ -304,7 +306,7 @@ const Dashboard: React.FC = () => {
                                     order.status === 'delivered' ? 'bg-green-100 text-green-800' :
                                     'bg-red-100 text-red-800'
                                   }`}>
-                                    {order.status}
+                                    {t(`orders.statuses.${order.status}`)}
                                   </span>
                                 </td>
                                 <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">
@@ -316,7 +318,7 @@ const Dashboard: React.FC = () => {
                         </table>
                       </div>
                     ) : (
-                      <p className="text-gray-500 text-center py-4">No recent orders</p>
+                      <p className="text-gray-500 text-center py-4">{t('dashboard.noRecentOrders')}</p>
                     )}
                   </div>
                 </div>

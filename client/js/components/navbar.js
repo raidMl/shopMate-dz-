@@ -1,70 +1,73 @@
-// Mobile Navbar Drawer Management
+/**
+ * Mobile Navbar Component
+ * Handles mobile drawer functionality, theme toggle, and language switching
+ */
 class MobileNavbar {
   constructor() {
     this.isOpen = false;
-    this.drawer = document.getElementById('mobileDrawer');
-    this.backdrop = document.getElementById('mobileDrawerBackdrop');
-    this.toggle = document.getElementById('mobileMenuToggle');
-    this.closeBtn = document.getElementById('mobileCloseBtn');
-    this.cartCount = document.getElementById('mobileCartCount');
-    this.themeIcon = document.getElementById('mobileThemeIcon');
-    this.currentLang = document.getElementById('mobileCurrentLang');
-    this.languageToggle = document.getElementById('mobileLanguageToggle');
-    this.languageOptions = document.getElementById('mobileLanguageOptions');
-    
+    this.elements = this.getElements();
+    this.currentLanguage = 'en';
     this.init();
   }
 
+  getElements() {
+    return {
+      drawer: document.getElementById('mobileDrawer'),
+      backdrop: document.getElementById('mobileDrawerBackdrop'),
+      toggle: document.getElementById('mobileMenuToggle'),
+      closeBtn: document.getElementById('mobileCloseBtn'),
+      cartCount: document.getElementById('mobileCartCount'),
+      themeIcon: document.getElementById('mobileThemeIcon'),
+      currentLang: document.getElementById('mobileCurrentLang'),
+      languageToggle: document.getElementById('mobileLanguageToggle'),
+      languageOptions: document.getElementById('mobileLanguageOptions'),
+      cartBtn: document.getElementById('mobileCartBtn'),
+      checkoutBtn: document.getElementById('mobileCheckoutBtn'),
+      themeToggle: document.getElementById('mobileThemeToggle')
+    };
+  }
+
   init() {
-    if (!this.drawer || !this.toggle) return;
+    if (!this.elements.drawer || !this.elements.toggle) {
+      console.warn('Mobile navbar elements not found');
+      return;
+    }
     
-    console.log('Initializing mobile navbar drawer');
-    
-    // Bind events
-    this.toggle.addEventListener('click', () => this.toggleDrawer());
-    this.closeBtn?.addEventListener('click', () => this.closeDrawer());
-    this.backdrop?.addEventListener('click', () => this.closeDrawer());
-    
-    // Mobile navigation items
-    document.getElementById('mobileCartBtn')?.addEventListener('click', (e) => {
+    this.setupEventListeners();
+    this.updateInitialState();
+    console.log('Mobile navbar initialized');
+  }
+
+  setupEventListeners() {
+    // Drawer toggle
+    this.elements.toggle?.addEventListener('click', () => this.toggleDrawer());
+    this.elements.closeBtn?.addEventListener('click', () => this.closeDrawer());
+    this.elements.backdrop?.addEventListener('click', () => this.closeDrawer());
+
+    // Navigation items
+    this.elements.cartBtn?.addEventListener('click', (e) => {
       e.preventDefault();
-      this.closeDrawer();
-      setTimeout(() => {
-        if (typeof openDrawer === 'function') {
-          openDrawer(true);
-        }
-      }, 300);
+      this.handleCartClick();
     });
-    
-    document.getElementById('mobileCheckoutBtn')?.addEventListener('click', (e) => {
+
+    this.elements.checkoutBtn?.addEventListener('click', (e) => {
       e.preventDefault();
-      this.closeDrawer();
-      setTimeout(() => {
-        if (typeof proceedToCheckout === 'function') {
-          proceedToCheckout();
-        }
-      }, 300);
+      this.handleCheckoutClick();
     });
-    
-    // Theme toggle - use the global theme manager
-    document.getElementById('mobileThemeToggle')?.addEventListener('click', (e) => {
+
+    // Theme toggle
+    this.elements.themeToggle?.addEventListener('click', (e) => {
       e.preventDefault();
-      // Access the global theme manager instance
-      if (window.themeManager) {
-        window.themeManager.toggle();
-      } else {
-        // Fallback if theme manager not available
-        this.toggleTheme();
-      }
+      this.handleThemeToggle();
     });
-    
-    // Language switcher events
-    this.languageToggle?.addEventListener('click', (e) => {
+
+    // Language switcher
+    this.elements.languageToggle?.addEventListener('click', (e) => {
       e.preventDefault();
       this.toggleLanguageOptions();
     });
-    
-    // Language option clicks
+
+    // Language options
     document.querySelectorAll('.mobile-lang-option').forEach(option => {
       option.addEventListener('click', (e) => {
         e.preventDefault();
@@ -72,64 +75,57 @@ class MobileNavbar {
         this.changeLanguage(lang);
       });
     });
-    
-    // Handle escape key
+
+    // Escape key handler
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) {
         this.closeDrawer();
       }
     });
-    
-    // Update cart count when it changes
-    this.updateCartCount();
-    this.updateCurrentLanguage();
-    
-    // Listen for cart updates
-    document.addEventListener('cartUpdated', () => {
-      this.updateCartCount();
-    });
-    
-    // Listen for language changes from the main language switcher
-    document.addEventListener('languageChanged', () => {
-      this.updateCurrentLanguage();
-    });
-    
-    // Listen for changes on the main language switcher
-    const mainLanguageSwitcher = document.getElementById('languageSelect');
-    if (mainLanguageSwitcher) {
-      mainLanguageSwitcher.addEventListener('change', () => {
-        this.updateCurrentLanguage();
-      });
-    }
-    
-    // Update on initialization
-    setTimeout(() => {
-      this.updateCurrentLanguage();
-    }, 100);
+
+    // Global event listeners
+    document.addEventListener('cartUpdated', () => this.updateCartCount());
+    document.addEventListener('languageChanged', () => this.updateCurrentLanguage());
   }
 
   toggleDrawer() {
-    console.log('Toggle drawer clicked, isOpen:', this.isOpen);
-    if (this.isOpen) {
-      this.closeDrawer();
-    } else {
-      this.openDrawer();
-    }
+    this.isOpen ? this.closeDrawer() : this.openDrawer();
   }
 
   openDrawer() {
-    console.log('Opening mobile drawer');
+    if (!this.elements.drawer) return;
+    
     this.isOpen = true;
-    this.drawer.classList.add('open');
-    this.backdrop.classList.add('open');
-    this.toggle.classList.add('open');
+    this.elements.drawer.classList.add('open');
+    this.elements.backdrop?.classList.add('open');
+    this.elements.toggle?.classList.add('open');
     
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
     
-    // Add stagger animation to nav items
-    const navItems = this.drawer.querySelectorAll('.mobile-nav-item');
-    navItems.forEach((item, index) => {
+    // Animate nav items
+    this.animateNavItems();
+  }
+
+  closeDrawer() {
+    if (!this.elements.drawer) return;
+    
+    this.isOpen = false;
+    this.elements.drawer.classList.remove('open');
+    this.elements.backdrop?.classList.remove('open');
+    this.elements.toggle?.classList.remove('open');
+    this.elements.languageOptions?.classList.remove('open');
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+    
+    // Reset animations
+    this.resetNavItemAnimations();
+  }
+
+  animateNavItems() {
+    const navItems = this.elements.drawer?.querySelectorAll('.mobile-nav-item');
+    navItems?.forEach((item, index) => {
       item.style.opacity = '0';
       item.style.transform = 'translateX(20px)';
       setTimeout(() => {
@@ -140,135 +136,42 @@ class MobileNavbar {
     });
   }
 
-  closeDrawer() {
-    console.log('Closing mobile drawer');
-    this.isOpen = false;
-    this.drawer.classList.remove('open');
-    this.backdrop.classList.remove('open');
-    this.toggle.classList.remove('open');
-    
-    // Close language options too
-    this.languageOptions?.classList.remove('open');
-    
-    // Restore body scroll
-    document.body.style.overflow = '';
-    
-    // Reset nav item animations
-    const navItems = this.drawer.querySelectorAll('.mobile-nav-item');
-    navItems.forEach(item => {
+  resetNavItemAnimations() {
+    const navItems = this.elements.drawer?.querySelectorAll('.mobile-nav-item');
+    navItems?.forEach(item => {
       item.style.transition = '';
       item.style.opacity = '';
       item.style.transform = '';
     });
   }
 
-  toggleLanguageOptions() {
-    if (this.languageOptions) {
-      this.languageOptions.classList.toggle('open');
-    }
-  }
-
-  changeLanguage(lang) {
-    // Use the existing language switcher functionality
-    if (typeof setLanguage === 'function') {
-      setLanguage(lang);
-    } else if (typeof changeLanguage === 'function') {
-      changeLanguage(lang);
-    } else {
-      // Fallback: trigger the existing language switcher
-      const languageSwitcher = document.getElementById('languageSelect');
-      if (languageSwitcher) {
-        languageSwitcher.value = lang;
-        languageSwitcher.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
-    
-    this.languageOptions?.classList.remove('open');
-    this.updateCurrentLanguage();
-    
-    // Update active state
-    document.querySelectorAll('.mobile-lang-option').forEach(option => {
-      option.classList.remove('active');
-      if (option.getAttribute('data-lang') === lang) {
-        option.classList.add('active');
-      }
-    });
-    
-    // Close the mobile drawer after language change
+  handleCartClick() {
+    this.closeDrawer();
     setTimeout(() => {
-      this.closeDrawer();
-    }, 500);
+      if (typeof openDrawer === 'function') {
+        openDrawer(true);
+      }
+    }, 300);
   }
 
-  updateCurrentLanguage() {
-    if (this.currentLang) {
-      // Get current language from the existing system
-      let currentLanguage = 'en';
-      
-      // Try different ways to get current language
-      if (typeof getCurrentLanguage === 'function') {
-        currentLanguage = getCurrentLanguage();
-      } else if (window.currentLanguage) {
-        currentLanguage = window.currentLanguage;
-      } else if (localStorage.getItem('language')) {
-        currentLanguage = localStorage.getItem('language');
-      } else {
-        // Check the main language switcher value
-        const languageSwitcher = document.getElementById('languageSelect');
-        if (languageSwitcher) {
-          currentLanguage = languageSwitcher.value || 'en';
-        }
+  handleCheckoutClick() {
+    this.closeDrawer();
+    setTimeout(() => {
+      if (typeof proceedToCheckout === 'function') {
+        proceedToCheckout();
       }
-      
-      const langMap = {
-        'en': 'EN',
-        'ar': 'ع',
-        'fr': 'FR'
-      };
-      this.currentLang.textContent = langMap[currentLanguage] || 'EN';
-    }
-    
-    // Update active state for language options
-    document.querySelectorAll('.mobile-lang-option').forEach(option => {
-      option.classList.remove('active');
-      const optionLang = option.getAttribute('data-lang');
-      let currentLang = 'en';
-      
-      if (typeof getCurrentLanguage === 'function') {
-        currentLang = getCurrentLanguage();
-      } else if (window.currentLanguage) {
-        currentLang = window.currentLanguage;
-      } else if (localStorage.getItem('language')) {
-        currentLang = localStorage.getItem('language');
-      }
-      
-      if (optionLang === currentLang) {
-        option.classList.add('active');
-      }
-    });
+    }, 300);
   }
 
-  updateCartCount() {
-    if (this.cartCount && typeof state !== 'undefined' && state.cart) {
-      const count = Object.values(state.cart).reduce((s, n) => s + n, 0);
-      this.cartCount.textContent = count;
-      
-      // Add pulse animation when count changes
-      this.cartCount.style.transform = 'scale(1.2)';
-      setTimeout(() => {
-        this.cartCount.style.transform = 'scale(1)';
-      }, 200);
+  handleThemeToggle() {
+    if (window.themeManager) {
+      window.themeManager.toggle();
+    } else {
+      this.fallbackThemeToggle();
     }
   }
 
-  updateThemeIcon(icon) {
-    if (this.themeIcon) {
-      this.themeIcon.textContent = icon;
-    }
-  }
-
-  // Fallback theme toggle if theme manager not available
-  toggleTheme() {
+  fallbackThemeToggle() {
     const currentTheme = localStorage.getItem('theme') || 'dark';
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
@@ -286,13 +189,124 @@ class MobileNavbar {
       toast(`Switched to ${newTheme} mode`, 'success');
     }
   }
+
+  toggleLanguageOptions() {
+    this.elements.languageOptions?.classList.toggle('open');
+  }
+
+  changeLanguage(lang) {
+    // Try different language switching methods
+    if (typeof setLanguage === 'function') {
+      setLanguage(lang);
+    } else if (window.languageSwitcher && typeof window.languageSwitcher.setLanguage === 'function') {
+      window.languageSwitcher.setLanguage(lang);
+    } else {
+      // Fallback to main language switcher
+      const languageSwitcher = document.getElementById('languageSelect');
+      if (languageSwitcher) {
+        languageSwitcher.value = lang;
+        languageSwitcher.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+    
+    this.elements.languageOptions?.classList.remove('open');
+    this.updateActiveLanguage(lang);
+    
+    // Close drawer after language change
+    setTimeout(() => this.closeDrawer(), 500);
+  }
+
+  updateActiveLanguage(lang) {
+    document.querySelectorAll('.mobile-lang-option').forEach(option => {
+      option.classList.remove('active');
+      if (option.getAttribute('data-lang') === lang) {
+        option.classList.add('active');
+      }
+    });
+  }
+
+  updateCurrentLanguage() {
+    if (!this.elements.currentLang) return;
+    
+    let currentLanguage = this.getCurrentLanguage();
+    const langMap = {
+      'en': 'EN',
+      'ar': 'ع',
+      'fr': 'FR'
+    };
+    
+    this.elements.currentLang.textContent = langMap[currentLanguage] || 'EN';
+    this.updateActiveLanguage(currentLanguage);
+  }
+
+  getCurrentLanguage() {
+    // Try multiple methods to get current language
+    if (typeof getCurrentLanguage === 'function') {
+      return getCurrentLanguage();
+    }
+    if (window.currentLanguage) {
+      return window.currentLanguage;
+    }
+    if (localStorage.getItem('language')) {
+      return localStorage.getItem('language');
+    }
+    
+    const languageSwitcher = document.getElementById('languageSelect');
+    if (languageSwitcher) {
+      return languageSwitcher.value || 'en';
+    }
+    
+    return 'en';
+  }
+
+  updateCartCount() {
+    if (!this.elements.cartCount) return;
+    
+    let count = 0;
+    if (typeof state !== 'undefined' && state.cart) {
+      count = Object.values(state.cart).reduce((sum, qty) => sum + qty, 0);
+    }
+    
+    this.elements.cartCount.textContent = count;
+    
+    // Add pulse animation
+    this.elements.cartCount.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      this.elements.cartCount.style.transform = 'scale(1)';
+    }, 200);
+  }
+
+  updateThemeIcon(icon) {
+    if (this.elements.themeIcon) {
+      this.elements.themeIcon.textContent = icon;
+    }
+  }
+
+  updateInitialState() {
+    this.updateCartCount();
+    this.updateCurrentLanguage();
+    
+    // Set initial theme icon
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    this.updateThemeIcon(currentTheme === 'light' ? '☀️' : '🌙');
+  }
+
+  // Public API methods
+  refresh() {
+    this.updateCartCount();
+    this.updateCurrentLanguage();
+  }
+
+  destroy() {
+    // Cleanup event listeners if needed
+    this.closeDrawer();
+  }
 }
 
-// Initialize mobile navbar when DOM is loaded
+// Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, initializing mobile navbar');
   window.mobileNavbar = new MobileNavbar();
 });
 
-// Export for use in other components
+// Export for manual initialization
 window.MobileNavbar = MobileNavbar;

@@ -415,21 +415,21 @@
     <div class="support-nav">
       <div class="container">
         <ul class="support-nav-list">
-          <li><a href="#contact" class="support-nav-link">Contact Us</a></li>
-          <li><a href="#faq" class="support-nav-link">FAQ</a></li>
-          <li><a href="#shipping" class="support-nav-link">Shipping Info</a></li>
-          <li><a href="#returns" class="support-nav-link">Returns</a></li>
+          <li><a href="#contact" class="support-nav-link" data-i18n="support.contact">Contact Us</a></li>
+          <li><a href="#faq" class="support-nav-link" data-i18n="support.faq">FAQ</a></li>
+          <li><a href="#shipping" class="support-nav-link" data-i18n="support.shipping">Shipping Info</a></li>
+          <li><a href="#returns" class="support-nav-link" data-i18n="support.returns">Returns</a></li>
         </ul>
       </div>
     </div>
 
     <div class="container">
-      <!-- Contact Us Section - Same as index.html -->
+      <!-- Contact Us Section -->
       <section id="contact" class="support-section contact-section">
         <div class="contact-content">
           <div class="contact-header" style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="border-bottom: none; display: block; margin-bottom: 1rem;">Get in Touch</h2>
-            <p>Have questions about our products or need support? We'd love to hear from you.</p>
+            <h2 style="border-bottom: none; display: block; margin-bottom: 1rem;" data-i18n="contact.title">Get in Touch</h2>
+            <p data-i18n="contact.subtitle">Have questions about our products or need support? We'd love to hear from you.</p>
           </div>
           <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
             <div class="contact-info" style="background: var(--surface-color); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color); height: fit-content;">
@@ -474,18 +474,17 @@
 
       <!-- FAQ Section -->
       <section id="faq" class="support-section">
-        <h2>Frequently Asked Questions</h2>
+        <h2 data-i18n="faq.title">Frequently Asked Questions</h2>
+        <p data-i18n="faq.subtitle">Find quick answers to the most common questions about ShopMate Algeria.</p>
         
-        <p>Find quick answers to the most common questions about ShopMate Algeria.</p>
-        
-        <h3>General Questions</h3>
+        <h3 data-i18n="faq.general">General Questions</h3>
         <div class="faq-item">
           <button class="faq-question">
-            What is ShopMate Algeria?
+            <span data-i18n="faq.whatIsShopmate">What is ShopMate Algeria?</span>
             <span class="faq-icon">▼</span>
           </button>
           <div class="faq-answer">
-            <p>ShopMate Algeria is a modern e-commerce platform specializing in quality electronics, accessories, and gadgets. We serve customers across all 58 wilayas of Algeria with fast delivery and excellent customer service.</p>
+            <p data-i18n="faq.whatIsShopmate.answer">ShopMate Algeria is a modern e-commerce platform specializing in quality electronics, accessories, and gadgets. We serve customers across all 58 wilayas of Algeria with fast delivery and excellent customer service.</p>
           </div>
         </div>
         
@@ -564,10 +563,10 @@
 
       <!-- Shipping Info Section -->
       <section id="shipping" class="support-section">
-        <h2>Shipping Information</h2>
+        <h2 data-i18n="shipping.title">Shipping Information</h2>
         
         <div class="highlight-box">
-          <p><strong>Fast Nationwide Delivery</strong> - We deliver to all 58 wilayas of Algeria with reliable shipping partners and tracking support.</p>
+          <p><strong data-i18n="shipping.subtitle">Fast Nationwide Delivery</strong> - <span data-i18n="shipping.coverageText">We deliver to all 58 wilayas of Algeria with reliable shipping partners and tracking support.</span></p>
         </div>
         
         <h3>Shipping Coverage</h3>
@@ -662,10 +661,10 @@
 
       <!-- Returns Section -->
       <section id="returns" class="support-section">
-        <h2>Returns & Refunds</h2>
+        <h2 data-i18n="returns.title">Returns & Refunds</h2>
         
         <div class="highlight-box">
-          <p><strong>7-Day Return Policy</strong> - We want you to be completely satisfied with your purchase. If you're not happy, we offer easy returns within 7 days.</p>
+          <p><strong data-i18n="returns.subtitle">7-Day Return Policy</strong> - <span data-i18n="returns.policy">We want you to be completely satisfied with your purchase. If you're not happy, we offer easy returns within 7 days.</span></p>
         </div>
         
         <h3>Return Policy Overview</h3>
@@ -839,11 +838,24 @@
   <div id="toast" class="toast">Message notification</div>
 
   <!-- JavaScript -->
+  <script src="./js/utils/helpers.js"></script>
+  <script src="./js/data/languages.js"></script>
+  <script src="./js/components/language-switcher.js"></script>
   <script src="./js/components/theme-contact.js"></script>
   
   <script>
     // Support page specific functionality
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize language switcher for support page
+      if (typeof setupLanguageSwitcher === 'function') {
+        setupLanguageSwitcher();
+      }
+      
+      // Apply initial translations
+      if (typeof applyTranslations === 'function') {
+        applyTranslations();
+      }
+      
       // Smooth scrolling for navigation links
       document.querySelectorAll('.support-nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -941,6 +953,7 @@
                 })
               });
               
+
               if (response.ok) {
                 console.log('Backend API success');
                 success = true;
@@ -1102,27 +1115,19 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Toast function for compatibility
-    function showToast(message, type = 'info') {
-      const toast = document.getElementById('toast');
-      if (!toast) return;
-      
-      toast.textContent = message;
-      toast.className = `toast ${type}`;
-      
-      toast.style.display = 'block';
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateX(-50%) translateY(0)';
-      
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-50%) translateY(-100%)';
-        setTimeout(() => {
-          toast.style.display = 'none';
-        }, 300);
-      }, 4000);
-    }
-  </script>
-
-</body>
-</html>
+        // Toast function for compatibility
+        function showToast(message, type = 'info') {
+          const toast = document.getElementById('toast');
+          if (!toast) return;
+          
+          toast.textContent = message;
+          toast.className = `toast ${type}`;
+          toast.style.display = 'block';
+          
+          setTimeout(() => {
+            toast.style.display = 'none';
+          }, 3000);
+        }
+      </script>
+    </body>
+    </html>

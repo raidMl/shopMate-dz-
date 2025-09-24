@@ -6,6 +6,7 @@
   backdrop-filter: saturate(140%) blur(10px);
   background: rgba(17,19,24,.5); 
   border-bottom: 1px solid #1e2431;
+  direction: ltr; /* Force LTR for navbar structure */
 }
 
 /* Light mode navbar */
@@ -23,6 +24,7 @@
   max-width: 100%;
 }
 
+/* Brand section with better RTL support */
 .brand { 
   display: flex; 
   gap: 10px; 
@@ -30,6 +32,7 @@
   font-weight: 800; 
   letter-spacing: .2px;
   flex-shrink: 0;
+  direction: ltr; /* Keep brand LTR for consistency */
 }
 
 .brand-name {
@@ -64,9 +67,10 @@
   color: white;
 }
 
+/* Enhanced nav actions with better spacing for Arabic */
 .nav-actions { 
   display: flex; 
-  gap: 10px; 
+  gap: 12px; /* Increased from 10px for better Arabic spacing */
   align-items: center; 
   flex-shrink: 0;
 }
@@ -205,14 +209,21 @@
   #checkoutQuick {
     font-size: 0;
     padding: 8px;
-    min-width: 36px;
+    min-width: 40px; /* Increased from 36px */
   }
-
+  
+  /* Better icon for Arabic context */
   #checkoutQuick::before {
     content: "💳";
     font-size: 16px;
   }
+  
+  [lang="ar"] #checkoutQuick::before,
+  [data-lang="ar"] #checkoutQuick::before {
+    content: "🛒"; /* Shopping cart icon for Arabic */
+  }
 }
+
 @media  (max-width: 480px) {
   .navbar {
     padding: 0 8px;
@@ -371,14 +382,15 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px; /* Increased from 16px */
+    direction: ltr; /* Keep structure LTR */
   }
 
   .mobile-nav-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 14px; /* Increased from 12px */
+    padding: 14px 18px; /* Increased padding */
     border-radius: 12px;
     background: var(--panel-2);
     border: 1px solid var(--border);
@@ -386,86 +398,45 @@
     transition: all 0.2s ease;
     text-decoration: none;
     color: var(--text);
-  }
-
-  .mobile-nav-item:hover {
-    background: #0ea5e9;
-    color: var(--bg);
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
-  }
-
-  .mobile-nav-item .nav-icon {
-    font-size: 18px;
-    width: 24px;
-    text-align: center;
+    min-height: 48px; /* Ensure consistent height */
   }
 
   .mobile-nav-item .nav-text {
     font-weight: 500;
     flex: 1;
+    font-size: 15px; /* Slightly larger for better readability */
+    line-height: 1.4;
   }
 
-  .mobile-nav-item .nav-badge {
-    background: var(--error);
-    color: white;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 999px;
-    min-width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
+  /* Arabic text in mobile nav */
+  [lang="ar"] .mobile-nav-item .nav-text,
+  [data-lang="ar"] .mobile-nav-item .nav-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 16px; /* Larger for Arabic readability */
+    letter-spacing: 0;
+    text-align: right; /* Right align Arabic text */
+    direction: rtl; /* RTL for Arabic text */
   }
 
-  .mobile-nav-item:hover .nav-badge {
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--error);
-  }
-
-  /* Mobile language section */
+  /* Language switcher improvements */
   .mobile-language-section {
-    margin-top: 8px;
-  }
-
-  .mobile-language-toggle {
-    position: relative;
-    cursor: pointer;
-  }
-
-  .mobile-language-toggle .nav-current-lang {
-    background: var(--brand);
-    color: var(--bg);
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 999px;
-    font-weight: 600;
-    min-width: 24px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 12px; /* Increased spacing */
   }
 
   .mobile-language-options {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-    margin-top: 4px;
-  }
-
-  .mobile-language-options.open {
-    max-height: 200px;
+    margin-top: 8px; /* Increased from 4px */
   }
 
   .mobile-lang-option {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    margin: 2px 0;
+    gap: 12px; /* Increased from 8px */
+    padding: 12px 16px; /* Increased padding */
+    margin: 4px 0; /* Increased from 2px */
     border: none;
     background: var(--panel);
     border-radius: 8px;
@@ -474,59 +445,164 @@
     width: 100%;
     color: var(--text);
     font-size: 14px;
+    min-height: 44px; /* Ensure touch-friendly height */
   }
 
-  .mobile-lang-option:hover {
-    background: var(--panel-2);
-    transform: translateX(4px);
-  }
-
-  .mobile-lang-option.active {
-    background: var(--brand);
-    color: var(--bg);
-  }
-
-  .lang-flag {
-    font-size: 16px;
-    width: 20px;
-    text-align: center;
-  }
-
-  .lang-name {
+  /* Better Arabic language option styling */
+  .mobile-lang-option .lang-name {
     flex: 1;
     text-align: left;
     font-weight: 500;
+    font-size: 15px;
+  }
+
+  .mobile-lang-option[data-lang="ar"] .lang-name {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: right;
+    direction: rtl;
   }
 
   .mobile-theme-toggle {
     margin-top: auto;
-    padding-top: 20px;
+    padding-top: 24px; /* Increased from 20px */
     border-top: 1px solid var(--border);
   }
 
-  .mobile-theme-item {
-    justify-content: center;
-    background: var(--bg);
+  /* Responsive improvements for Arabic */
+  @media (max-width: 768px) {
+    .nav-actions {
+      gap: 10px; /* Slightly reduced for smaller screens */
+    }
+    
+    .nav-actions .btn {
+      padding: 8px 14px;
+      font-size: 14px;
+    }
+    
+    [lang="ar"] .nav-actions .btn,
+    [data-lang="ar"] .nav-actions .btn {
+      padding: 8px 16px;
+    }
   }
 
-  /* Mobile drawer backdrop */
-  .mobile-drawer-backdrop {
-    position: fixed;
-    top: 0;
+  @media (max-width: 640px) {
+    .nav-actions {
+      gap: 8px;
+    }
+    
+    /* Improved checkout button for Arabic */
+    #checkoutQuick {
+      font-size: 0;
+      padding: 8px;
+      min-width: 40px; /* Increased from 36px */
+    }
+    
+    /* Better icon for Arabic context */
+    #checkoutQuick::before {
+      content: "💳";
+      font-size: 16px;
+    }
+    
+    [lang="ar"] #checkoutQuick::before,
+    [data-lang="ar"] #checkoutQuick::before {
+      content: "🛒"; /* Shopping cart icon for Arabic */
+    }
+  }
+
+  @media (max-width: 480px) {
+    /* Mobile drawer spacing for Arabic */
+    .mobile-drawer-content {
+      gap: 16px;
+      padding: 18px;
+    }
+    
+    .mobile-nav-item {
+      gap: 12px;
+      padding: 12px 16px;
+    }
+    
+    [lang="ar"] .mobile-nav-item .nav-text,
+    [data-lang="ar"] .mobile-nav-item .nav-text {
+      font-size: 15px;
+    }
+  }
+
+  /* RTL layout support for Arabic */
+  [lang="ar"] .navbar,
+  [data-lang="ar"] .navbar {
+    direction: rtl;
+  }
+
+  [lang="ar"] .nav-inner,
+  [data-lang="ar"] .nav-inner {
+    direction: rtl;
+  }
+
+  [lang="ar"] .brand,
+  [data-lang="ar"] .brand {
+    direction: ltr; /* Keep brand LTR */
+    order: 2; /* Move to right side in RTL */
+  }
+
+  [lang="ar"] .nav-actions,
+  [data-lang="ar"] .nav-actions {
+    direction: rtl;
+    order: 1; /* Move to left side in RTL */
+  }
+
+  [lang="ar"] .mobile-menu-toggle,
+  [data-lang="ar"] .mobile-menu-toggle {
+    order: 3; /* Keep hamburger on the right in RTL */
+  }
+
+  /* Mobile drawer RTL support */
+  [lang="ar"] .mobile-drawer,
+  [data-lang="ar"] .mobile-drawer {
+    right: auto;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 45;
-    opacity: 0;
-    visibility: hidden;
+    transform: translateX(-100%);
+    border-right: 1px solid var(--border);
+    border-left: none;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+    direction: rtl;
+  }
+
+  [lang="ar"] .mobile-drawer.open,
+  [data-lang="ar"] .mobile-drawer.open {
+    transform: translateX(0);
+  }
+
+  [lang="ar"] .mobile-drawer-header,
+  [data-lang="ar"] .mobile-drawer-header {
+    direction: rtl;
+  }
+
+  [lang="ar"] .mobile-nav-item,
+  [data-lang="ar"] .mobile-nav-item {
+    direction: rtl;
+  }
+
+  [lang="ar"] .mobile-nav-item:hover,
+  [data-lang="ar"] .mobile-nav-item:hover {
+    transform: translateX(-4px); /* Reverse direction for RTL */
+  }
+
+  /* Smooth transitions for language switching */
+  .navbar,
+  .nav-inner,
+  .nav-actions,
+  .mobile-drawer,
+  .mobile-nav-item {
     transition: all 0.3s ease;
   }
 
-  .mobile-drawer-backdrop.open {
-    opacity: 1;
-    visibility: visible;
+  /* Improved text rendering for Arabic */
+  [lang="ar"],
+  [data-lang="ar"] {
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
   }
 }
 

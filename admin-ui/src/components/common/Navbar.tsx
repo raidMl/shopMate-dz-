@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { path: '/dashboard', label: 'Dashboard' },
-    { path: '/products', label: 'Products' },
-    { path: '/categories', label: 'Categories' },
-    { path: '/orders', label: 'Orders' },
+    { path: '/dashboard', label: t('navigation.dashboard') },
+    { path: '/products', label: t('navigation.products') },
+    { path: '/categories', label: t('navigation.categories') },
+    { path: '/orders', label: t('navigation.orders') },
   ];
 
   return (
@@ -23,7 +26,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">ShopMate</h1>
+              <h1 className="text-xl font-bold text-gray-900">{t('app.title')}</h1>
             </div>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               {navLinks.map((link) => (
@@ -44,12 +47,13 @@ const Navbar: React.FC = () => {
 
           {/* Desktop User Menu */}
           <div className="hidden md:flex md:items-center md:space-x-4">
+            <LanguageSwitcher />
             <span className="text-sm text-gray-700">{user?.name}</span>
             <button
               onClick={logout}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out"
             >
-              Logout
+              {t('navigation.logout')}
             </button>
           </div>
 
@@ -108,6 +112,9 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <div className="mt-3 px-2 space-y-1">
+            <div className="px-3 py-2">
+              <LanguageSwitcher className="mb-2" />
+            </div>
             <button
               onClick={() => {
                 logout();
@@ -115,7 +122,7 @@ const Navbar: React.FC = () => {
               }}
               className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition duration-150 ease-in-out"
             >
-              Sign out
+              {t('navigation.logout')}
             </button>
           </div>
         </div>

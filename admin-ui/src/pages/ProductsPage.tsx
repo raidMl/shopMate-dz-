@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { productsAPI, categoriesAPI } from '../services/api';
 import Navbar from '../components/common/Navbar';
@@ -36,6 +37,7 @@ interface Category {
 
 const ProductsPage: React.FC = () => {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +131,7 @@ const ProductsPage: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm(t('products.confirmDelete'))) {
       try {
         await productsAPI.delete(id);
         fetchProducts();
@@ -192,7 +194,7 @@ const ProductsPage: React.FC = () => {
 
       <main className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Products</h2>
+          <h2 className="text-2xl font-bold">{t('products.title')}</h2>
           <button
             onClick={() => {
               setEditingProduct(null);
@@ -201,12 +203,12 @@ const ProductsPage: React.FC = () => {
             }}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
           >
-            Add New Product
+            {t('products.addNew')}
           </button>
         </div>
 
         {loading ? (
-          <div className="text-center py-4">Loading products...</div>
+          <div className="text-center py-4">{t('products.loading')}</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
@@ -250,13 +252,13 @@ const ProductsPage: React.FC = () => {
                     onClick={() => handleEdit(product)}
                     className="flex-1 bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
                   >
-                    Edit
+                    {t('products.edit')}
                   </button>
                   <button
                     onClick={() => handleDelete(product._id)} // Use product.id here
                     className="flex-1 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
                   >
-                    Delete
+                    {t('products.delete')}
                   </button>
                 </div>
               </div>

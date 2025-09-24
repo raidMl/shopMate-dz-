@@ -2,6 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .rtl-reverse {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .rtl-space-reverse > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+[dir="rtl"] .ml-3 {
+  margin-right: 0.75rem;
+  margin-left: 0;
+}
+
+[dir="rtl"] .mr-3 {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+[dir="rtl"] .pl-3 {
+  padding-right: 0.75rem;
+  padding-left: 0;
+}
+
+[dir="rtl"] .pr-3 {
+  padding-left: 0.75rem;
+  padding-right: 0;
+}
+
+[dir="rtl"] .left-0 {
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .right-0 {
+  left: 0;
+  right: auto;
+}
+
+/* Arabic font improvements */
+[dir="rtl"] {
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Language switcher improvements */
+.language-switcher {
+  min-width: 120px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import LanguageSwitcher from '../components/common/LanguageSwitcher';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +10,7 @@ const LoginPage: React.FC = () => {
   const [localError, setLocalError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login, loading, error } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,7 +18,7 @@ const LoginPage: React.FC = () => {
     setLocalError('');
     
     if (!email || !password) {
-      setLocalError('Please fill in all fields');
+      setLocalError(t('auth.fillAllFields'));
       return;
     }
     
@@ -33,6 +36,10 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       {/* Header Section */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex-1" />
+          <LanguageSwitcher className="mb-4" />
+        </div>
         <div className="flex justify-center">
           <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg">
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,10 +48,10 @@ const LoginPage: React.FC = () => {
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Welcome Back
+          {t('auth.welcomeBack')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Sign in to your admin dashboard
+          {t('auth.signInSubtitle')}
         </p>
       </div>
 
@@ -71,7 +78,7 @@ const LoginPage: React.FC = () => {
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email address
+                {t('auth.email')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -86,7 +93,7 @@ const LoginPage: React.FC = () => {
                   autoComplete="email"
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
-                  placeholder="Enter your email"
+                  placeholder={t('auth.emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
@@ -97,7 +104,7 @@ const LoginPage: React.FC = () => {
             {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -112,7 +119,7 @@ const LoginPage: React.FC = () => {
                   autoComplete="current-password"
                   required
                   className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
-                  placeholder="Enter your password"
+                  placeholder={t('auth.passwordPlaceholder')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
@@ -166,7 +173,7 @@ const LoginPage: React.FC = () => {
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
-              Secure admin access • Protected by authentication
+              {t('auth.secureAccess')}
             </p>
           </div>
         </div>
@@ -174,7 +181,7 @@ const LoginPage: React.FC = () => {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Need help? Contact system administrator
+            {t('auth.needHelp')}
           </p>
         </div>
       </div>

@@ -9,23 +9,31 @@ class CategoriesManager {
             ttl: 5 * 60 * 1000 // 5 minutes cache
         };
         
-        this.init();
+        // Don't call init() here, call it from static method
     }
 
     async init() {
         console.log('📂 Categories Manager initializing...');
         
-        // Load categories on page load
-        await this.loadCategories();
-        
-        // Populate various UI elements with categories
-        this.populateFooterCategories();
-        this.populateCategoryFilter();
-        
-        // Setup event listeners
-        this.setupEventListeners();
-        
-        console.log('✅ Categories Manager initialized');
+        try {
+            // Load categories on page load
+            await this.loadCategories();
+            
+            // Populate various UI elements with categories
+            this.populateFooterCategories();
+            this.populateCategoryFilter();
+            
+            // Setup event listeners
+            this.setupEventListeners();
+            
+            console.log('✅ Categories Manager initialized');
+        } catch (error) {
+            console.error('❌ Categories Manager initialization failed:', error);
+            // Still populate with default categories
+            this.categories = this.getDefaultCategories();
+            this.populateFooterCategories();
+            this.populateCategoryFilter();
+        }
     }
 
     async loadCategories(forceRefresh = false) {
@@ -41,13 +49,19 @@ class CategoriesManager {
             // Show loading state
             this.showLoadingState();
             
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+            
             const response = await fetch(`${this.apiBaseUrl}/categories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                }
+                },
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -88,10 +102,11 @@ class CategoriesManager {
 
     getDefaultCategories() {
         return [
-            { id: 'audio', name: 'Audio', slug: 'audio' },
-            { id: 'peripherals', name: 'Peripherals', slug: 'peripherals' },
-            { id: 'wearables', name: 'Wearables', slug: 'wearables' },
-            { id: 'accessories', name: 'Accessories', slug: 'accessories' }
+            { id: 'audio', name: 'Audio & Headphones', slug: 'audio' },
+            { id: 'peripherals', name: 'Computer Peripherals', slug: 'peripherals' },
+            { id: 'wearables', name: 'Wearables & Smart Devices', slug: 'wearables' },
+            { id: 'accessories', name: 'Accessories & Gadgets', slug: 'accessories' },
+            { id: 'mobile', name: 'Mobile & Tablets', slug: 'mobile' }
         ];
     }
 
@@ -378,15 +393,33 @@ class CategoriesManager {
         }
         return window.categoriesManager;
     }
+
+    // Static method to initialize
+    static async initialize() {
+        const instance = CategoriesManager.getInstance();
+        await instance.init();
+        return instance;
+    }
 }
 
 // Initialize Categories Manager when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        CategoriesManager.getInstance();
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            await CategoriesManager.initialize();
+        } catch (error) {
+            console.error('Failed to initialize Categories Manager:', error);
+        }
     });
 } else {
-    CategoriesManager.getInstance();
+    // DOM is already ready
+    setTimeout(async () => {
+        try {
+            await CategoriesManager.initialize();
+        } catch (error) {
+            console.error('Failed to initialize Categories Manager:', error);
+        }
+    }, 100);
 }
 
 // Export for use in other modules
