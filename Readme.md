@@ -1,4 +1,4 @@
-# backend url : [https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/](https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/)
+# backend url : [ecommerce-otnyyyhby-raidmls-projects.vercel.app](https://ecommerce-otnyyyhby-raidmls-projects.vercel.app)
 
 # client ui : 
 
