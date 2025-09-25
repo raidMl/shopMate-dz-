@@ -18,8 +18,19 @@ connectDB();
 const app = express();
 
 // Middleware
+// Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:5500',
+    'https://raidml.github.io',
+    'https://shopmate.dz'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
 
 // Root route - Add this before API routes
 app.get('/', (req, res) => {
