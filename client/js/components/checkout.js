@@ -332,7 +332,7 @@ function handlePlaceOrder(e) {
  * @returns {Promise} - Promise resolving to created order
  */
 async function createOrder(orderData) {
-  const API_BASE_URL = 'http://localhost:5000/api';
+  const API_BASE_URL = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api';
   
   try {
     const headers = {

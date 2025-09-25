@@ -100,7 +100,7 @@
     RewriteRule ^(en|ar|fr)/(.*)$ $2?lang=$1 [L,QSA]
     
     # API routes (if using backend API)
-    RewriteRule ^api/(.*)$ http://localhost:5000/api/$1 [P,L]
+    RewriteRule ^api/(.*)$ https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/$1 [P,L]
     
     # Fallback to index.html for SPA
     RewriteCond %{REQUEST_FILENAME} !-f

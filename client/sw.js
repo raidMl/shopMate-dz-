@@ -41,8 +41,8 @@ const STATIC_ASSETS = [
 
 // API endpoints to cache
 const API_ENDPOINTS = [
-  'http://localhost:5000/api/products',
-  'http://localhost:5000/api/categories'
+  'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/products',
+  'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/categories'
 ];
 
 // Install event - cache static assets
@@ -105,7 +105,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // Handle API requests
-  if (url.origin === 'http://localhost:5000' || url.pathname.startsWith('/api/')) {
+  if (url.origin === 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app' || url.pathname.startsWith('/api/')) {
     event.respondWith(handleApiRequest(request));
     return;
   }
