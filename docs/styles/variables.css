@@ -1,0 +1,51 @@
+/* CSS Variables for Theme System */
+:root {
+  /* Dark Theme (Default) */
+  --bg: #0b0c10;
+  --panel: #111318;
+  --panel-2: #161a22;
+  --border: #1e2a3d;
+  --text: #e6e7eb;
+  --muted: #98a2b3;
+  --primary: #38bdf8;
+  --primary-hover: #0ea5e9;
+  --accent: #6ee7b7;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --success: #22c55e;
+  
+  /* Shadows */
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  
+  /* Border radius */
+  --radius: 18px;
+  
+  /* Animation */
+  --transition: all 0.2s ease;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg: #ffffff;
+  --panel: #f8fafc;
+  --panel-2: #f1f5f9;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --accent: #059669;
+  --error: #dc2626;
+  --warning: #d97706;
+  --success: #16a34a;
+  
+  /* Shadows */
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Theme transition */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
