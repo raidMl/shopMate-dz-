@@ -3,13 +3,13 @@ let products = [];
 let categories = [];
 
 // API configuration
-const API_BASE_URL = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api';
-
+// const API_BASE_URL = 'http://localhost:5000'; // Adjust as needed
+const API_BASE_URL = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app';
 // Fetch products from API
 async function fetchProducts() {
   try {
     console.log('Fetching products from API...');
-    const response = await fetch(`${API_BASE_URL}/products`);
+    const response = await fetch(`${API_BASE_URL}/api/products`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,7 +60,7 @@ async function fetchProducts() {
 // Fetch categories from API (if available)
 async function fetchCategories() {
   try {
-    const response = await fetch(`${API_BASE_URL}/categories`);
+    const response = await fetch(`${API_BASE_URL}/api/categories`);
     if (response.ok) {
       const data = await response.json();
       categories = data.map(cat => cat.name || cat._id);
