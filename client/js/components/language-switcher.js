@@ -212,6 +212,133 @@ function setupLanguageSwitcher() {
   }, 100);
 }
 
+// Add event listener for language changes
+document.addEventListener('DOMContentLoaded', () => {
+  // Set initial language from localStorage
+  const savedLanguage = localStorage.getItem('language') || 'en';
+  
+  // Update global language if setLanguage function exists
+  if (typeof setLanguage === 'function') {
+    setLanguage(savedLanguage);
+  }
+  
+  // Listen for mobile language changes
+  document.addEventListener('languageChanged', (e) => {
+    if (e.detail && e.detail.language) {
+      console.log('Language changed event received:', e.detail.language);
+      
+      // Update any global language state
+      if (typeof setLanguage === 'function') {
+        setLanguage(e.detail.language);
+      }
+      
+      // Update mobile navbar if it exists
+      if (window.mobileNavbar) {
+        window.mobileNavbar.currentLanguage = e.detail.language;
+        window.mobileNavbar.updateCurrentLanguage();
+      }
+    }
+  });
+  
+  // Listen for language change requests
+  document.addEventListener('languageChangeRequest', (e) => {
+    if (e.detail && e.detail.language) {
+      console.log('Language change request received:', e.detail.language);
+      
+      // Store the language
+      localStorage.setItem('language', e.detail.language);
+      
+      // Update any global language state
+      if (typeof setLanguage === 'function') {
+        setLanguage(e.detail.language);
+      }
+      
+      // Dispatch confirmation event
+      document.dispatchEvent(new CustomEvent('languageChanged', {
+        detail: { language: e.detail.language }
+      }));
+    }
+  });
+});
+
+// Add CSS styles for mobile language options
+function addMobileLanguageStyles() {
+  if (document.getElementById('mobile-language-styles')) return;
+  
+  const style = document.createElement('style');
+  style.id = 'mobile-language-styles';
+  style.textContent = `
+    .mobile-language-options {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      background: var(--bg-secondary, #f8f9fa);
+      border-radius: 8px;
+      margin-top: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .mobile-language-options.open {
+      max-height: 200px;
+      opacity: 1;
+    }
+    
+    .mobile-lang-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 14px;
+    }
+    
+    .mobile-lang-option:hover {
+      background-color: var(--primary-alpha, rgba(110, 231, 183, 0.1));
+    }
+    
+    .mobile-lang-option.active {
+      background-color: var(--primary-alpha, rgba(110, 231, 183, 0.2));
+      font-weight: 600;
+    }
+    
+    .mobile-lang-option .lang-flag {
+      font-size: 18px;
+    }
+    
+    .mobile-lang-option .lang-name {
+      flex: 1;
+      color: var(--text-primary, #1a1a1a);
+    }
+    
+    .mobile-language-toggle.active .nav-current-lang {
+      color: var(--primary, #6ee7b7);
+    }
+    
+    .mobile-language-toggle {
+      position: relative;
+    }
+    
+    .mobile-language-toggle::after {
+      content: '▼';
+      font-size: 10px;
+      margin-left: auto;
+      transition: transform 0.3s ease;
+    }
+    
+    .mobile-language-toggle.active::after {
+      transform: rotate(180deg);
+    }
+  `;
+  
+  document.head.appendChild(style);
+}
+
 // Initialize language switcher when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   new LanguageSwitcher();
