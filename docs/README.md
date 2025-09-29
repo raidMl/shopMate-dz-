@@ -1,191 +1,112 @@
-# ShopMate - Modern E-Commerce UI
+# ShopMate E-commerce Application
 
-A beautiful, responsive e-commerce interface built with pure HTML, CSS, and JavaScript. No frameworks required!
+## GitHub Pages Deployment
 
-## 🚀 Features
+This folder contains the production-ready files for the ShopMate e-commerce application, optimized for GitHub Pages deployment.
 
-- **Product Grid** with filtering, sorting, and search
-- **Rich Product Data** with images, descriptions, and specifications
-- **Discount System** with original prices and percentage off
-- **Color & Size Variants** for applicable products
-- **Product Preview Modal** with detailed specifications
-- **Shopping Cart** with quantity management and stock validation
-- **Favorites System** with persistent storage
-- **Responsive Design** for all screen sizes
-- **Checkout Flow** with form validation
-- **Toast Notifications** with different types
-- **Keyboard Shortcuts** for better UX
-- **Local Storage** for cart and favorites persistence
-- **Real Images** with fallback to generated placeholders
+### Live Demo
+Once deployed, your application will be available at: `https://[your-username].github.io/[repository-name]/`
 
-## 📁 Project Structure
+### Features
+- 🛍️ Product catalog with search and filtering
+- 🛒 Shopping cart functionality
+- 📱 Progressive Web App (PWA) support
+- 🎨 Dark/Light theme toggle
+- 🌐 Multi-language support
+- 📊 Google Sheets integration for data management
+- 📱 Fully responsive design
 
+### Deployment Instructions
+
+1. **Enable GitHub Pages:**
+   - Go to your repository settings
+   - Scroll to "Pages" section
+   - Select "Deploy from a branch"
+   - Choose "main" branch and "/docs" folder
+   - Click "Save"
+
+2. **Custom Domain (Optional):**
+   - Add your custom domain in the "Custom domain" field
+   - Make sure to configure your DNS settings
+
+### File Structure
 ```
-├── index.html                 # Main HTML file
-├── index1.html               # Original single-file version
-├── data/                     # Data files
-│   └── products.json         # Product catalog with full details
-├── styles/                   # CSS files organized by component
-│   ├── variables.css         # CSS custom properties
-│   ├── base.css             # Base styles and utilities
-│   ├── responsive.css       # Media queries
-│   └── components/          # Component-specific styles
-│       ├── navbar.css
-│       ├── hero.css
-│       ├── toolbar.css
-│       ├── product-grid.css
-│       ├── cart-drawer.css
-│       ├── modal.css
-│       └── toast.css
-└── js/                      # JavaScript files organized by feature
-    ├── app.js              # Main application entry point
-    ├── utils/              # Utility functions
-    │   ├── helpers.js      # Helper functions and utilities
-    │   └── state.js        # State management
-    ├── data/               # Data and configuration
-    │   └── products.js     # Product data loader
-    └── components/         # Component-specific logic
-        ├── productCard.js  # Product card rendering
-        ├── cart.js         # Shopping cart functionality
-        ├── favorites.js    # Favorites management
-        ├── filters.js      # Filtering and search
-        └── checkout.js     # Checkout process
-```
-
-## 🎯 Usage
-
-1. **Open `index.html`** in your browser
-2. **Browse products** using the grid view
-3. **Filter and search** using the toolbar controls
-4. **Add to cart** and manage quantities
-5. **Mark favorites** by clicking the star icons
-6. **Checkout** with form validation
-
-## ⌨️ Keyboard Shortcuts
-
-- **Escape** - Close modals and drawer
-- **Ctrl/Cmd + K** - Focus search input
-- **Ctrl/Cmd + Enter** - Submit checkout form (when modal is open)
-
-## 🎨 Customization
-
-### Colors
-Edit `styles/variables.css` to change the color scheme:
-
-```css
-:root {
-  --bg: #0b0c10;        /* Background */
-  --brand: #6ee7b7;     /* Primary brand color */
-  --brand-2: #38bdf8;   /* Secondary brand color */
-  /* ... other colors */
-}
+docs/
+├── index.html          # Main application page
+├── company.html        # Company/About page
+├── support.html        # Support/Contact page
+├── manifest.json       # PWA manifest
+├── sw.js              # Service worker for offline support
+├── robots.txt         # SEO robots file
+├── sitemap.xml        # SEO sitemap
+├── .htaccess          # Apache server configuration
+├── js/                # JavaScript modules
+│   ├── app.js         # Main application logic
+│   ├── components/    # UI components
+│   ├── data/          # Data management
+│   └── utils/         # Utility functions
+├── styles/            # CSS stylesheets
+│   ├── base.css       # Base styles
+│   ├── responsive.css # Responsive design
+│   ├── variables.css  # CSS variables
+│   └── components/    # Component styles
+└── data/              # Static data files
+    ├── products.json  # Product data
+    └── orders.json    # Sample orders
 ```
 
-### Products
-The product catalog is now stored in `data/products.json` with rich product information:
+### Configuration
 
-```json
-{
-  "products": [
-    {
-      "id": "p1",
-      "name": "Product Name",
-      "description": "Detailed product description",
-      "image": "https://example.com/image.jpg",
-      "price": 99,
-      "originalPrice": 129,
-      "discount": 23,
-      "category": "Category",
-      "rating": 4.5,
-      "stock": 10,
-      "createdAt": "2025-01-01",
-      "hue": 200,
-      "colors": [
-        { "name": "Black", "hex": "#000000", "stock": 5 }
-      ],
-      "sizes": [
-        { "name": "Medium", "stock": 3 }
-      ],
-      "specifications": {
-        "feature1": "value1",
-        "feature2": "value2"
-      }
-    }
-  ],
-  "categories": [
-    {
-      "id": "category-id",
-      "name": "Category Name",
-      "description": "Category description"
-    }
-  ]
-}
+#### API Endpoints
+The application is configured to use the following API endpoints:
+- Products: `https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/products`
+- Categories: `https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/categories`
+- Contact: `https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/contact`
+
+#### PWA Features
+- Offline support via service worker
+- Add to home screen capability
+- Push notifications (when implemented)
+- Background sync for orders
+
+### Performance Optimization
+- ✅ Minified and optimized assets
+- ✅ Service worker caching
+- ✅ Lazy loading for images
+- ✅ Responsive images
+- ✅ SEO optimization
+
+### Browser Support
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+- Mobile browsers
+
+### Development
+For local development, serve the files from this directory using any static file server:
+
+```bash
+# Using Python
+python -m http.server 8000
+
+# Using Node.js http-server
+npx http-server
+
+# Using VS Code Live Server extension
 ```
 
-#### Product Features:
-- **Images** - Real product images with fallback to generated ones
-- **Descriptions** - Detailed product descriptions
-- **Discounts** - Original price and discount percentage
-- **Colors** - Available color options with stock levels
-- **Sizes** - Size variants where applicable
-- **Specifications** - Technical specifications
-- **Enhanced Search** - Search includes descriptions
+### Troubleshooting
 
-## 🔧 Components
+#### Common Issues:
+1. **Service Worker 404:** Make sure `sw.js` is served from the root directory
+2. **CORS Errors:** Check that API endpoints are configured correctly
+3. **PWA not installing:** Ensure `manifest.json` is properly linked in HTML
+4. **Offline functionality:** Clear browser cache and re-register service worker
 
-### Product Card
-- Displays product information
-- Handles add to cart functionality
-- Manages favorite state
-- Shows stock availability
-
-### Shopping Cart
-- Persistent storage via localStorage
-- Quantity management with stock validation
-- Real-time subtotal calculation
-- Slide-out drawer interface
-
-### Favorites
-- Toggle favorite products
-- Persistent storage via localStorage
-- Filter to show favorites only
-- Visual indicators
-
-### Filters & Search
-- Category filtering
-- Price range slider
-- Stock availability filter
-- Real-time search
-- Multiple sorting options
-
-### Checkout
-- Form validation
-- Loading states
-- Error handling
-- Demo payment processing
-
-## 📱 Responsive Design
-
-The application is fully responsive with breakpoints at:
-- **1024px** - Tablet layout
-- **720px** - Small tablet/large phone
-- **420px** - Phone layout
-- **320px** - Small phone optimization
-
-## 🚀 Getting Started
-
-1. Clone or download the files
-2. Open `index.html` in a web browser
-3. No build process required!
-
-## 🔄 Migration from Single File
-
-If you're using the original `index1.html`, the new modular version (`index.html`) provides the same functionality with better organization and maintainability.
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
+#### Support
+For issues or questions, please create an issue in the repository or contact support through the application.
 
 ---
 
-Made with ♥ — Pure HTML/CSS/JS
+**Note:** This deployment folder is automatically synced with the main application. Any changes should be made in the source files and then copied to this docs folder for deployment.

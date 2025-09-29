@@ -1,0 +1,241 @@
+/* Company Page Specific Styles */
+.company-page {
+  padding: 2rem 0;
+  min-height: 100vh;
+}
+
+.brand-link {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex;
+  gap: 10px;
+}
+
+.company-nav {
+  position: sticky;
+  top: 80px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  z-index: 100;
+}
+
+.company-nav-list {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.company-nav-item {
+  position: relative;
+}
+
+.company-nav-link {
+  color: var(--muted-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.company-nav-link:hover,
+.company-nav-link.active {
+  color: var(--primary-color);
+  background: var(--primary-color-light);
+}
+
+.company-section {
+  margin-bottom: 4rem;
+  scroll-margin-top: 120px;
+}
+
+.company-section h2 {
+  color: var(--text-color);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+.company-section h3 {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem 0;
+}
+
+.company-section p {
+  color: var(--text-color);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.company-section ul {
+  color: var(--text-color);
+  line-height: 1.7;
+  padding-left: 1.5rem;
+}
+
+.company-section li {
+  margin-bottom: 0.5rem;
+}
+
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.company-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.2s ease;
+}
+
+.company-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.company-card h4 {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.highlight-box {
+  background: var(--primary-color-light);
+  border-left: 4px solid var(--primary-color);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.contact-info {
+  background: var(--surface-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.contact-info h4 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.contact-info p {
+  margin-bottom: 0.5rem;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* Compact Sections */
+.compact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.compact-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.compact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.compact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.compact-list li {
+  background: var(--surface-color);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--primary-color);
+  margin-bottom: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .company-nav {
+    top: 70px;
+  }
+  
+  .company-nav-list {
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .company-nav-link {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .company-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .company-grid,
+  .compact-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .company-card,
+  .compact-card {
+    padding: 1.5rem;
+  }
+  
+  .compact-list {
+    grid-template-columns: 1fr;
+  }
+}
