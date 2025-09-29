@@ -28,7 +28,6 @@ app.use(cors({
     'http://localhost:5500',
     'https://raidml.github.io',
     'https://shopmate.dz',
-    'https://raidml.github.io/ecommerce-googlesheet/'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
