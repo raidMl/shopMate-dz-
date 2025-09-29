@@ -59,3 +59,9 @@ reduce the  quantity by orderQuntityNumber  the order  stored in file json
 # ✅ 15/9/2025 -
 use all senstive data from env file -
 #add livraison price for each wilaya // done
+
+
+copy into docs 
+#✅ 16/9/2025 - COMPLETED
+# if it's static html/css/js, copy into docs/
+cp -r * ../docs
