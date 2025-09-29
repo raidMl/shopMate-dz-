@@ -25,6 +25,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://127.0.0.1:5500',
+    'http://localhost:5500',
     'https://raidml.github.io',
     'https://shopmate.dz',
     'https://raidml.github.io/ecommerce-googlesheet/'
@@ -79,7 +80,12 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+// Only start server if not in Vercel environment
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
-  console.log(`Server running on port ${PORT}`);
-});
+// Export for Vercel
+module.exports = app;

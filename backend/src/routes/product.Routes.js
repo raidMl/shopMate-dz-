@@ -8,10 +8,16 @@ const { protect, admin } = require("../middleware/authMiddleware");
 // @access  Public
 router.get("/", async (req, res) => {
   try {
+    // Add CORS headers explicitly
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    
     const products = await Product.find({})
           .populate("category", "name _id"); // only return category name + id
     res.json(products);
   } catch (error) {
+    console.error('Error fetching products:', error);
     res.status(500).json({ message: error.message });
   }
 });

@@ -3,8 +3,8 @@ let products = [];
 let categories = [];
 
 // API configuration
-// const API_BASE_URL = 'http://localhost:5000'; // Adjust as needed
-const API_BASE_URL = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app';
+const API_BASE_URL = 'https://ecommerce-api-rho-liard.vercel.app';
+
 // Fetch products from API
 async function fetchProducts() {
   try {
