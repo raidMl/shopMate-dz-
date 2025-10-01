@@ -332,7 +332,71 @@ const languages = {
       "returns.refundProcessed": "Refund Processed",
       "returns.refundInfo": "Refund Information",
       "returns.defective": "Defective or Damaged Items",
-      "returns.exchange": "Exchange Policy"
+      "returns.exchange": "Exchange Policy",
+      
+      // Company page translations
+      "company.title": "Company Information",
+      "company.subtitle": "About ShopMate Algeria",
+      "company.about": "About Us",
+      "company.privacy": "Privacy Policy",
+      "company.terms": "Terms of Service",
+      "company.careers": "Careers",
+      "company.mission": "Our Mission",
+      "company.values": "Our Values",
+      "company.whyChoose": "Why Choose ShopMate?",
+      "company.getInTouch": "Get in Touch",
+      "company.address": "Address",
+      "company.phone": "Phone",
+      "company.email": "Email",
+      "company.businessHours": "Business Hours",
+      "company.mondayFriday": "Monday - Friday, 9:00 AM - 4:00 PM",
+      
+      "company.qualityFirst": "Quality First",
+      "company.qualityDesc": "We carefully curate our product selection to ensure every item meets our high standards for quality and reliability.",
+      "company.innovation": "Innovation",
+      "company.innovationDesc": "We embrace the latest technology to provide a seamless shopping experience through our modern, framework-free platform.",
+      "company.customerCentric": "Customer-Centric",
+      "company.customerDesc": "Your satisfaction is our priority. We're committed to providing exceptional service and support at every step.",
+      "company.localExpertise": "Local Expertise",
+      "company.localDesc": "As an Algerian company, we understand local needs and preferences, ensuring relevant products and services.",
+      
+      // Privacy Policy translations
+      "privacy.title": "Privacy Policy",
+      "privacy.lastUpdated": "Last updated: January 15, 2025",
+      "privacy.infoWeCollect": "Information We Collect",
+      "privacy.howWeUse": "How We Use Data",
+      "privacy.yourRights": "Your Rights",
+      "privacy.dataSecurity": "Data Security",
+      "privacy.dataSharing": "Data Sharing",
+      "privacy.cookies": "Cookies",
+      "privacy.contactUs": "Contact Us",
+      
+      // Terms of Service translations
+      "terms.title": "Terms of Service",
+      "terms.lastUpdated": "Last updated: January 15, 2025",
+      "terms.acceptance": "Acceptance of Terms",
+      "terms.useLicense": "Use License",
+      "terms.productInfo": "Product Information",
+      "terms.ordersPayment": "Orders and Payment",
+      "terms.shipping": "Shipping and Delivery",
+      "terms.returns": "Returns and Refunds",
+      "terms.userConduct": "User Conduct",
+      "terms.limitation": "Limitation of Liability",
+      "terms.governingLaw": "Governing Law",
+      "terms.changes": "Changes to Terms",
+      
+      // Careers translations
+      "careers.title": "Careers",
+      "careers.joinTeam": "Join the ShopMate Team!",
+      "careers.whyWork": "Why Work With Us?",
+      "careers.currentOpportunities": "Current Opportunities",
+      "careers.howToApply": "How to Apply",
+      "careers.internshipProgram": "Internship Program",
+      "careers.location": "Location",
+      "careers.requirements": "Requirements",
+      "careers.applicationDetails": "Application Details",
+      "careers.responseTime": "Response Time",
+      "careers.include": "Include",
     }
   },
   
@@ -669,7 +733,73 @@ const languages = {
       "returns.refundProcessed": "تم معالجة الاسترداد",
       "returns.refundInfo": "معلومات الاسترداد",
       "returns.defective": "منتجات معيبة أو تالفة",
-      "returns.exchange": "سياسة التبديل"
+      "returns.exchange": "سياسة التبديل",
+      
+      // Company page translations
+      "company.title": "معلومات الشركة",
+      "company.subtitle": "حول شوب مايت الجزائر",
+      "company.about": "من نحن",
+      "company.privacy": "سياسة الخصوصية",
+      "company.terms": "شروط الخدمة",
+      "company.careers": "الوظائف",
+      "company.mission": "مهمتنا",
+      "company.values": "قيمنا",
+      "company.whyChoose": "لماذا تختار شوب مايت؟",
+      "company.getInTouch": "تواصل معنا",
+      "company.address": "العنوان",
+      "company.phone": "الهاتف",
+      "company.email": "البريد الإلكتروني",
+      "company.businessHours": "ساعات العمل",
+      "company.mondayFriday": "الإثنين - الجمعة، 9:00 ص - 4:00 م",
+      
+      "company.qualityFirst": "الجودة أولاً",
+      "company.qualityDesc": "نختار منتجاتنا بعناية لضمان أن كل عنصر يلبي معاييرنا العالية للجودة والموثوقية.",
+      "company.innovation": "الابتكار",
+      "company.innovationDesc": "نتبنى أحدث التقنيات لتوفير تجربة تسوق سلسة من خلال منصتنا الحديثة.",
+      "company.customerCentric": "محور العميل",
+      "company.customerDesc": "رضاكم هو أولويتنا. نحن ملتزمون بتقديم خدمة ودعم استثنائيين في كل خطوة.",
+      "company.localExpertise": "الخبرة المحلية",
+      "company.localDesc": "كشركة جزائرية، نفهم الاحتياجات والتفضيلات المحلية، مما يضمن منتجات وخدمات ذات صلة.",
+      
+      // Privacy Policy translations
+      "privacy.title": "سياسة الخصوصية",
+      "privacy.lastUpdated": "آخر تحديث: 15 يناير 2025",
+      "privacy.infoWeCollect": "المعلومات التي نجمعها",
+      "privacy.howWeUse": "كيف نستخدم البيانات",
+      "privacy.yourRights": "حقوقك",
+      "privacy.dataSecurity": "أمان البيانات",
+      "privacy.dataSharing": "مشاركة البيانات",
+      "privacy.cookies": "ملفات تعريف الارتباط",
+      "privacy.contactUs": "اتصل بنا",
+      
+      // Terms of Service translations
+      "terms.title": "شروط الخدمة",
+      "terms.lastUpdated": "آخر تحديث: 15 يناير 2025",
+      "terms.acceptance": "قبول الشروط",
+      "terms.useLicense": "ترخيص الاستخدام",
+      "terms.productInfo": "معلومات المنتج",
+      "terms.ordersPayment": "الطلبات والدفع",
+      "terms.shipping": "الشحن والتوصيل",
+      "terms.returns": "الإرجاع والاسترداد",
+      "terms.userConduct": "سلوك المستخدم",
+      "terms.limitation": "حدود المسؤولية",
+      "terms.governingLaw": "القانون الحاكم",
+      "terms.changes": "تغييرات الشروط",
+      
+      // Careers translations
+      "careers.title": "الوظائف",
+      "careers.joinTeam": "انضم إلى فريق شوب مايت!",
+      "careers.whyWork": "لماذا تعمل معنا؟",
+      "careers.currentOpportunities": "الفرص الحالية",
+      "careers.howToApply": "كيفية التقديم",
+      "careers.internshipProgram": "برنامج التدريب",
+      "careers.location": "الموقع",
+      "careers.requirements": "المتطلبات",
+      "careers.applicationDetails": "تفاصيل التطبيق",
+      "careers.responseTime": "وقت الاستجابة",
+      "careers.include": "يشمل",
+      
+      // ...existing code...
     }
   },
   
@@ -1005,7 +1135,73 @@ const languages = {
       "returns.refundProcessed": "Remboursement Traité",
       "returns.refundInfo": "Informations de Remboursement",
       "returns.defective": "Articles Défectueux ou Endommagés",
-      "returns.exchange": "Politique d'Échange"
+      "returns.exchange": "Politique d'Échange",
+      
+      // Company page translations
+      "company.title": "Informations sur l'Entreprise",
+      "company.subtitle": "À propos de ShopMate Algérie",
+      "company.about": "À Propos",
+      "company.privacy": "Politique de Confidentialité",
+      "company.terms": "Conditions d'Utilisation",
+      "company.careers": "Carrières",
+      "company.mission": "Notre Mission",
+      "company.values": "Nos Valeurs",
+      "company.whyChoose": "Pourquoi Choisir ShopMate?",
+      "company.getInTouch": "Contactez-nous",
+      "company.address": "Adresse",
+      "company.phone": "Téléphone",
+      "company.email": "E-mail",
+      "company.businessHours": "Heures d'Ouverture",
+      "company.mondayFriday": "Lundi - Vendredi, 9h00 - 16h00",
+      
+      "company.qualityFirst": "Qualité d'Abord",
+      "company.qualityDesc": "Nous sélectionnons soigneusement nos produits pour nous assurer que chaque article répond à nos hauts standards de qualité et de fiabilité.",
+      "company.innovation": "Innovation",
+      "company.innovationDesc": "Nous adoptons la dernière technologie pour fournir une expérience d'achat transparente grâce à notre plateforme moderne.",
+      "company.customerCentric": "Centré sur le Client",
+      "company.customerDesc": "Votre satisfaction est notre priorité. Nous nous engageons à fournir un service et un soutien exceptionnels à chaque étape.",
+      "company.localExpertise": "Expertise Locale",
+      "company.localDesc": "En tant qu'entreprise algérienne, nous comprenons les besoins et préférences locaux, garantissant des produits et services pertinents.",
+      
+      // Privacy Policy translations
+      "privacy.title": "Politique de Confidentialité",
+      "privacy.lastUpdated": "Dernière mise à jour: 15 janvier 2025",
+      "privacy.infoWeCollect": "Informations que Nous Collectons",
+      "privacy.howWeUse": "Comment Nous Utilisons les Données",
+      "privacy.yourRights": "Vos Droits",
+      "privacy.dataSecurity": "Sécurité des Données",
+      "privacy.dataSharing": "Partage des Données",
+      "privacy.cookies": "Cookies",
+      "privacy.contactUs": "Contactez-nous",
+      
+      // Terms of Service translations
+      "terms.title": "Conditions d'Utilisation",
+      "terms.lastUpdated": "Dernière mise à jour: 15 janvier 2025",
+      "terms.acceptance": "Acceptation des Conditions",
+      "terms.useLicense": "Licence d'Utilisation",
+      "terms.productInfo": "Informations sur les Produits",
+      "terms.ordersPayment": "Commandes et Paiement",
+      "terms.shipping": "Expédition et Livraison",
+      "terms.returns": "Retours et Remboursements",
+      "terms.userConduct": "Conduite de l'Utilisateur",
+      "terms.limitation": "Limitation de Responsabilité",
+      "terms.governingLaw": "Loi Applicable",
+      "terms.changes": "Modifications des Conditions",
+      
+      // Careers translations
+      "careers.title": "Carrières",
+      "careers.joinTeam": "Rejoignez l'Équipe ShopMate!",
+      "careers.whyWork": "Pourquoi Travailler avec Nous?",
+      "careers.currentOpportunities": "Opportunités Actuelles",
+      "careers.howToApply": "Comment Postuler",
+      "careers.internshipProgram": "Programme de Stage",
+      "careers.location": "Lieu",
+      "careers.requirements": "Exigences",
+      "careers.applicationDetails": "Détails de l'Application",
+      "careers.responseTime": "Temps de Réponse",
+      "careers.include": "Inclure",
+      
+      // ...existing code...
     }
   }
 };

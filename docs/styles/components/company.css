@@ -14,7 +14,7 @@
 }
 
 .company-nav {
-  position: sticky;
+  position: relative;
   top: 80px;
   background: var(--surface-color);
   border-bottom: 1px solid var(--border-color);
