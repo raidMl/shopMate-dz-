@@ -465,7 +465,7 @@
   }
 
   .mobile-theme-toggle {
-    margin-top: auto;
+    margin-bottom: auto;
     padding-top: 24px; /* Increased from 20px */
     border-top: 1px solid var(--border);
   }
