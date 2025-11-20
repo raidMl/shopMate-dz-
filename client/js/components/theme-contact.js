@@ -57,7 +57,7 @@ class ThemeManager {
 class ContactForm {
   constructor() {
     this.form = document.getElementById('contactForm');
-    this.apiUrl = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/contact'; // Backend API endpoint
+    this.apiUrl = 'https://ecommerce-api-rho-liard.vercel.app/api/contact'; // Use the correct backend API
     this.init();
   }
 
@@ -101,33 +101,49 @@ class ContactForm {
     submitButton.disabled = true;
     submitButton.classList.add('loading');
     
-    // Disable form inputs
+    // Disable form inputscontact
     inputs.forEach(input => input.disabled = true);
     
     try {
+      console.log('Sending to:', this.apiUrl);
       const response = await fetch(this.apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(data)
       });
       
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
+        const result = await response.json();
+        console.log('Success response:', result);
+        
         // Show success message
         toast(t('contact.success') || 'Thank you! Your message has been sent successfully.', 'success');
         this.form.reset();
         
-        // Optional: Show confirmation modal
+        // Show confirmation modal
         this.showSuccessModal(data);
         
       } else {
+        const errorText = await response.text();
+        console.error('Server error:', response.status, errorText);
         throw new Error(`Server responded with status: ${response.status}`);
       }
       
     } catch (error) {
       console.error('Contact form error:', error);
-      toast(t('contact.error') || 'Sorry, there was an error sending your message. Please try again.', 'error');
+      
+      // Show user-friendly error with fallback
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        // Network error - provide fallback
+        toast('Unable to send message online. Please email us directly at shopemate.dz@gmail.com', 'error');
+      } else {
+        toast(t('contact.error') || 'Sorry, there was an error sending your message. Please try again.', 'error');
+      }
     } finally {
       // Reset button and form state
       submitButton.textContent = originalText;

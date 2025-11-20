@@ -57,7 +57,7 @@ class ThemeManager {
 class ContactForm {
   constructor() {
     this.form = document.getElementById('contactForm');
-    this.apiUrl = 'https://ecommerce-otnyyyhby-raidmls-projects.vercel.app/api/contact'; // Backend API endpoint
+    this.apiUrl = 'https://ecommerce-api-rho-liard.vercel.app/api/contact'; // Backend API endpoint
     this.init();
   }
 
