@@ -1,0 +1,5 @@
+//add product  tags add product  tags for its page 
+//add wilaya and commune for  order 
+//add  formulare for order direcly the product 
+
+//create a page for see the products  it contain details  of it and order it 
