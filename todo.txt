@@ -1,5 +1,46 @@
 //add product  tags add product  tags for its page 
-//add wilaya and commune for  order 
-//add  formulare for order direcly the product 
+# //add wilaya and commune for  order 
+# //add  formulare for order direcly the product 
 
-//create a page for see the products  it contain details  of it and order it 
+# //create a page for see the products  it contain details  of it and order it 
+
+add page which  will create website  with custom domain and  hosting and  ssl certificate for free with  one click and  add the ability to edit the website with drag and drop builder and  add the ability to add custom code for the website
+and custome name for the website and add the ability to add custom domain for the website and add the ability to add custom hosting for the website and add the ability to add custom ssl certificate for the website and add the ability to add custom email for the website and add the ability to add custom analytics for the website and add the ability to add custom seo for the website and add the ability to add custom social media for the website and add the ability to add custom payment gateway for the website and add the ability to add custom shipping for the website and add the ability to add custom tax for the website and add the ability to add custom discount for the website and add the ability to add custom coupon for the website and add the ability to add custom affiliate program for the website and add the ability to add custom loyalty program for the website and add the ability to add custom referral program for the website and add the ability to add custom review system for the website and add the ability to add custom rating system for the website and add the ability to add custom testimonial system for the website and add the ability to add custom faq system for the website and add the ability to add custom contact form for the website and  create page with drag and drop builder  with  one click  with  free hosting  free ssl certificate  free domain name  free email  free analytics  free seo  free social media  free payment gateway  free shipping  free tax  free discount  free coupon  free affiliate program  free loyalty program  free referral program  free review system  free rating system  free testimonial system  free faq system  free contact form
+link with google sheet for the product data and order data and user data and category data and slider data and contact data and footer data and  use the google sheet as a database for the website and add the ability to edit the data in the google sheet and see the changes in the website in real time
+make the order work 
+
+
+📧 Email:    superadmin@example.com
+🔐 Password: SuperAdmin123!@#
+🎯 Role:     super_admin
+
+
+
+// show only products and order of the amin  not the other users
+but category is commun .
+
+// add setting link  behind the orders to modify the admin dashboard 
+by add shiping info change wilaya and prices 
+manage the url of our website 
+manage the seo of our website
+manage the social media of our website
+manage the payment gateway of our website
+manage the shipping of our website
+manage the tax of our website
+manage the discount of our website
+manage the coupon of our website
+manage the affiliate program of our website
+manage the loyalty program of our website
+manage the referral program of our website
+manage the review system of our website
+manage the rating system of our website
+manage the logo of our website
+manage the favicon of our website
+manage the contact info of our website
+manage the about us of our website
+manage the privacy policy of our website
+manage the terms of service of our website
+manage the faq of our website
+manage the contact form of our website
+manage the domain of our website
+manage the hosting of our website

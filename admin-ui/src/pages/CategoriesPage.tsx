@@ -24,12 +24,12 @@ const CategoriesPage: React.FC = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [user]);
 
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await categoriesAPI.getAll();
+      const response = await categoriesAPI.getAll(user?.role === 'super_admin' ? undefined : user?._id);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);

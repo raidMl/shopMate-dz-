@@ -8,7 +8,11 @@ const { protect, admin } = require('../middleware/authMiddleware');
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const query = {};
+    if (req.query.adminId) {
+      query.adminId = req.query.adminId;
+    }
+    const categories = await Category.find(query);
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -46,15 +50,19 @@ router.post('/', protect, admin, async (req, res) => {
       return res.status(400).json({ message: 'Category name is required' });
     }
     
-    // Check if category with same name already exists
-    const existingCategory = await Category.findOne({ name: name.trim() });
+    // Check if category with same name already exists for this specific admin
+    const existingCategory = await Category.findOne({ 
+      name: name.trim(),
+      adminId: req.user._id 
+    });
     if (existingCategory) {
       return res.status(400).json({ message: 'Category with this name already exists' });
     }
     
     const category = new Category({
       name: name.trim(),
-      description: description ? description.trim() : ''
+      description: description ? description.trim() : '',
+      adminId: req.user._id // Store who created this category
     });
     
     const createdCategory = await category.save();
@@ -74,6 +82,11 @@ router.put('/:id', protect, admin, async (req, res) => {
     const category = await Category.findById(req.params.id);
     
     if (category) {
+      // Only allow if requester is the creator or super_admin
+      if (req.user.role !== 'super_admin' && category.adminId?.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Not authorized to update this category" });
+      }
+
       category.name = req.body.name || category.name;
       category.description = req.body.description || category.description;
       
@@ -95,6 +108,11 @@ router.delete('/:id', protect, admin, async (req, res) => {
     const category = await Category.findById(req.params.id);
     
     if (category) {
+      // Only allow if requester is the creator or super_admin
+      if (req.user.role !== 'super_admin' && category.adminId?.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Not authorized to delete this category" });
+      }
+
       await category.deleteOne();
       res.json({ message: 'Category removed' });
     } else {

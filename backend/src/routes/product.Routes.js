@@ -13,7 +13,14 @@ router.get("/", async (req, res) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
     
-    const products = await Product.find({})
+    // Check for adminId query parameter
+    const query = {};
+    if (req.query.adminId) {
+      // If adminId is provided, filter by it (used by Admin UI)
+      query.adminId = req.query.adminId;
+    }
+
+    const products = await Product.find(query)
           .populate("category", "name _id"); // only return category name + id
     res.json(products);
   } catch (error) {
@@ -48,7 +55,13 @@ router.post(
   admin,
   async (req, res) => {
     try {
-      const product = new Product(req.body);
+      // Set adminId from the authenticated user
+      const productData = {
+        ...req.body,
+        adminId: req.user._id
+      };
+      
+      const product = new Product(productData);
       const createdProduct = await product.save();
       res.status(201).json(createdProduct);
     } catch (error) {
@@ -69,6 +82,11 @@ router.put(
       const product = await Product.findById(req.params.id);
 
       if (product) {
+        // Only allow if requester is the creator or super_admin
+        if (req.user.role !== 'super_admin' && product.adminId?.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "Not authorized to update this product" });
+        }
+
         Object.keys(req.body).forEach((key) => {
           product[key] = req.body[key];
         });
@@ -96,6 +114,11 @@ router.delete(
       const product = await Product.findById(req.params.id);
 
       if (product) {
+        // Only allow if requester is the creator or super_admin
+        if (req.user.role !== 'super_admin' && product.adminId?.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "Not authorized to delete this product" });
+        }
+
         await product.deleteOne();
         res.json({ message: "Product removed" });
       } else {

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Order, Product } = require("../models");
+const { Order, Product, getDeliveryPrice } = require("../models");
 const { protect, admin } = require("../middleware/authMiddleware");
 const QRCode = require("qrcode");
 const mongoose = require("mongoose");
@@ -197,18 +197,37 @@ router.post("/", async (req, res) => {
     await reduceProductStock(orderProducts);
     console.log("✅ Stock reduced successfully for all products");
 
+    // Identify the admin associated with these products
+    let adminId = null;
+    if (orderProducts.length > 0) {
+      const firstProduct = await Product.findById(orderProducts[0].product);
+      if (firstProduct && firstProduct.adminId) {
+        adminId = firstProduct.adminId;
+      }
+    }
+
+    // Calculate delivery price based on wilaya and delivery type
+    const wilaya = customerInfo.wilaya.trim();
+    const deliveryType = customerInfo.deliveryType || "bureau";
+    const deliveryPrice = getDeliveryPrice(wilaya, deliveryType);
+
+    console.log(`📦 Delivery: ${deliveryType} in ${wilaya} = ${deliveryPrice} DZD`);
+
     // Create order with customer info (userId can be null for guest orders)
     const order = new Order({
       user: userId, // Can be null for guest orders
+      adminId: adminId, // Tag the order with the admin who owns the products
       products: orderProducts,
       totalPrice,
-      deliveryPrice: 500, // Fixed delivery price
-      finalTotal: totalPrice + 500, // Total including delivery
+      deliveryPrice: deliveryPrice, // Calculate based on wilaya and delivery type
+      finalTotal: totalPrice + deliveryPrice, // Total including delivery
       customerInfo: {
         fullName: customerInfo.fullName.trim(),
         email: customerInfo.email.trim().toLowerCase(),
         phone: customerInfo.phone.trim(),
-        wilaya: customerInfo.wilaya.trim(),
+        wilaya: wilaya,
+        deliveryType: deliveryType,
+        deliveryPrice: deliveryPrice,
         address: customerInfo.address.trim()
       }
     });
@@ -217,6 +236,9 @@ router.post("/", async (req, res) => {
     const qrCodeData = JSON.stringify({
       orderId: order._id,
       totalPrice,
+      deliveryPrice: deliveryPrice,
+      deliveryType: deliveryType,
+      wilaya: wilaya,
       customerName: customerInfo.fullName,
       email: customerInfo.email,
       phone: customerInfo.phone,
@@ -271,7 +293,14 @@ router.get("/my/orders", protect, async (req, res) => {
 // @access  Private/Admin
 router.get("/", protect, admin, async (req, res) => {
   try {
-    const orders = await Order.find({})
+    const query = {};
+    
+    // If user is admin (not super_admin), filter orders by their tagged adminId
+    if (req.user && req.user.role === 'admin') {
+      query.adminId = req.user._id;
+    }
+
+    const orders = await Order.find(query)
       .populate("user", "id name")
       .populate({
         path: "products.product",
@@ -295,6 +324,11 @@ router.put("/:id/status", protect, admin, async (req, res) => {
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Security check: Only allow if requester is the assigned admin or super_admin
+    if (req.user.role !== 'super_admin' && order.adminId?.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to update this order" });
     }
 
     const oldStatus = order.status;
@@ -351,6 +385,11 @@ router.delete("/:id", protect, admin, async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
+      // Security check: Only allow if requester is the assigned admin or super_admin
+      if (req.user.role !== 'super_admin' && order.adminId?.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Not authorized to delete this order" });
+      }
+
       // Restore stock if order is not already cancelled
       if (order.status !== "cancelled") {
         console.log(`🔄 Restoring stock for deleted order ${order._id}...`);

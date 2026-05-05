@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { productsAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 interface Product {
   _id: string;
@@ -31,12 +32,14 @@ const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await productsAPI.getAll();
+      // Pass the user's ID to filter by their own products, unless super_admin
+      const response = await productsAPI.getAll(user?.role === 'super_admin' ? undefined : user?._id);
       setProducts(response.data);
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Failed to fetch products');
@@ -44,7 +47,7 @@ const useProducts = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   const createProduct = async (productData: any) => {
     try {

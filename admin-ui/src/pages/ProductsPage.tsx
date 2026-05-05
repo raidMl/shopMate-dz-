@@ -63,12 +63,12 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
-  }, []);
+  }, [user]);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await productsAPI.getAll();
+      const response = await productsAPI.getAll(user?.role === 'super_admin' ? undefined : user?._id);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -79,7 +79,7 @@ const ProductsPage: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await categoriesAPI.getAll();
+      const response = await categoriesAPI.getAll(user?.role === 'super_admin' ? undefined : user?._id);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);

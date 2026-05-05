@@ -149,5 +149,26 @@
     "currency": "DA",
     "required": "Required",
     "optional": "Optional"
+  },
+  "admin": {
+    "management": "Admin Management",
+    "createNew": "Create New Admin",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading admins...",
+    "noAdmins": "No admins found. Create one to get started!",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "role": "Role",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "create": "Create Admin",
+    "update": "Update Admin",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this admin?"
+  },
+  "validation": {
+    "fillAllFields": "Please fill in all fields"
   }
 }

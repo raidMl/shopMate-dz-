@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import useProducts from '../../hooks/useProducts';
+import { categoriesAPI } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import { Product } from '../../types/product';
+
+interface Category {
+  _id: string;
+  name: string;
+}
 
 interface ProductFormProps {
   productId?: string;
@@ -9,7 +16,9 @@ interface ProductFormProps {
 
 const ProductForm: React.FC<ProductFormProps> = ({ productId, onClose }) => {
   const { createProduct, updateProduct } = useProducts();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     _id: '',
     name: '',
@@ -23,12 +32,20 @@ const ProductForm: React.FC<ProductFormProps> = ({ productId, onClose }) => {
   });
 
   useEffect(() => {
+    fetchCategories();
     if (productId) {
-      // In a real app, you'd fetch the product by ID here
-      // For now, we'll just set the ID
-      setFormData(prev => ({ ...prev, id: productId }));
+      // ...
     }
-  }, [productId]);
+  }, [productId, user]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesAPI.getAll(user?.role === 'super_admin' ? undefined : user?._id);
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -162,15 +179,21 @@ const ProductForm: React.FC<ProductFormProps> = ({ productId, onClose }) => {
             <label htmlFor="category" className="block text-sm font-medium text-gray-700">
               Category
             </label>
-            <input
-              type="text"
+            <select
               id="category"
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
               className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-            />
+            >
+              <option value="">Select a category</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

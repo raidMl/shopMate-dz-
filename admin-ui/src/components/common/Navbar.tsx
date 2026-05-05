@@ -12,12 +12,22 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const navLinks = [
+  // Different navigation links based on user role
+  const getAllNavLinks = () => [
     { path: '/dashboard', label: t('navigation.dashboard') },
     { path: '/products', label: t('navigation.products') },
     { path: '/categories', label: t('navigation.categories') },
     { path: '/orders', label: t('navigation.orders') },
+    { path: '/settings', label: 'Settings' },
   ];
+
+  const getSuperAdminNavLinks = () => [
+    { path: '/dashboard', label: t('navigation.dashboard') },
+    { path: '/admin-management', label: 'Admin Management' },
+    { path: '/settings', label: 'Settings' },
+  ];
+
+  const navLinks = user?.role === 'super_admin' ? getSuperAdminNavLinks() : getAllNavLinks();
 
   return (
     <nav className="bg-white shadow-sm">

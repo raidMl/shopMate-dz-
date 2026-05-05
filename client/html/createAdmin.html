@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب مسؤول - إدارة المتجر</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      background-color: #f8f9ff;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .password-strength {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      flex: 1;
+      background: #e1e8ed;
+      border-radius: 2px;
+      transition: background-color 0.3s;
+    }
+
+    .strength-bar.weak { background: #ff6b6b; }
+    .strength-bar.medium { background: #ffa94d; }
+    .strength-bar.strong { background: #51cf66; }
+
+    .strength-text {
+      font-size: 12px;
+      margin-top: 5px;
+      color: #666;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group input {
+      width: auto;
+      margin-right: 10px;
+      margin-left: 0;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .alert.error {
+      background: #ffe0e0;
+      color: #c33;
+      display: block;
+      border: 1px solid #ffb3b3;
+    }
+
+    .alert.success {
+      background: #e0ffe0;
+      color: #33c;
+      display: block;
+      border: 1px solid #b3ffb3;
+    }
+
+    .alert.info {
+      background: #e0f0ff;
+      color: #0033cc;
+      display: block;
+      border: 1px solid #b3d9ff;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px;
+      }
+
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛍️ إنشاء حساب مسؤول</h1>
+      <p>قم بإنشاء حسابك لإدارة متجرك الإلكتروني</p>
+    </div>
+
+    <div id="alert" class="alert"></div>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 10px; color: #667eea;">جاري المعالجة...</p>
+    </div>
+
+    <form id="adminForm" style="display: block;">
+      <!-- Basic Info -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">الاسم الكامل*</label>
+          <input type="text" id="name" name="name" placeholder="محمد أحمد" required>
+        </div>
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني*</label>
+          <input type="email" id="email" name="email" placeholder="admin@example.com" required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">كلمة المرور*</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+        <div class="password-strength">
+          <div class="strength-bar"></div>
+          <div class="strength-bar"></div>
+          <div class="strength-bar"></div>
+        </div>
+        <div class="strength-text">قوة كلمة المرور: <span id="strengthText">ضعيفة</span></div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">تأكيد كلمة المرور*</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+      </div>
+
+      <!-- Site Info for Initial Setup -->
+      <div class="form-group">
+        <label for="siteName">اسم المتجر*</label>
+        <input type="text" id="siteName" name="siteName" placeholder="متجري الإلكتروني" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">رقم الهاتف*</label>
+          <input type="tel" id="phone" name="phone" placeholder="213XXXXXXXXX" required>
+        </div>
+        <div class="form-group">
+          <label for="wilaya">الولاية*</label>
+          <select id="wilaya" name="wilaya" required>
+            <option value="">اختر الولاية</option>
+            <option value="01">01 - الجزائر البيضاء</option>
+            <option value="16">16 - الجزائر</option>
+            <option value="31">31 - وهران</option>
+            <option value="25">25 - قسنطينة</option>
+            <option value="02">02 - الشلف</option>
+            <option value="03">03 - الأغواط</option>
+            <option value="04">04 - أم البواقي</option>
+            <option value="05">05 - باتنة</option>
+            <option value="06">06 - بجاية</option>
+            <option value="07">07 - بسكرة</option>
+            <option value="08">08 - بشار</option>
+            <option value="09">09 - البليدة</option>
+            <option value="10">10 - البويرة</option>
+            <option value="11">11 - تمنراست</option>
+            <option value="12">12 - تبسة</option>
+            <option value="13">13 - تلمسان</option>
+            <option value="14">14 - تيارت</option>
+            <option value="15">15 - تيزي وزو</option>
+            <option value="17">17 - الجلفة</option>
+            <option value="18">18 - جيجل</option>
+            <option value="19">19 - سطيف</option>
+            <option value="20">20 - السعيدة</option>
+            <option value="21">21 - سكيكدة</option>
+            <option value="22">22 - سيدي بلعباس</option>
+            <option value="23">23 - عنابة</option>
+            <option value="24">24 - قالمة</option>
+            <option value="26">26 - المدية</option>
+            <option value="27">27 - مستغانم</option>
+            <option value="28">28 - المسيلة</option>
+            <option value="29">29 - معسكر</option>
+            <option value="30">30 - ورقلة</option>
+            <option value="32">32 - البيض</option>
+            <option value="33">33 - إليزي</option>
+            <option value="34">34 - برج بوعريريج</option>
+            <option value="35">35 - بومرداس</option>
+            <option value="36">36 - الطارف</option>
+            <option value="37">37 - تندوف</option>
+            <option value="38">38 - تسيمسيلت</option>
+            <option value="39">39 - الوادي (واد سوف)</option>
+            <option value="40">40 - خنشلة</option>
+            <option value="41">41 - سوق أهراس</option>
+            <option value="42">42 - تيبازة</option>
+            <option value="43">43 - ميلة</option>
+            <option value="44">44 - عين الدفلى</option>
+            <option value="45">45 - النعامة</option>
+            <option value="46">46 - عين تموشنت</option>
+            <option value="47">47 - غرادية</option>
+            <option value="48">48 - غليزان</option>
+            <option value="49">49 - تيميمون</option>
+            <option value="50">50 - برج باجي مختار</option>
+            <option value="51">51 - أولاد جلال</option>
+            <option value="52">52 - بني عباس</option>
+            <option value="53">53 - عين صالح</option>
+            <option value="54">54 - عين قزام</option>
+            <option value="55">55 - توقرت</option>
+            <option value="56">56 - جانت</option>
+            <option value="57">57 - المغير</option>
+            <option value="58">58 - المنيعة</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Terms -->
+      <div class="checkbox-group">
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">أوافق على شروط الخدمة والسياسة الخاصة</label>
+      </div>
+
+      <button type="submit" class="btn-submit">إنشاء الحساب</button>
+    </form>
+
+    <div class="footer-text">
+      هل لديك حساب؟ <a href="/login.html">دخول</a>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:8080';
+    const form = document.getElementById('adminForm');
+    const alert = document.getElementById('alert');
+    const loading = document.getElementById('loading');
+    const passwordInput = document.getElementById('password');
+    const strengthBars = document.querySelectorAll('.strength-bar');
+    const strengthText = document.getElementById('strengthText');
+
+    // Password strength checker
+    passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value;
+      let strength = 0;
+      const strengthTexts = ['ضعيفة', 'متوسطة', 'قوية'];
+      const strengthClasses = ['weak', 'medium', 'strong'];
+
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+      strength = Math.min(strength, 2);
+
+      strengthBars.forEach((bar, index) => {
+        if (index <= strength) {
+          bar.className = `strength-bar ${strengthClasses[strength]}`;
+        } else {
+          bar.className = 'strength-bar';
+        }
+      });
+
+      strengthText.textContent = strengthTexts[strength];
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validation
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const siteName = document.getElementById('siteName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const wilaya = document.getElementById('wilaya').value;
+      const terms = document.getElementById('terms').checked;
+
+      if (!name || !email || !password || !confirmPassword || !siteName || !phone || !wilaya) {
+        showAlert('الرجاء ملء جميع الحقول المطلوبة', 'error');
+        return;
+      }
+
+      if (password.length < 8) {
+        showAlert('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert('كلمات المرور غير متطابقة', 'error');
+        return;
+      }
+
+      if (!terms) {
+        showAlert('يجب الموافقة على شروط الخدمة', 'error');
+        return;
+      }
+
+      // Create admin account
+      try {
+        showLoading(true);
+
+        const response = await fetch(`${API_URL}/api/users/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            role: 'admin'
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'خطأ في إنشاء الحساب');
+        }
+
+        // Save user info to localStorage
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminEmail', email);
+        localStorage.setItem('siteName', siteName);
+        localStorage.setItem('adminPhone', phone);
+        localStorage.setItem('adminWilaya', wilaya);
+
+        showAlert('✅ تم إنشاء الحساب بنجاح! جاري التوجيه...', 'success');
+
+        // Redirect to setup page after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'SetupInfoGen.html';
+        }, 2000);
+
+      } catch (error) {
+        showAlert(`❌ ${error.message}`, 'error');
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    function showAlert(message, type) {
+      alert.className = `alert ${type}`;
+      alert.textContent = message;
+    }
+
+    function showLoading(show) {
+      loading.style.display = show ? 'block' : 'none';
+      form.style.display = show ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

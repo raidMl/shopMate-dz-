@@ -1,9 +1,13 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute: React.FC = () => {
-  const { user, loading, isAdmin } = useAuth();
+interface ProtectedRouteProps {
+  requiredRole?: 'admin' | 'super_admin';
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
@@ -13,9 +17,16 @@ const ProtectedRoute: React.FC = () => {
     return <Navigate to="/login" replace />;
   }
 
-  // Always check isAdmin even though we're not using requireAdmin prop for now
-  if (!isAdmin) {
-    return <Navigate to="/unauthorized" replace />;
+  // If requiring super_admin role specifically
+  if (requiredRole === 'super_admin') {
+    if (user.role !== 'super_admin') {
+      return <Navigate to="/dashboard" replace />;
+    }
+  } else {
+    // Default: require admin or super_admin
+    if (user.role !== 'admin' && user.role !== 'super_admin') {
+      return <Navigate to="/login" replace />;
+    }
   }
 
   return <Outlet />;
