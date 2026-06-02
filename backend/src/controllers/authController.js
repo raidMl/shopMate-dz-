@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
+const { generateAdminClientFolder } = require("../utils/siteGenerator");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -21,6 +22,16 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
+
+    // GENERATE CLIENT WEBSITE FOLDER if they are an admin
+    if (user.role === "admin" || user.role === "super_admin") {
+      try {
+        const adminSlug = email.split('@')[0];
+        generateAdminClientFolder(adminSlug);
+      } catch (genError) {
+        console.error(`❌ Failed to generate client folder for ${user.email}:`, genError.message);
+      }
+    }
 
     // Generate token for the new user
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1d" });

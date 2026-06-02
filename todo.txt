@@ -10,9 +10,16 @@ link with google sheet for the product data and order data and user data and cat
 make the order work 
 
 
-📧 Email:    superadmin@example.com
+📧 Email:    raidreus.22@gmail.com
 🔐 Password: SuperAdmin123!@#
 🎯 Role:     super_admin
+
+admins//
+
+laila@store.com
+password123
+ali@gmail.com
+123456789
 
 
 
@@ -44,3 +51,7 @@ manage the faq of our website
 manage the contact form of our website
 manage the domain of our website
 manage the hosting of our website
+
+
+//fix the get in touch for send msg to the mail of the admin 
+ and link it with the its route .(it send the msg to shopmate website)

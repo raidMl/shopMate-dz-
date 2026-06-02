@@ -5,7 +5,10 @@ const { Product } = require('../models');
 // @access  Public
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const { adminId } = req.query;
+    const filter = adminId ? { adminId: adminId } : {};
+    
+    const products = await Product.find(filter).populate('category');
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

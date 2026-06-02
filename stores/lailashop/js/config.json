@@ -1,0 +1,58 @@
+{
+  "socialMedia": {
+    "facebook": "https://web.facebook.com/laila",
+    "instagram": "https://web.facebook.com/",
+    "tikTok": "https://web.facebook.com/",
+    "twitter": "https://web.facebook.com/",
+    "whatsapp": "213669453240",
+    "youtube": "https://web.facebook.com/"
+  },
+  "shipping": {
+    "enableDomicile": true,
+    "enableBureau": true,
+    "freeShippingThreshold": 0,
+    "defaultDeliveryDays": 3
+  },
+  "paymentMethods": {
+    "cashOnDelivery": true,
+    "bankTransfer": false,
+    "edahabMobile": false
+  },
+  "policies": {
+    "returnDays": 7
+  },
+  "_id": "69efd046f7ab642d76c4d4e1",
+  "admin": {
+    "permissions": {
+      "manageAdmins": false,
+      "manageSite": false,
+      "manageTheme": false,
+      "viewStats": false
+    },
+    "site": null,
+    "_id": "69efd043f7ab642d76c4d4da",
+    "name": "laila",
+    "email": "laila@gmail.com",
+    "password": "$2a$10$0oQnc.RCnYFcCkntDEMQ1uku7.wXpdpjihKEF4hj7lcc33v0Z2QRy",
+    "role": "admin",
+    "createdAt": "2026-04-27T21:08:19.137Z",
+    "__v": 0,
+    "lastLogin": "2026-05-06T09:57:59.852Z",
+    "status": "active",
+    "endAccessDate": "2026-06-05T10:41:01.140Z"
+  },
+  "siteName": "lailashop",
+  "email": "laila@gmail.com",
+  "phone": "0796704432",
+  "isSetupComplete": false,
+  "setupProgress": 20,
+  "createdAt": "2026-04-27T21:08:22.688Z",
+  "updatedAt": "2026-05-06T09:57:17.603Z",
+  "__v": 0,
+  "description": "laila shop ecommerce website",
+  "domain": "lailashop.com",
+  "logo": "https://www.mediafire.com/file/wa6f2ehn3g2n6xc/Gemini_Generated_Image_9vq4ip9vq4ip9vq4.png/file",
+  "address": "bougie bejaia",
+  "city": "bougie",
+  "wilaya": "06"
+}

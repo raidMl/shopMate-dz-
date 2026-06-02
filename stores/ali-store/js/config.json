@@ -1,0 +1,60 @@
+{
+  "socialMedia": {
+    "facebook": "https://web.facebook.com/",
+    "instagram": "https://web.facebook.com/",
+    "tikTok": "https://web.facebook.com/",
+    "twitter": "https://web.facebook.com/",
+    "whatsapp": "213669453240",
+    "youtube": "https://web.facebook.com/"
+  },
+  "shipping": {
+    "enableDomicile": true,
+    "enableBureau": true,
+    "freeShippingThreshold": 500,
+    "defaultDeliveryDays": 2
+  },
+  "paymentMethods": {
+    "cashOnDelivery": true,
+    "bankTransfer": false,
+    "edahabMobile": false
+  },
+  "policies": {
+    "returnDays": 4,
+    "warranty": "d",
+    "termsAndConditions": "d"
+  },
+  "_id": "69efcdd602ed806061ea6bfe",
+  "admin": {
+    "permissions": {
+      "manageAdmins": false,
+      "manageTheme": false,
+      "viewStats": false,
+      "manageSite": false
+    },
+    "status": "active",
+    "site": null,
+    "_id": "69efcdd302ed806061ea6bf8",
+    "name": "ali said",
+    "email": "ali@gmail.com",
+    "password": "$2a$10$iOe1t1RaIcwDC5xyVmjB/eT71tqnSoiU32Js0NY0cJrwr9I8ttkSm",
+    "role": "admin",
+    "createdAt": "2026-04-27T20:57:55.218Z",
+    "__v": 0,
+    "lastLogin": "2026-05-03T10:26:09.572Z",
+    "endAccessDate": "2026-06-05T10:41:01.140Z"
+  },
+  "siteName": "ali store",
+  "email": "alistore@gmail.com",
+  "phone": "0796704432",
+  "isSetupComplete": true,
+  "setupProgress": 100,
+  "createdAt": "2026-04-27T20:57:58.439Z",
+  "updatedAt": "2026-05-06T10:18:39.770Z",
+  "__v": 0,
+  "description": "ali",
+  "domain": "alistore.store",
+  "logo": "https://www.mediafire.com/file/6t49o542mwhbksj/download+(2).png/file",
+  "address": "afron",
+  "city": "blida",
+  "postalCode": "1900"
+}

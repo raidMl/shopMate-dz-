@@ -163,7 +163,7 @@ router.post("/", async (req, res) => {
     }
 
     // Validate required customer info fields
-    const requiredFields = ['fullName', 'email', 'phone', 'wilaya', 'address'];
+    const requiredFields = ['fullName', 'phone', 'wilaya', 'address'];
     for (const field of requiredFields) {
       if (!customerInfo[field] || !customerInfo[field].trim()) {
         return res.status(400).json({ message: `${field} is required` });
@@ -209,7 +209,7 @@ router.post("/", async (req, res) => {
     // Calculate delivery price based on wilaya and delivery type
     const wilaya = customerInfo.wilaya.trim();
     const deliveryType = customerInfo.deliveryType || "bureau";
-    const deliveryPrice = getDeliveryPrice(wilaya, deliveryType);
+    const deliveryPrice = await getDeliveryPrice(wilaya, deliveryType);
 
     console.log(`📦 Delivery: ${deliveryType} in ${wilaya} = ${deliveryPrice} DZD`);
 
@@ -218,9 +218,9 @@ router.post("/", async (req, res) => {
       user: userId, // Can be null for guest orders
       adminId: adminId, // Tag the order with the admin who owns the products
       products: orderProducts,
-      totalPrice,
-      deliveryPrice: deliveryPrice, // Calculate based on wilaya and delivery type
-      finalTotal: totalPrice + deliveryPrice, // Total including delivery
+      totalPrice: Number(totalPrice),
+      deliveryPrice: Number(deliveryPrice), // Calculate based on wilaya and delivery type
+      finalTotal: Number(totalPrice) + Number(deliveryPrice), // Total including delivery
       customerInfo: {
         fullName: customerInfo.fullName.trim(),
         email: customerInfo.email.trim().toLowerCase(),

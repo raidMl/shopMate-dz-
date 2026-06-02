@@ -156,7 +156,10 @@ const userSchema = new mongoose.Schema({
     manageSite: { type: Boolean, default: false },   // Can manage site content
   },
   createdAt: { type: Date, default: Date.now },
-  endAccessDate: { type: Date, default: Date.now+30*24*60*60*1000 }, // For temporary access control (30 days)
+  endAccessDate: { 
+    type: Date, 
+    default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) 
+  }, // For temporary access control (30 days)
   lastLogin: { type: Date, default: null },
 });
 
@@ -233,7 +236,7 @@ const orderSchema = new mongoose.Schema({
   finalTotal: { type: Number, required: true },
   customerInfo: {
     fullName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: false },
     phone: { type: String, required: true },
     wilaya: { type: String, enum: WILAYAS, required: true },
     deliveryType: { type: String, enum: ["domicile", "bureau"], default: "bureau" },

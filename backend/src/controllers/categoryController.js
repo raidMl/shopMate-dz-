@@ -5,7 +5,10 @@ const { Category } = require('../models');
 // @access  Public
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const { adminId } = req.query;
+    const filter = adminId ? { adminId: adminId } : {};
+    
+    const categories = await Category.find(filter);
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });

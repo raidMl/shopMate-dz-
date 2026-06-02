@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { SiteConfig, User } = require("../models");
 const { protect, admin } = require("../middleware/authMiddleware");
+const { generateAdminClientFolder } = require("../utils/siteGenerator");
 
 /* ==============================
    GET SITE CONFIG FOR CURRENT ADMIN
@@ -131,6 +132,14 @@ router.put("/:id", protect, admin, async (req, res) => {
 
     config.updatedAt = new Date();
     await config.save();
+
+    // Trigger store regeneration/update when config changes
+    try {
+      const adminSlug = config.siteName.toLowerCase().replace(/[^a-z0-9]/g, '-') || req.user.email.split('@')[0];
+      generateAdminClientFolder(adminSlug, null, null, config);
+    } catch (genError) {
+      console.error("⚠️ Failed to update physical store folder:", genError.message);
+    }
 
     console.log(`✅ Site configuration updated for admin: ${req.user.email}`);
 

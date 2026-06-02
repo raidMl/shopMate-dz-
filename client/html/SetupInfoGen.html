@@ -769,8 +769,11 @@
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
       
-      document.querySelector(`[data-section="${section}"].section`).classList.add('active');
-      document.querySelector(`[data-section="${section}"].sidebar-item`).classList.add('active');
+      const targetSection = document.querySelector(`[data-section="${section}"].section`);
+      const targetSidebar = document.querySelector(`[data-section="${section}"].sidebar-item`);
+      
+      if (targetSection) targetSection.classList.add('active');
+      if (targetSidebar) targetSidebar.classList.add('active');
     }
 
     // Save section

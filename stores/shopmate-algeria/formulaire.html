@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استمارة الطلب - ShopMate</title>
+    <link rel="stylesheet" href="./styles/variables.css">
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/responsive.css">
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        .formulaire-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .formulaire-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .product-section {
+            padding: 40px;
+            background: #fafafa;
+            border-left: 1px solid #eee;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            background: white;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-info h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 24px;
+            color: #ff0066;
+            font-weight: 700;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .product-description {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .form-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-title {
+            margin-bottom: 20px;
+        }
+
+        .form-title h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 4px 0;
+            text-align: right;
+        }
+
+        .form-title p {
+            font-size: 13px;
+            color: #888;
+            margin: 0;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 6px;
+            text-align: right;
+        }
+
+        .form-group label .required { color: #ff0000; }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 10px;
+            padding-right: 30px;
+            cursor: pointer;
+        }
+
+        .summary-box {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .summary-row:last-child { margin-bottom: 0; }
+
+        .summary-row.total {
+            font-weight: 600;
+            font-size: 16px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 10px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 16px 0;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .qty-input {
+            width: 50px;
+            height: 32px;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff3000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #e62800;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: #888;
+        }
+
+        .error-message,
+        .success-message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c00;
+            border-left: 3px solid #c00;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #080;
+            border-left: 3px solid #080;
+        }
+
+        @media (max-width: 768px) {
+            .formulaire-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-section {
+                border-left: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .product-image { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="formulaire-container">
+        <div id="loadingState" class="loading-state">جاري تحميل المنتج...</div>
+
+        <div id="formulaireContent" style="display: none;">
+            <div class="formulaire-content">
+                <div class="product-section">
+                    <img id="productImage" class="product-image" src="" alt="Product" />
+                    <div class="product-info">
+                        <h2 id="productName"></h2>
+                        <div class="product-price" id="productPrice"></div>
+                        <div class="product-rating"><span id="productRating">⭐ 4.5</span></div>
+                        <div class="product-description" id="productDescription"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title">
+                        <h1>استمارة الطلب</h1>
+                        <p>المرجو إدخال معلوماتك الخاصة بك</p>
+                    </div>
+
+                    <div id="errorMessage" class="error-message"></div>
+                    <div id="successMessage" class="success-message"></div>
+
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="fullName">الإسم الكامل <span class="required">*</span></label>
+                            <input type="text" id="fullName" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">الهاتف <span class="required">*</span></label>
+                            <input type="tel" id="phone" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wilaya">الولاية <span class="required">*</span></label>
+                            <select id="wilaya" required><option value="">اختر الولاية</option></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="municipality">البلدية <span class="required">*</span></label>
+                            <input type="text" id="municipality" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">العنوان</label>
+                            <input type="text" id="address" />
+                        </div>
+
+                        <div class="summary-box">
+                            <div class="summary-row">
+                                <span id="subtotal">0 دج</span>
+                                <span>سعر المنتج</span>
+                            </div>
+                            <div class="summary-row">
+                                <span id="shipping">500 دج</span>
+                                <span>سعر التوصيل</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span id="total">0 دج</span>
+                                <span>المجموع</span>
+                            </div>
+                        </div>
+
+                        <div class="quantity-selector">
+                            <button type="button" id="qtyMinus" class="qty-btn">−</button>
+                            <input type="number" id="quantity" class="qty-input" value="1" min="1" />
+                            <button type="button" id="qtyPlus" class="qty-btn">+</button>
+                        </div>
+
+                        <button type="submit" class="submit-btn">إشتري الان</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/utils/helpers.js"></script>
+    <script src="./js/utils/state.js"></script>
+    <script src="./js/data/wilayas.js"></script>
+    <script src="./js/data/products.js"></script>
+    
+    <script>
+        let currentProduct = null;
+        const DELIVERY_PRICE = 500;
+
+        const initDOM = () => ({
+            loading: document.getElementById('loadingState'),
+            content: document.getElementById('formulaireContent'),
+            productImage: document.getElementById('productImage'),
+            productName: document.getElementById('productName'),
+            productPrice: document.getElementById('productPrice'),
+            productRating: document.getElementById('productRating'),
+            productDescription: document.getElementById('productDescription'),
+            wilayaSelect: document.getElementById('wilaya'),
+            quantity: document.getElementById('quantity'),
+            subtotal: document.getElementById('subtotal'),
+            shipping: document.getElementById('shipping'),
+            total: document.getElementById('total'),
+            errorMessage: document.getElementById('errorMessage'),
+            successMessage: document.getElementById('successMessage'),
+            orderForm: document.getElementById('orderForm'),
+            fullName: document.getElementById('fullName'),
+            phone: document.getElementById('phone'),
+            municipality: document.getElementById('municipality'),
+            address: document.getElementById('address')
+        });
+
+        let DOM = {};
+
+        function getProductIdFromURL() {
+            return new URLSearchParams(window.location.search).get('id');
+        }
+
+        async function loadProductData() {
+            DOM = initDOM();
+            const productId = getProductIdFromURL();
+            if (!productId) return showFormError('معرف المنتج غير موجود');
+
+            try {
+                if (!products || products.length === 0) await fetchProducts();
+                
+                currentProduct = products.find(p => p.id === productId);
+                if (!currentProduct) return showFormError('المنتج غير موجود');
+
+                displayProduct();
+                loadWilayas();
+                updatePrices();
+                setupEventListeners();
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showFormError('حدث خطأ في تحميل المنتج');
+            }
+        }
+
+        function displayProduct() {
+            if (!currentProduct) return;
+
+            DOM.productName.textContent = currentProduct.name;
+            DOM.productPrice.textContent = money(currentProduct.price);
+            DOM.productRating.textContent = `⭐ ${(currentProduct.rating || 4.5).toFixed(1)}`;
+            DOM.productDescription.textContent = currentProduct.description || 'منتج عالي الجودة';
+            
+            const imageUrl = currentProduct.image || imageFor(currentProduct.hue, currentProduct.name);
+            DOM.productImage.src = imageUrl;
+            DOM.productImage.onerror = () => {
+                DOM.productImage.src = imageFor(currentProduct.hue, currentProduct.name);
+            };
+
+            DOM.loading.style.display = 'none';
+            DOM.content.style.display = 'block';
+        }
+
+        function loadWilayas() {
+            DOM.wilayaSelect.innerHTML = '<option value="">اختر الولاية</option>';
+            if (window.wilayas && Array.isArray(window.wilayas)) {
+                window.wilayas.forEach(w => {
+                    const opt = document.createElement('option');
+                    opt.value = w.code;
+                    opt.textContent = `${w.code} ${w.name_fr} ${w.name_ar}`;
+                    DOM.wilayaSelect.appendChild(opt);
+                });
+            }
+        }
+
+        function updatePrices() {
+            if (!currentProduct) return;
+            const qty = parseInt(DOM.quantity.value) || 1;
+            const subtotal = currentProduct.price * qty;
+            DOM.subtotal.textContent = money(subtotal);
+            DOM.shipping.textContent = money(DELIVERY_PRICE);
+            DOM.total.textContent = money(subtotal + DELIVERY_PRICE);
+        }
+
+        function showFormError(message) {
+            DOM.loading.style.display = 'block';
+            DOM.errorMessage.textContent = message;
+            DOM.errorMessage.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            DOM.successMessage.textContent = message;
+            DOM.successMessage.style.display = 'block';
+            setTimeout(() => {DOM.successMessage.style.display = 'none';}, 5000);
+        }
+
+        function setupEventListeners() {
+            DOM.quantity.addEventListener('change', updatePrices);
+            
+            document.getElementById('qtyPlus').addEventListener('click', e => {
+                e.preventDefault();
+                DOM.quantity.value = parseInt(DOM.quantity.value) + 1;
+                updatePrices();
+            });
+            
+            document.getElementById('qtyMinus').addEventListener('click', e => {
+                e.preventDefault();
+                DOM.quantity.value = Math.max(1, parseInt(DOM.quantity.value) - 1);
+                updatePrices();
+            });
+
+            DOM.orderForm.addEventListener('submit', e => {
+                e.preventDefault();
+                
+                const formData = {
+                    fullName: DOM.fullName.value.trim(),
+                    phone: DOM.phone.value.trim(),
+                    wilaya: DOM.wilayaSelect.value,
+                    municipality: DOM.municipality.value.trim(),
+                    address: DOM.address.value.trim(),
+                    quantity: parseInt(DOM.quantity.value) || 1,
+                    productId: currentProduct.id,
+                    productName: currentProduct.name,
+                    productPrice: currentProduct.price,
+                    deliveryPrice: DELIVERY_PRICE,
+                    totalPrice: currentProduct.price * (parseInt(DOM.quantity.value) || 1) + DELIVERY_PRICE,
+                    timestamp: new Date().toISOString()
+                };
+
+                if (!formData.fullName || !formData.phone || !formData.wilaya || !formData.municipality) {
+                    DOM.errorMessage.textContent = 'الرجاء إملأ الحقول المطلوبة';
+                    DOM.errorMessage.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                    orders.push(formData);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    
+                    showSuccess('تم استقبال طلبك بنجاح! سنتصل بك قريباً.');
+                    DOM.orderForm.reset();
+                    DOM.quantity.value = 1;
+                    updatePrices();
+                } catch (error) {
+                    DOM.errorMessage.textContent = 'حدث خطأ أثناء معالجة الطلب';
+                    DOM.errorMessage.style.display = 'block';
+                }
+            });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadProductData);
+        } else {
+            loadProductData();
+        }
+    </script>
+</body>
+</html>

@@ -6,6 +6,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { User } = require("../models");
+const { generateAdminClientFolder } = require("../utils/siteGenerator");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -153,6 +154,25 @@ exports.createAdmin = async (req, res) => {
     });
 
     await admin.save();
+
+    // GENERATE CLIENT WEBSITE FOLDER
+    try {
+      // Use site name or email prefix as slug
+      const adminSlug = site ? site.toLowerCase().replace(/[^a-z0-9]/g, '-') : admin.email.split('@')[0];
+      
+      // Pass the actual admin ID to the generator so it can be saved in credentials.json
+      const siteConfig = {
+        adminId: admin._id,
+        siteName: site || admin.name,
+        admin: admin._id
+      };
+      
+      const clientFolderPath = generateAdminClientFolder(adminSlug, email, password, siteConfig);
+      console.log(`🚀 Generated client folder for ${admin.email} at ${clientFolderPath}`);
+    } catch (genError) {
+      console.error(`❌ Failed to generate client folder for ${admin.email}:`, genError.message);
+      // We don't fail the whole request, but log it
+    }
 
     res.status(201).json({
       message: "Admin created successfully",
@@ -378,7 +398,7 @@ exports.getStatistics = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, site } = req.body;
 
     if (!JWT_SECRET) {
       return res.status(500).json({ message: "JWT_SECRET is not configured" });
@@ -388,13 +408,38 @@ exports.register = async (req, res) => {
     if (existingUser) return res.status(400).json({ message: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
+    const userData = {
       name,
       email,
       password: hashedPassword,
       role: role || "user"
-    });
+    };
+
+    // If registering an admin, provide default permissions
+    if (userData.role === 'admin') {
+      userData.permissions = {
+        manageAdmins: false,
+        manageTheme: true,
+        viewStats: true,
+        manageSite: true,
+      };
+      userData.status = 'active';
+      if (site) userData.site = site;
+    }
+
+    const user = new User(userData);
     await user.save();
+
+    // GENERATE CLIENT WEBSITE FOLDER if it's an admin
+    if (user.role === 'admin') {
+      try {
+        const adminSlug = site ? site.toLowerCase().replace(/[^a-z0-9]/g, '-') : user.email.split('@')[0];
+        const clientFolderPath = generateAdminClientFolder(adminSlug, email, password);
+        console.log(`🚀 Generated client folder for ${user.email} at ${clientFolderPath}`);
+      } catch (genError) {
+        console.error(`❌ Failed to generate client folder for ${user.email}:`, genError.message);
+      }
+    }
 
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
 

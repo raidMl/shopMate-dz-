@@ -1,0 +1,61 @@
+{
+  "socialMedia": {
+    "facebook": "",
+    "instagram": "",
+    "tikTok": "",
+    "twitter": "",
+    "whatsapp": "",
+    "youtube": ""
+  },
+  "shipping": {
+    "enableDomicile": true,
+    "enableBureau": true,
+    "freeShippingThreshold": 0,
+    "defaultDeliveryDays": 3
+  },
+  "paymentMethods": {
+    "cashOnDelivery": true,
+    "bankTransfer": false,
+    "edahabMobile": false
+  },
+  "policies": {
+    "returnDays": 7,
+    "warranty": "",
+    "termsAndConditions": ""
+  },
+  "_id": "69fb1696f480c913d33de6bc",
+  "admin": {
+    "permissions": {
+      "manageAdmins": false,
+      "manageTheme": false,
+      "viewStats": false,
+      "manageSite": false
+    },
+    "_id": "69fb1693f480c913d33de6b6",
+    "name": "RAID ABDERRAOUF MELIZI",
+    "email": "raidreus.21@gmail.com",
+    "password": "$2a$10$GgO3Qa7m7UVTywc5fzXuMeTW34QyvUkViQT7.sdULXw8TxFTr4gGa",
+    "role": "admin",
+    "status": "active",
+    "site": null,
+    "lastLogin": "2026-05-06T10:30:08.108Z",
+    "createdAt": "2026-05-06T10:23:15.487Z",
+    "endAccessDate": "2026-06-05T10:23:15.487Z",
+    "__v": 0
+  },
+  "siteName": "dz store",
+  "email": "raidreus.21@gmail.com",
+  "phone": "0696456544",
+  "isSetupComplete": true,
+  "setupProgress": 100,
+  "createdAt": "2026-05-06T10:23:18.389Z",
+  "updatedAt": "2026-05-06T10:24:15.068Z",
+  "__v": 0,
+  "description": "",
+  "domain": "alistore.store",
+  "logo": "https://www.mediafire.com/file/6t49o542mwhbksj/download+(2).png/file",
+  "address": "afron",
+  "city": "blida",
+  "postalCode": "1900",
+  "wilaya": "16"
+}
